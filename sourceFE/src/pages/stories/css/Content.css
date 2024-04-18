@@ -1,0 +1,48 @@
+.containerCard {
+	align-items: center;
+    justify-content: center;
+   
+    max-height: fit-content;
+	padding: 20px;
+}
+
+
+.image {
+	/* flex-basis: 40%; */
+	margin-right: 20px;
+}
+
+/* .image img {
+	width: 100%;
+	height: auto;
+} */
+
+.text {
+	/* flex-basis: 55%; */
+}
+
+.text h1 {
+	margin-top: 0;
+	margin-bottom: 10px;
+	font-size: 28px;
+}
+
+.text p {
+	margin-bottom: 10px;
+}
+
+.text span {
+	font-weight: bold;
+}
+
+.icons {
+	display: flex;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.icons i {
+	margin-right: 10px;
+	font-size: 24px;
+	color: #333;
+}

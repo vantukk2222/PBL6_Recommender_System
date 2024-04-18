@@ -11,6 +11,7 @@ import Stories from './pages/stories/Stories'
 import NotFound404 from './pages/error/NotFound404'
 import HomeNavbar from './components/headers/HomeNavbar'
 import HomeHeader from './components/headers/HomeHeader'
+import Content from './pages/stories/Content'
 const App = () => {
  
   const router = createBrowserRouter(
@@ -19,6 +20,7 @@ const App = () => {
       <Route path='/' element={<HomeHeader/>}>
         <Route index element={<Dashboard/>}/>
         <Route path='/stories' element={<Stories/>}/>
+        <Route path='/content' element={<Content/>}/>
       </Route>
       </>
     )
