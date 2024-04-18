@@ -9,7 +9,7 @@ function HomeHeader() {
         <HomeNavbar />
       </div>
       <div className="row">
-        <div className="col-3 col-s-3 menu">
+        <div className=" menu">
           <Outlet />
         </div>
       </div>
