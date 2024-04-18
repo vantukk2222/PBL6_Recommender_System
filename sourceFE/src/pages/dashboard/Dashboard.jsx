@@ -1,15 +1,15 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import { Banner } from '../../components/banners/Banner'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { Banner } from "../../components/banners/Banner";
 
 const Dashboard = () => {
   return (
-    <div>
-     <Banner/>
-      {/* Child routes will be rendered here */}
-     
+    <div className=" flex flex-col justify-center	items-center w-screen">
+      <Banner />
+      <Banner />
+      <Banner />
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
