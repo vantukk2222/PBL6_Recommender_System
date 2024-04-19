@@ -13,7 +13,7 @@ const Content = () => {
   };
 
   return (
-    <div className="containerCard w-10/12 mx-auto  "> 
+    <div className="containerCard w-10/12 mx-auto "> 
       <div className="flex bg-white size-4/5  w-full bg-slate-200 rounded-lg">
         <div className="ml-3 p-3  image flex-initial w-1/2">
           <img className="rounded" src="https://anhanime.com/wp-content/uploads/2023/11/Anh-Gojo-Satoru-dep.jpg" />
