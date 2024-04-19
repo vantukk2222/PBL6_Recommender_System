@@ -1,5 +1,5 @@
-.carousel-container {
-  background: rgba(0, 0, 0, 0.5); /* Màu nền làm mờ */
+/* .carousel-container {
+  background: rgba(0, 0, 0, 0.5);
   width: 355px;
   height: 200px;
 }
@@ -21,6 +21,7 @@
   }
   
   .carousel-image.active {
-    transform: scale(1.2); /* Kích thước lớn hơn khi nổi lên */
+    transform: scale(1.2); 
   }
-  
+
+   */

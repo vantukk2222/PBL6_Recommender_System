@@ -1,11 +1,9 @@
 .containerCard {
 	align-items: center;
     justify-content: center;
-   
     max-height: fit-content;
 	padding: 20px;
 }
-
 
 .image {
 	/* flex-basis: 40%; */

@@ -1,0 +1,6 @@
+.m-rank-title {
+    height: 40px;
+    width:100%;
+    background-repeat: no-repeat;
+    background-image: url('../rankTitle.svg');
+}

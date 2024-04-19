@@ -9,7 +9,7 @@ function HomeHeader() {
         <HomeNavbar />
       </div>
       <div className="row">
-        <div className=" menu">
+        <div className="menu flex w-screen justify-center	items-center ">
           <Outlet />
         </div>
       </div>
