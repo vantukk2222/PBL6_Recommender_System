@@ -14,14 +14,14 @@ const Content = () => {
   };
 
   return (
-    <div className="containerCard p-4 w-9/12 mx-auto bg-gray-50 ">
+    <div className="containerCard p-4 w-[1080px] mx-auto bg-gray-50 ">
       <div className="flex h-full flex-initial w-full bg-slate-200 rounded-lg">
-        <div className=" p-2  image h-auto w-1/4 ">
+        <div className=" p-2  image h-[400px] w-1/3 ">
           <img className="w-full h-full object-cover rounded " src="https://anhanime.com/wp-content/uploads/2023/11/Anh-Gojo-Satoru-dep.jpg" />
         </div>
         <div>
-          <div className="text  flex-initial w-auto pl-5 mt-5 ">
-            <h1 className='font-serif font-bold text-3xl'>{data.name}</h1>
+          <div className="text  flex-initial w-auto pl-2 mt-5 ">
+            <h1 className='font-serif font-bold text-[35px]'>{data.name}</h1>
             <div className='flex py-2'>
               <div className='flex pr-4'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -95,7 +95,7 @@ const Content = () => {
               <i className="fas fa-thumbs-up"></i>
             </div>
           </div>
-          <div className='flex px-6 pt-5 pb-6 '>
+          <div className='flex px-2 pt-4 pb-6 '>
             <button class="rounded-full bg-cyan-400 hover:bg-blue-700 text-white font-bold py-2 px-4 ">
               <p className='font-serif text-lg'>Read</p>
             </button>
@@ -114,23 +114,23 @@ const Content = () => {
       </div>
       <div className="flex  size-4/5 w-full border-y-4 my-10">
         <div className="text flex-initial w-2/3 my-5 ">
-          <h1 className="font-bold ">About</h1>
+          <h1 className="font-bold text-2xl ">About</h1>
           <p className='text-xl font-light'>Synopsis </p>
-          <p className='italic text-xl'>{data.synopsis}</p>
+          <p className='italic text-xl ml-2'>{data.synopsis}</p>
 
         </div>
       </div>
       <div className="flex size-4/5 w-full border-b-4 ">
         <div className="text flex-initial w-2/3 mb-5 ">
-          <h1 className="font-bold ">Tags</h1>
-          <div className='mt-2'>
+          <h1 className="font-bold text-2xl ">Tags</h1>
+          <div className='mt-2 '>
             <Tag></Tag>
           </div>
         </div>
       </div>
       <div className="flex size-4/5 w-full border-b-4 ">
         <div className="text flex-initial w-2/3 mb-5 ">
-          <h1 className="font-bold ">Rating</h1>
+          <h1 className="font-bold text-2xl">Rating</h1>
           <div className='mt-2'>
             <Comment />
           </div>
