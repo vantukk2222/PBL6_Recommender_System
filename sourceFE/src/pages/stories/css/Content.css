@@ -1,9 +1,7 @@
 .containerCard {
 	align-items: center;
     justify-content: center;
-   
-    max-height: fit-content;
-	padding: 20px;
+
 }
 
 
@@ -31,9 +29,6 @@
 	margin-bottom: 10px;
 }
 
-.text span {
-	font-weight: bold;
-}
 
 .icons {
 	display: flex;
