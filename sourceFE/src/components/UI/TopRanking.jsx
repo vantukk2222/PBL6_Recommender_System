@@ -1,6 +1,8 @@
 import { React, useState } from "react";
 import { EachRanking } from "../Cards/EachRanking";
-export const TopRanking = () => {
+import PropTypes from "prop-types";
+
+export const TopRanking = ({ dataTopRanking }) => {
   const [showAll, setShowAll] = useState(false);
 
   const [numberList, setNumberList] = useState(5);
@@ -8,12 +10,13 @@ export const TopRanking = () => {
     setShowAll(!showAll);
     setNumberList(numberList === 5 ? 10 : 5);
   };
+
   return (
     <>
       <div className="flex flex-col w-full  pb-12 ">
         <div className="flex flex-row justify-between  border-b-2 font-bold  ">
           <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
-            Top Fanfic Books
+            {dataTopRanking?.title}
           </h1>
           <a
             className="uppercase text-blue-600 text-[16px] hover:underline hover:cursor-pointer "
@@ -24,9 +27,17 @@ export const TopRanking = () => {
         </div>
         <div className="flex flex-col justify-between">
           <div className="list-ranking flex flex-row">
-            <EachRanking numberList={numberList} />
-            <EachRanking numberList={numberList} />
-            <EachRanking numberList={numberList} />
+            {dataTopRanking?.dataEachTopRanking?.map(
+              (eachItemEachDataTopRanking, index) => {
+                return (
+                  <EachRanking
+                    dataEachRanking={eachItemEachDataTopRanking}
+                    numberList={numberList}
+                    key={index}
+                  />
+                );
+              }
+            )}
           </div>
           {!showAll ? (
             <div className="show-all-ranking flex	 justify-center items-center">
@@ -55,4 +66,7 @@ export const TopRanking = () => {
       </div>
     </>
   );
+};
+TopRanking.propTypes = {
+  dataTopRanking: PropTypes.object.isRequired,
 };

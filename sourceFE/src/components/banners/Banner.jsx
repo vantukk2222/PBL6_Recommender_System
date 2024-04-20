@@ -12,7 +12,7 @@ export const Banner = () => {
         {/* carolsel */}
         <CarouselItem />
         {/* grid table */}
-        <div className="grid grid-cols-5 grid-cols-2 gap-10 ml-10 ">
+        <div className="grid grid-cols-5 grid-cols-2 gap-5 ml-10 ">
           {/* item */}
           <WeeklyItem />
           <WeeklyItem />

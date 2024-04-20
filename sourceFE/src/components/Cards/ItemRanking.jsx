@@ -18,19 +18,19 @@ export const ItemRanking = ({ data, rank }) => {
           <img
             className="w-[53px] h-[70px] rounded"
             src={data?.image}
-            title={data?.title}
+            title={data?.nameOfNovel}
           />
         </div>
-        <div className={`number-ranking text-[16px] antialiased ${color} mx-2`}>
+        <div className={`number-ranking text-[16px] font-bold antialiased ${color} mx-2`}>
           <p>{rank < 10 ? "0" + rank : rank}</p>
         </div>
         <div className="flex flex-col">
           <a href="/content">
             <h3
               className="font-bold text-[16px] text-left line-clamp-1 hover:underline cursor-pointer"
-              title={data?.title}
+              title={data?.nameOfNovel}
             >
-              {data?.title}
+              {data?.nameOfNovel}
             </h3>
           </a>
           <a className="">
