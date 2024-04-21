@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams,Link } from 'react-router-dom';
 import './css/Content.css';
 import Tag from '../../components/Tags/Tag';
 import Comment from '../../components/Comments/Comment';
@@ -7,6 +7,7 @@ const Content = () => {
   let { idCate } = useParams();
 
   let data = {
+    id:'dast43',
     name: 'The Imbecile Lord Is Married to Five Beautiful Goddess',
     star: 4.79,
     synopsis: 'Did I really die?\nCain Lisworth woke up in the adventurer guild, he had returned to the start of his journey after being killed by the cosmos guards.\n Armed with his knowledge, he started his life once again trying to break the heavenly orders and escape the mortal world.\navigatorThis time, without mistakes he will raise back to the top and reclaim his throne as the strongest enchanter in history!\n****\n\nThis story finally has a Discord server. Please visit it to see character art, or demand art to be created for a specific character.\nOnly ask how someone looks, and I will get it out.',
@@ -97,7 +98,9 @@ const Content = () => {
           </div>
           <div className='flex px-2 pt-4 pb-6 '>
             <button class="rounded-full bg-cyan-400 hover:bg-blue-700 text-white font-bold py-2 px-4 ">
+             <Link to={`/stories/${data.id}`}>
               <p className='font-serif text-lg'>Read</p>
+              </Link> 
             </button>
             <button class="flex justify-center items-center rounded-full ml-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ">
               <div className='mr-1'>
