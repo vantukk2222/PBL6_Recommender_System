@@ -14,14 +14,16 @@ export const ItemRanking = ({ data, rank }) => {
   return (
     <>
       <div className="flex flex-row py-2">
-        <div className="">
+        <a className="" href="/content">
           <img
-            className="w-[53px] h-[70px] rounded"
+            className="w-[53px] h-[70px] rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
             src={data?.image}
             title={data?.nameOfNovel}
           />
-        </div>
-        <div className={`number-ranking text-[16px] font-bold antialiased ${color} mx-2`}>
+        </a>
+        <div
+          className={`number-ranking text-[16px] font-bold antialiased ${color} mx-2`}
+        >
           <p>{rank < 10 ? "0" + rank : rank}</p>
         </div>
         <div className="flex flex-col">

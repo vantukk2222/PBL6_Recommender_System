@@ -7,7 +7,11 @@ export const WeeklyItem = ({ items }) => {
     <>
       <div className="max-w-[121px] max-h[220px] bg-white  ">
         <NavLink exact to="/content" className="w-[121px] h-[139.5px]">
-          <img className="w-[121px] h-[139.5px]" src={banner1} alt="" />
+          <img
+            className="w-[121px] h-[139.5px]  w-[121px] h-[139.5px] ease-in-out delay-100 hover:-translate-y-1 hover:scale-105  duration-500"
+            src={banner1}
+            alt=""
+          />
         </NavLink>
         <div className=" max-w-[121px]">
           <NavLink exact to="/content">

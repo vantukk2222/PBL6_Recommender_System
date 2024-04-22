@@ -4,6 +4,8 @@ import { TopRanking } from "../../components/UI/TopRanking";
 import banner1 from "../../assets/images/banner1.jpg";
 import { HomeTags } from "../../components/Tags/HomeTags";
 import { WeeklyItem } from "../../components/Cards/WeeklyItem";
+import { SelectionImage } from "../../components/UI/selectionImage";
+import { RecommenderNovels } from "../../components/UI/recommenderNovels";
 const Dashboard = () => {
   const dataTopRanking = [
     {
@@ -63,13 +65,13 @@ const Dashboard = () => {
             },
             {
               image: banner1,
-              nameOfNovel: "Endless Path : Infinite Cosmos ",
+              nameOfNovel: "Endless Path : Infinite8 Cosmos ",
               category: "Anime & Comics",
               rating: 4.8,
             },
             {
               image: banner1,
-              nameOfNovel: "Endless Path : Infinite Cosmos ",
+              nameOfNovel: "Endless Path : Infinite9 Cosmos ",
               category: "Anime & Comics",
               rating: 4.8,
             },
@@ -409,38 +411,84 @@ const Dashboard = () => {
       ],
     },
   ];
+  const dataHomeTags = [
+    {
+      title: "Top Fanfic Tags",
+      tags: [
+        { name: "Action" },
+        { name: "Adventure" },
+        { name: "Comedy" },
+        { name: "Drama" },
+        { name: "Fantasy" },
+        { name: "Horror" },
+        { name: "Mystery" },
+        { name: "Romance" },
+        { name: "Sci-fi" },
+        { name: "Slice of Life" },
+      ],
+    },
+    {
+      title: "Popular Tags",
+      tags: [
+        { name: "Action" },
+        { name: "Adventure" },
+        { name: "Comedy" },
+        { name: "Drama" },
+        { name: "Fantasy" },
+        { name: "Horror" },
+        { name: "Mystery" },
+        { name: "Romance" },
+        { name: "Sci-fi" },
+        { name: "Slice of Life" },
+      ],
+    },
+  ];
 
   return (
     <div className=" flex flex-col justify-end items-center w-screen max-w-[1080px]">
       <Banner />
       <TopRanking dataTopRanking={dataTopRanking[0]} />;
-      <HomeTags />
+      <HomeTags dataHomeTags={dataHomeTags[1]} />
       <TopRanking dataTopRanking={dataTopRanking[1]} />;
-      <div className="flex flex-col w-full  pb-12 ">
+      <div className="flex flex-col flex-wrap  pb-12 w-full">
         <div className="flex flex-row justify-between  border-b-2 font-bold  ">
           <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
             Potential Starlet
           </h1>
         </div>
-        <div className="grid grid-cols-8">
+        <div className="grid grid-cols-8 gap-4">
           {Array.from({ length: 8 }).map((_, index) => (
             <WeeklyItem key={index} />
           ))}
         </div>
       </div>
-      <div className="flex flex-col w-full  pb-12 ">
+      <div className="flex flex-row">
+        <div style={{ flex: 6 }}>
+          <SelectionImage
+            dataSelectionImage={dataTopRanking[0]?.dataEachTopRanking[0]?.data}
+          />
+        </div>
+        <div style={{ flex: 4 }}>
+          <RecommenderNovels
+            dataRecommenderNovels={
+              dataTopRanking[0]?.dataEachTopRanking[0]?.data
+            }
+          />
+        </div>
+      </div>
+      <div className="flex flex-col flex-wrap   w-full pb-12 ">
         <div className="flex flex-row justify-between  border-b-2 font-bold  ">
           <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
             Completed Novel
           </h1>
         </div>
-        <div className="grid grid-cols-8">
+        <div className="grid grid-cols-8 gap-4">
           {Array.from({ length: 8 }).map((_, index) => (
             <WeeklyItem key={index} />
           ))}
         </div>
       </div>
-      <HomeTags />
+      <HomeTags dataHomeTags={dataHomeTags[1]} />
     </div>
   );
 };
