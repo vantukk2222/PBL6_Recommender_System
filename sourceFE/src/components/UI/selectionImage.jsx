@@ -36,8 +36,8 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                       setSelectedImage(item);
                     }}
                     key={index}
-                    src={item.image}
-                    alt={item.nameOfNovel}
+                    src={item.image || dataSelectionImage[0].image}
+                    alt={item.nameOfNovel || dataSelectionImage[0].nameOfNovel}
                   />
                 );
               })}
@@ -57,7 +57,8 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                     className="font-bold text-[21px] text-left line-clamp-1 hover:underline cursor-pointer"
                     title={selectedImage?.nameOfNovel}
                   >
-                    {selectedImage?.nameOfNovel}
+                    {selectedImage?.nameOfNovel ||
+                      dataSelectionImage[0].nameOfNovel}
                   </h3>
                 </a>
                 <a className="">
@@ -65,7 +66,7 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                     className="font-light text-[14px] text-gray-400 hover:underline cursor-pointer mb-2"
                     title={selectedImage?.category}
                   >
-                    {selectedImage?.category}
+                    {selectedImage?.category || dataSelectionImage[0].category}
                   </h1>
                 </a>
                 <div className="flex flex-row">

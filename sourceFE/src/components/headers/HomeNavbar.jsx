@@ -7,11 +7,50 @@ import {
   HamburgetMenuOpen,
   BrowseIcon,
 } from "./icon";
+import { ModalHeader } from "./ModalHeader";
 
 function HomeNavbar() {
   const [click, setClick] = useState(false);
+  const [isModalGenresOpen, setIsModalGenresOpen] = useState(false);
+  const [isModalRankingOpen, setIsModalRankingOpen] = useState(false);
 
   const handleClick = () => setClick(!click);
+  const genres = {
+    Novels: {
+      data: [
+        [
+          "Urban",
+          "Fantasy",
+          "Sci-fi",
+          "Mystery",
+          "Adventure",
+          "Action",
+          "Horror",
+          "Slice of Life",
+          "School Life",
+          "Historical",
+          "Martial Arts",
+          "Sports",
+        ],
+        ["Urban", "Fantasy", "History", "Teen", "LGBT+", "Sci-fi", "General"],
+      ],
+    },
+    Fan_fic: {
+      data: [
+        [
+          "Anime & Comics",
+          "Video Games",
+          "Celebrities",
+          "Music & Bands",
+          "Movies",
+          "TV",
+          "Book & Literature",
+          "Theater",
+          "Orther",
+        ],
+      ],
+    },
+  };
   return (
     <>
       <nav className="navbar">
@@ -29,15 +68,24 @@ function HomeNavbar() {
               <li className="nav-item">
                 <NavLink
                   exact
-                  to="/"
+                  to="/genres/"
                   activeClassName="active"
                   className="nav-links flex flex-row"
                   onClick={handleClick}
+                  onMouseEnter={() => setIsModalGenresOpen(true)}
+                  onMouseLeave={() => setIsModalGenresOpen(false)}
+                  style={{ position: "relative" }} // Make sure the parent has position: relative or absolute
                 >
-                  <span className="mr-2 mt-2">
+                  <span
+                    className="mr-2 mt-2"
+                    onClick={(event) => {
+                      event.preventDefault();
+                    }}
+                  >
                     <BrowseIcon selected={click} />
                   </span>
                   <strong>Browse</strong>{" "}
+                  {isModalGenresOpen && <ModalHeader dataModal={genres} />}
                 </NavLink>
               </li>
               <li className="nav-item">
