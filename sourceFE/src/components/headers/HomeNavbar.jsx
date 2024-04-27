@@ -74,7 +74,7 @@ function HomeNavbar() {
                   onClick={handleClick}
                   onMouseEnter={() => setIsModalGenresOpen(true)}
                   onMouseLeave={() => setIsModalGenresOpen(false)}
-                  style={{ position: "relative" }} // Make sure the parent has position: relative or absolute
+                  style={{ position: "relative" }}
                 >
                   <span
                     className="mr-2 mt-2"
@@ -91,12 +91,37 @@ function HomeNavbar() {
               <li className="nav-item">
                 <NavLink
                   exact
-                  to="/stories"
+                  to="/genres/"
                   activeClassName="active"
-                  className="nav-links"
+                  className="nav-links flex flex-row"
                   onClick={handleClick}
+                  onMouseEnter={() => setIsModalRankingOpen(true)}
+                  onMouseLeave={() => setIsModalRankingOpen(false)}
+                  style={{ position: "relative" }}
                 >
                   <strong>Rankings</strong>
+                  {isModalRankingOpen && (
+                    <div className="absolute top-full left-0 hover:cursor-auto	">
+                      <div className=" flex flex-col text-white  pt-2 text-[19px] font-bold  bg-black h-max-[120px] h-fit  w-max rounded-tl-lg	rounded-bl-lg ">
+                        {Object.keys(genres)?.map((genre, index) => (
+                          <NavLink
+                            to={
+                              "/ranking/" +
+                              genre
+                                .toLowerCase()
+                                .replace("_", "-")
+                                .replace(" ", "-") +
+                              "/all_time/power_rank"
+                            }
+                            key={index}
+                            className="pl-2 py-2 pr-6 hover:bg-blue-700 -lg hover:cursor-pointer  "
+                          >
+                            {genre.replace("_", "-") + " Ranking"}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -117,7 +142,7 @@ function HomeNavbar() {
 
             {click ? (
               <span className="icon">
-                <HamburgetMenuClose />{" "}
+                <HamburgetMenuClose />
               </span>
             ) : (
               <span className="icon">

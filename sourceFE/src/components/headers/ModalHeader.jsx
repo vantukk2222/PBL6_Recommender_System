@@ -16,7 +16,7 @@ export const ModalHeader = ({ dataModal }) => {
           event.preventDefault();
         }}
       >
-        <div className="flex  flex-row bg-gray-800 h-max-[340px] h-[340px] w-max-[640px] w-[640px] rounded-lg ">
+        <div className="flex  flex-row bg-gray-800 h-max-[340px] h-[340px] w-max-[640px] w-max rounded-lg ">
           <div className=" flex flex-col text-white pt-2 text-[21px] font-bold  bg-black h-max-[340px] h-[340px] w-max-[120px] w-[120px] rounded-tl-lg	rounded-bl-lg ">
             {Object.keys(genres)?.map((genre, index) => (
               <NavLink
@@ -39,7 +39,7 @@ export const ModalHeader = ({ dataModal }) => {
               </NavLink>
             ))}
           </div>
-          <div className="flex flex-col flex-wrap h-max-[300px]   ">
+          <div className="flex flex-col flex-wrap h-max-[300px]  w-[420px] ">
             {selectedGenre?.data?.map((genre, index) => (
               <div key={index} className="text-left">
                 {selectedGenre.data.length > 1 ? (
