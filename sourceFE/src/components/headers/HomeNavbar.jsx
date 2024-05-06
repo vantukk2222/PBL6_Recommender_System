@@ -66,10 +66,8 @@ function HomeNavbar() {
 
             <ul className={click ? "nav-menu active" : "nav-menu"}>
               <li className="nav-item">
-                <NavLink
-                  exact
-                  to="/genres/"
-                  activeClassName="active"
+                <a
+                  href="/genres/novels/all"
                   className="nav-links flex flex-row"
                   onClick={handleClick}
                   onMouseEnter={() => setIsModalGenresOpen(true)}
@@ -86,13 +84,11 @@ function HomeNavbar() {
                   </span>
                   <strong>Browse</strong>{" "}
                   {isModalGenresOpen && <ModalHeader dataModal={genres} />}
-                </NavLink>
+                </a>
               </li>
               <li className="nav-item">
-                <NavLink
-                  exact
-                  to="/genres/"
-                  activeClassName="active"
+                <a
+                  href="/ranking/"
                   className="nav-links flex flex-row"
                   onClick={handleClick}
                   onMouseEnter={() => setIsModalRankingOpen(true)}
@@ -122,18 +118,12 @@ function HomeNavbar() {
                       </div>
                     </div>
                   )}
-                </NavLink>
+                </a>
               </li>
               <li className="nav-item">
-                <NavLink
-                  exact
-                  to="/blog"
-                  activeClassName="active"
-                  className="nav-links"
-                  onClick={handleClick}
-                >
+                <a to="/blog" className="nav-links" onClick={handleClick}>
                   <strong>Create</strong>
-                </NavLink>
+                </a>
               </li>
             </ul>
           </div>

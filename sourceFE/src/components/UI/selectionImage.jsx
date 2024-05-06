@@ -13,7 +13,7 @@ export const SelectionImage = ({ dataSelectionImage }) => {
             <h1
               className="text-2xl text-black font-bold mb-4 pb-6 "
               onClick={() => {
-                console.log("data: ", dataSelectionImage[0].image);
+                console.log("123");
               }}
             >
               {dataSelectionImage[0]?.nameOfNovel}
@@ -22,7 +22,6 @@ export const SelectionImage = ({ dataSelectionImage }) => {
           <div className="flex flex-col justify-between pt-2 ml-4 bg-slate-100">
             <div className="flex  flex-row overflow-x-auto  max-w-[648px]">
               {dataSelectionImage.map((item, index) => {
-                console.log("item: ", item.image);
                 // if (index == 0) return null;
                 return (
                   <img

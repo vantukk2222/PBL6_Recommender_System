@@ -79,12 +79,12 @@
   
   .nav-item:hover:after {
     width: 100%;
-    background: #ffdd40;
+    /* background: #ffdd40; */
   }
   
-  .nav-item .active {
+  /* .nav-item .active {
     color: #ffdd40;
-  }
+  } */
   
   .nav-icon {
     display: none;
@@ -118,11 +118,11 @@
       transition: all 0.5s ease;
       z-index: 1;
     }
-    
+/*     
     .nav-item .active {
       color: #ffdd40;
       border: none;
-    }
+    } */
     .nav-links {
       color: #fff;
       padding: 1.5rem;

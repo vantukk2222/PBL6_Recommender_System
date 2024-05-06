@@ -12,17 +12,18 @@ export const ModalHeader = ({ dataModal }) => {
       <div
         className="absolute top-full left-0 hover:cursor-auto	"
         onMouseLeave={() => setSelectedGenre(genres["Novels"])}
-        onClick={(event) => {
-          event.preventDefault();
-        }}
+        // onClick={(event) => {
+        //   event.preventDefault();
+        // }}
       >
         <div className="flex  flex-row bg-gray-800 h-max-[340px] h-[340px] w-max-[640px] w-max rounded-lg ">
           <div className=" flex flex-col text-white pt-2 text-[21px] font-bold  bg-black h-max-[340px] h-[340px] w-max-[120px] w-[120px] rounded-tl-lg	rounded-bl-lg ">
             {Object.keys(genres)?.map((genre, index) => (
-              <NavLink
-                to={
+              <a
+                href={
                   "/genres/" +
-                  genre.toLowerCase().replace("_", "-").replace(" ", "-")
+                  genre.toLowerCase().replace("_", "-").replace(" ", "-") +
+                  "/all"
                 }
                 key={index}
                 className={
@@ -36,7 +37,7 @@ export const ModalHeader = ({ dataModal }) => {
                 }}
               >
                 {genre.replace("_", "-")}
-              </NavLink>
+              </a>
             ))}
           </div>
           <div className="flex flex-col flex-wrap h-max-[300px]  w-[420px] ">
@@ -57,8 +58,8 @@ export const ModalHeader = ({ dataModal }) => {
                   }
                 >
                   {genre.map((item, index) => (
-                    <NavLink
-                      to={
+                    <a
+                      href={
                         "/genres/" +
                         selectedGenrez
                           .toLowerCase()
@@ -71,7 +72,7 @@ export const ModalHeader = ({ dataModal }) => {
                       className="text-white text-[15px] pl-2 ml-2 h-fit font-bold line-clamp-1	 w-max-[120px] w-[120px] rounded hover:bg-blue-700 hover:cursor-pointer"
                     >
                       {item}
-                    </NavLink>
+                    </a>
                   ))}
                 </div>
               </div>
