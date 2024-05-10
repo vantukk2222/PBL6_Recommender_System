@@ -9,6 +9,8 @@ import { RecommenderNovels } from "../../components/UI/recommenderNovels";
 
 import useNovel from "../../hooks/useNovel";
 import { getNovel, getNovels } from "../../ultis/utilsNovel";
+import { getAuthors } from "../../ultis/utilsAuthor";
+import useAuthor from "../../hooks/useAuthor";
 const Dashboard = () => {
   const dataTopRanking = [
     {
@@ -448,15 +450,22 @@ const Dashboard = () => {
   ];
 
 
-  const { 
-    listNovel,
-    setListNovel,
-    filter,
-    setFilter,
+  // const { 
+  //   listNovel,
+  //   setListNovel,
+  //   filter,
+  //   setFilter,
+  //   page,
+  //   setPage
+  // } = useNovel();
+  const {
+    authorData,
+    setAuthorData,
+    listAuthor,
+    setListAuthor,
     page,
     setPage
-  } = useNovel();
-  
+  } = useAuthor();
   // useEffect(()=>{
   //     getNovels(filter).then((res)=> {
   //       setListNovel(res.novels);
@@ -464,13 +473,13 @@ const Dashboard = () => {
   //     });
   // },[])
   
-  // useEffect(()=>{
-  //   var id = '23901715324199104';
-  //   getNovel(id).then((res)=>{
-  //     console.log(res);
-  //   })
-  // },[])
-  console.log('data novels',listNovel);
+  useEffect(()=>{
+    console.log('1');
+    getAuthors().then((res)=>{
+      setListAuthor(res.authors);
+    })
+  },[])
+  // console.log('data author', listAuthor);
   return (
     <div className=" flex flex-col justify-end items-center w-screen max-w-[1080px]">
       <Banner />

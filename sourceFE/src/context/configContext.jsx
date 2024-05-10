@@ -1,11 +1,16 @@
-import AuthorContext from "./authorContext";
+
+import { AuthorProvider } from "./authorContext";
 import { NovelProvider } from "./novelContext";
 import PropType from "prop-types";
 const ContextProvider = ({ children }) => {
   return (
-    <AuthorContext>
-      <NovelProvider>{children}</NovelProvider>
-    </AuthorContext>
+    <AuthorProvider>
+      <NovelProvider>
+          {children}
+      </NovelProvider>
+    </AuthorProvider>
+      
+  
   );
 };
 

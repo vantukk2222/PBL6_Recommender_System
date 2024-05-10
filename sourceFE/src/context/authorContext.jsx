@@ -16,7 +16,7 @@ export const AuthorProvider = ({children}) => {
         authorData,
         setAuthorData,
         listAuthor,
-        setAuthorData,
+        setListAuthor,
         page,
         setPage
     };
