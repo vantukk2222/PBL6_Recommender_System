@@ -2,6 +2,8 @@ import React from "react";
 import "./css/HomeHeader.css";
 import HomeNavbar from "./HomeNavbar";
 import { Outlet } from "react-router-dom";
+
+
 function HomeHeader() {
   return (
     <div className="container">

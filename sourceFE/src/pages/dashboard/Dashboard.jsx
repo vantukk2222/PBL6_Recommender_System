@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Banner } from "../../components/banners/Banner";
 import { TopRanking } from "../../components/UI/TopRanking";
 import banner1 from "../../assets/images/banner1.jpg";
@@ -6,6 +6,9 @@ import { HomeTags } from "../../components/Tags/HomeTags";
 import { WeeklyItem } from "../../components/Cards/WeeklyItem";
 import { SelectionImage } from "../../components/UI/selectionImage";
 import { RecommenderNovels } from "../../components/UI/recommenderNovels";
+
+import useNovel from "../../hooks/useNovel";
+import { getNovel, getNovels } from "../../ultis/utilsNovel";
 const Dashboard = () => {
   const dataTopRanking = [
     {
@@ -444,6 +447,30 @@ const Dashboard = () => {
     },
   ];
 
+
+  const { 
+    listNovel,
+    setListNovel,
+    filter,
+    setFilter,
+    page,
+    setPage
+  } = useNovel();
+  
+  // useEffect(()=>{
+  //     getNovels(filter).then((res)=> {
+  //       setListNovel(res.novels);
+  //       setPage(res.page);
+  //     });
+  // },[])
+  
+  // useEffect(()=>{
+  //   var id = '23901715324199104';
+  //   getNovel(id).then((res)=>{
+  //     console.log(res);
+  //   })
+  // },[])
+  console.log('data novels',listNovel);
   return (
     <div className=" flex flex-col justify-end items-center w-screen max-w-[1080px]">
       <Banner />
