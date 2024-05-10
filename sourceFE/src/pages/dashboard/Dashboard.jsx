@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Banner } from "../../components/banners/Banner";
 import { TopRanking } from "../../components/UI/TopRanking";
 import banner1 from "../../assets/images/banner1.jpg";
@@ -6,6 +6,11 @@ import { HomeTags } from "../../components/Tags/HomeTags";
 import { WeeklyItem } from "../../components/Cards/WeeklyItem";
 import { SelectionImage } from "../../components/UI/selectionImage";
 import { RecommenderNovels } from "../../components/UI/recommenderNovels";
+
+import useNovel from "../../hooks/useNovel";
+import { getNovel, getNovels } from "../../ultis/utilsNovel";
+import { getAuthors } from "../../ultis/utilsAuthor";
+import useAuthor from "../../hooks/useAuthor";
 const Dashboard = () => {
   const dataTopRanking = [
     {
@@ -444,6 +449,37 @@ const Dashboard = () => {
     },
   ];
 
+
+  // const { 
+  //   listNovel,
+  //   setListNovel,
+  //   filter,
+  //   setFilter,
+  //   page,
+  //   setPage
+  // } = useNovel();
+  const {
+    authorData,
+    setAuthorData,
+    listAuthor,
+    setListAuthor,
+    page,
+    setPage
+  } = useAuthor();
+  // useEffect(()=>{
+  //     getNovels(filter).then((res)=> {
+  //       setListNovel(res.novels);
+  //       setPage(res.page);
+  //     });
+  // },[])
+  
+  useEffect(()=>{
+    console.log('1');
+    getAuthors().then((res)=>{
+      setListAuthor(res.authors);
+    })
+  },[])
+  // console.log('data author', listAuthor);
   return (
     <div className=" flex flex-col justify-end items-center w-screen max-w-[1080px]">
       <Banner />
