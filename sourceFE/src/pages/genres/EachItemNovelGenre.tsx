@@ -1,5 +1,5 @@
 import React from "react";
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 
 export const EachItemNovelGenre = ({ item }) => {
   const proxyUrl = `http://localhost:3001/proxy-image?url=${encodeURIComponent(

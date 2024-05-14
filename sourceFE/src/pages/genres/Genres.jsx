@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./css/genres.css";
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { EachItemNovelGenre } from "./EachItemNovelGenre";
 export const Genres = () => {
