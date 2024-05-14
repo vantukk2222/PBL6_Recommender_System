@@ -5,7 +5,12 @@ const AuthorContext = createContext({});
 export const AuthorProvider = ({children}) => {
     const [authorData, setAuthorData] = useState([]);
     const [listAuthor, setListAuthor] = useState([]);
- 
+    const [filter, setFilter] = useState({
+        page : 1 , 
+        pageSize : 4, 
+        sortField : 'name',
+        sortOrder:'desc'
+    })
     const [page, setPage] = useState({
         totalPages :1,
         currentPage :1
@@ -13,6 +18,8 @@ export const AuthorProvider = ({children}) => {
     });
 
     const contextAuthorData = {
+        filter,
+        setFilter,
         authorData,
         setAuthorData,
         listAuthor,
