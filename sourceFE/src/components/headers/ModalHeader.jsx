@@ -22,7 +22,7 @@ export const ModalHeader = ({ dataModal }) => {
               <a
                 href={
                   "/genres/" +
-                  genre.toLowerCase().replace("_", "-").replace(" ", "-") +
+                  // genre.toLowerCase().replace("_", "-").replace(" ", "-") +
                   "/all"
                 }
                 key={index}
@@ -66,7 +66,11 @@ export const ModalHeader = ({ dataModal }) => {
                           .replace("_", "-")
                           .replace(" ", "-") +
                         "/" +
-                        item.replace(/\s/g, "-").toLowerCase()
+                        item
+                          .replace(/[^a-z0-9\s]/gi, "")
+                          .split(/\s+/)
+                          .join("-")
+                          .toLowerCase()
                       }
                       key={index}
                       className="text-white text-[15px] pl-2 ml-2 h-fit font-bold line-clamp-1	 w-max-[120px] w-[120px] rounded hover:bg-blue-700 hover:cursor-pointer"
