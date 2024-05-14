@@ -1,8 +1,13 @@
 import { data } from "autoprefixer";
 import apiAuthor from "../api/apiAuthor";
 
-export const getAuthors = async () =>{
-    const response = await apiAuthor.getAuthors();
+export const getAuthors = async (filter = {
+    'page' : 1,
+    'pageSize' : 4,
+    'sortField' : 'name',
+    'sortOrder':'desc'
+}) =>{
+    const response = await apiAuthor.getAuthors(filter);
     const data = {
         'page' : {  
             'currentPage' : response.data.currentPage,
