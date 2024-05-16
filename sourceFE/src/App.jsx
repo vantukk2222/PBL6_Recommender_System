@@ -14,6 +14,7 @@ import HomeNavbar from "./components/headers/HomeNavbar";
 import HomeHeader from "./components/headers/HomeHeader";
 import Content from "./pages/stories/Content";
 import { Genres } from "./pages/genres/Genres";
+import { Ranking } from "./pages/ranking/Ranking";
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,8 +22,9 @@ const App = () => {
         <Route path="/" element={<HomeHeader />}>
           <Route index element={<Dashboard />} />
           <Route path="/stories/:Id?" element={<Stories />} />
-          <Route path="/content" element={<Content />} />
-          <Route path="/genres?/:novel?/:genres?" element={<Genres />} />
+          <Route path="/content/:idCate" element={<Content />} />
+          <Route path="/genres/:novel/:genres?" element={<Genres />} />
+          <Route path="/ranking/:genres?" element={<Ranking />} />
         </Route>
       </>
     )

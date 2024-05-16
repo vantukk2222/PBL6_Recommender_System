@@ -17,12 +17,12 @@ export const ModalHeader = ({ dataModal }) => {
         // }}
       >
         <div className="flex  flex-row bg-gray-800 h-max-[340px] h-[340px] w-max-[640px] w-max rounded-lg ">
-          <div className=" flex flex-col text-white pt-2 text-[21px] font-bold  bg-black h-max-[340px] h-[340px] w-max-[120px] w-[120px] rounded-tl-lg	rounded-bl-lg ">
+          <div className=" flex flex-col text-white pt-2 text-[18px] font-semibold  bg-black h-max-[340px] h-[340px] w-max-[120px] w-[120px] rounded-tl-lg	rounded-bl-lg ">
             {Object.keys(genres)?.map((genre, index) => (
               <a
                 href={
                   "/genres/" +
-                  // genre.toLowerCase().replace("_", "-").replace(" ", "-") +
+                  genre.toLowerCase().replace("_", "-").replace(" ", "-") +
                   "/all"
                 }
                 key={index}

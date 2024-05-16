@@ -98,7 +98,7 @@ function HomeNavbar() {
                   <strong>Rankings</strong>
                   {isModalRankingOpen && (
                     <div className="absolute top-full left-0 hover:cursor-auto	">
-                      <div className=" flex flex-col text-white  pt-2 text-[19px] font-bold  bg-black h-max-[120px] h-fit  w-max rounded-tl-lg	rounded-bl-lg ">
+                      <div className=" flex flex-col text-white  pt-2 text-[18px] font-semibold  bg-black h-max-[120px] h-fit  w-max rounded-tl-lg	rounded-bl-lg ">
                         {Object.keys(genres)?.map((genre, index) => (
                           <NavLink
                             to={
@@ -106,8 +106,7 @@ function HomeNavbar() {
                               genre
                                 .toLowerCase()
                                 .replace("_", "-")
-                                .replace(" ", "-") +
-                              "/all_time/power_rank"
+                                .replace(" ", "-")
                             }
                             key={index}
                             className="pl-2 py-2 pr-6 hover:bg-blue-700 -lg hover:cursor-pointer  "
