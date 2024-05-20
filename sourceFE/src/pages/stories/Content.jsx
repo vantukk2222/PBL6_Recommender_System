@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useParams, Link } from "react-router-dom";
 import "./css/Content.css";
 import Tag from "../../components/Tags/Tag";
 import Comment from "../../components/Comments/Comment";
+import { getNovel } from "../../ultis/utilsNovel";
+import { proxyUrl } from "../../api/apiProxy";
+import { formatNumber } from "./../../ultis/convertNumber";
 const Content = () => {
   const { idCate } = useParams();
+  const [dataNovel, setDataNovel] = useState(null);
   console.log("id:", idCate);
-
+  useEffect(() => {
+    getNovel(idCate).then((res) => {
+      setDataNovel(res);
+    });
+  }, [idCate]);
   let data = {
     id: "dast43",
     name: "The Imbecile Lord Is Married to Five Beautiful Goddess",
@@ -17,17 +25,20 @@ const Content = () => {
   };
 
   return (
-    <div className="containerCard p-4 w-[1080px] mx-auto bg-gray-50 ">
-      <div className="flex h-full flex-initial w-full bg-slate-200 rounded-lg">
-        <div className=" p-2  image h-[400px] w-1/3 ">
+    <div className="containerCard p-4 w-[1080px] mx-auto bg-slate-100 ">
+      <div className="flex h-full flex-initial w-full  rounded-lg">
+        <div className=" p-2  image h-[412px] w-[308px] ">
           <img
             className="w-full h-full object-cover rounded "
-            src="https://anhanime.com/wp-content/uploads/2023/11/Anh-Gojo-Satoru-dep.jpg"
+            src={proxyUrl(dataNovel?.imageUrl)}
+            title={dataNovel?.name}
           />
         </div>
         <div>
           <div className="text  flex-initial w-auto pl-2 mt-5 ">
-            <h1 className="font-serif font-bold text-[35px]">{data.name}</h1>
+            <h1 className="font-serif font-bold text-[35px]">
+              {dataNovel?.name}
+            </h1>
             <div className="flex py-2">
               <div className="flex pr-4">
                 <svg
@@ -50,28 +61,28 @@ const Content = () => {
                   />
                 </svg>
                 <p className="hover:underline	ml-2">
-                  <NavLink to="/#">
-                    <span className="font-bold">Fantasy</span>
-                  </NavLink>
+                  <a href="/#">
+                    <span className="font-bold">
+                      {dataNovel?.category?.name}
+                    </span>
+                  </a>
                 </p>
               </div>
               <div className="flex pr-4">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
                   viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
+                  fill="none"
+                  className="mr-2 w-[20px] h-[20px] "
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"
-                  />
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M4 2h10l6 6v14H4V2zm4 4h4v2H8V6zm8 6v-2H8v2h8z"
+                    fill="#000"
+                  ></path>
                 </svg>
-                <p className="	ml-2">
-                  <span>876 Chapters </span>
+                <p className="	">
+                  <span>{dataNovel?.chapters} Chapters</span>
                 </p>
               </div>
               <div className="flex">
@@ -96,7 +107,7 @@ const Content = () => {
                 </svg>
 
                 <p className="	ml-2">
-                  <span>3.4M Views</span>
+                  <span>{formatNumber(dataNovel?.views || 0)} Views</span>
                 </p>
               </div>
             </div>
@@ -104,7 +115,7 @@ const Content = () => {
             <div className="flex">
               <p className="text-xl font-light">Author:</p>
               <p className="text-xl text-sky-500 ml-2 font-medium hover:underline">
-                <NavLink to="/#">Alen_Tanor</NavLink>
+                <NavLink to="/#">{dataNovel?.author?.name}</NavLink>
               </p>
             </div>
             <div className="flex justify-start text-left mt-2">
@@ -113,6 +124,7 @@ const Content = () => {
                   const curIndex = index + 1;
                   return (
                     <svg
+                      key={index}
                       className={
                         curIndex <= data.star
                           ? "w-6 h-6 text-yellow-300 me-1"
@@ -133,7 +145,7 @@ const Content = () => {
                   );
                 })}
               </div>
-              <p className="text-xl ml-2">{data.star} (48 ratings)</p>
+              <p className="text-xl ml-2">{dataNovel?.rating} (48 ratings)</p>
             </div>
 
             <div className="icons">
@@ -144,12 +156,12 @@ const Content = () => {
             </div>
           </div>
           <div className="flex px-2 pt-4 pb-6 ">
-            <button class="rounded-full bg-cyan-400 hover:bg-blue-700 text-white font-bold py-2 px-4 ">
-              <Link to={`/stories/${data.id}`}>
+            <button className="rounded-full bg-cyan-400 hover:bg-blue-700 text-white font-bold py-2 px-4 ">
+              <a href={`/stories/${dataNovel?._id}`}>
                 <p className="font-serif text-lg">Read</p>
-              </Link>
+              </a>
             </button>
-            <button class="flex justify-center items-center rounded-full ml-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ">
+            <button className="flex justify-center items-center rounded-full ml-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ">
               <div className="mr-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -172,10 +184,12 @@ const Content = () => {
         </div>
       </div>
       <div className="flex  size-4/5 w-full border-y-4 my-10">
-        <div className="text flex-initial w-2/3 my-5 ">
+        <div className="text flex-initial w-full my-5 ">
           <h1 className="font-bold text-2xl ">About</h1>
-          <p className="text-xl font-light">Synopsis </p>
-          <p className="italic text-xl ml-2">{data.synopsis}</p>
+          <p className="text-[16px] font-light text-gray-400">Synopsis </p>
+          <p className="italic text-[15px] ml-2 w-full">
+            {dataNovel?.description}
+          </p>
         </div>
       </div>
       <div className="flex size-4/5 w-full border-b-4 ">

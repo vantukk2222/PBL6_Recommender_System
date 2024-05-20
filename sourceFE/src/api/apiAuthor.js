@@ -2,10 +2,7 @@ import axiosClient from "./AxiosConfig";
 
 const apiAuthor = {
     getAuthors :  (filter) =>{
-        let url  = `/author?page=${filter.page}
-        &pageSize=${filter.pageSize}
-        &sortField=${filter.sortField}
-        &sortOrder=${filter.sortOrder}`
+        let url  = `/author?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}`
         // console.log('url',url)
         return axiosClient.get(url)
     },

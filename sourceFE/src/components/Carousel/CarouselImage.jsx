@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import banner1 from "../../assets/images/banner1.jpg";
 import banner2 from "../../assets/images/banner2.jpg";
 import banner3 from "../../assets/images/banner3.jpg";
-export const CarouselItem = () => {
+import { PropTypes } from "prop-types";
+export const CarouselItem = ({ dataCarousel }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lastClickTime, setLastClickTime] = useState(Date.now());
 
@@ -95,4 +96,8 @@ export const CarouselItem = () => {
       </div>
     </>
   );
+};
+
+CarouselItem.propTypes = {
+  dataCarousel: PropTypes.array.isRequired,
 };

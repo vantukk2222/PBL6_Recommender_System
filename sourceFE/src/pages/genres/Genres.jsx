@@ -3,6 +3,8 @@ import "./css/genres.css";
 import PropTypes from "prop-types";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { EachItemNovelGenre } from "./EachItemNovelGenre";
+import useCategory from "./../../hooks/useCategory";
+import { getCategories } from "../../ultis/utilsCategory";
 export const Genres = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -151,9 +153,16 @@ export const Genres = () => {
       },
     ],
   };
-
+  const {
+    categoryData,
+    setCategoryData,
+    listCategory,
+    filter,
+    setFilter,
+    page,
+    setPage,
+  } = useCategory();
   useEffect(() => {
-    console.log("mkszdmkf");
     navigate(
       "/genres/" +
         pathName +
@@ -165,6 +174,15 @@ export const Genres = () => {
           .toLowerCase()
     );
   }, [navigate, pathName, selectedGenres]);
+  useEffect(() => {
+    getCategories().then((response) => {
+      setCategoryData(response.categories);
+      console.log("categoryData", response.categories);
+    });
+  }, [pathName]);
+  useEffect(()=>{
+    
+  },[])
   return (
     <>
       <div className=" flex flex-row  w-screen max-w-[1080px] max-h-[1620px] h-[1620px]">
@@ -396,7 +414,6 @@ export const Genres = () => {
           </div>
           <div className="grid grid-cols-2 ">
             {dataNovel?.novels.map((eachNovel, index) => {
-              console.log("eachNovel", eachNovel);
               return <EachItemNovelGenre key={index} item={eachNovel} />;
             })}
           </div>

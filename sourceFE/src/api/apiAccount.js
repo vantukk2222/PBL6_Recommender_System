@@ -7,10 +7,7 @@ const apiAccount = {
         return axiosClient.post(url, data)
     },
     getAccounts :  (filter) =>{
-        let url  = `/account?page=${filter.page}
-        &pageSize=${filter.pageSize}
-        &sortField=${filter.sortField}
-        &sortOrder=${filter.sortOrder}`
+        let url  = `/account?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}`
         // console.log('url',url)
         return axiosClient.get(url)
     },

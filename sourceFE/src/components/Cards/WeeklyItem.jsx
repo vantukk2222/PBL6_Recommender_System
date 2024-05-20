@@ -2,27 +2,35 @@ import React, { useState, useEffect } from "react";
 import banner1 from "../../assets/images/banner1.jpg";
 import { NavLink } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import { proxyUrl } from "./../../api/apiProxy";
 export const WeeklyItem = ({ items }) => {
   return (
     <>
-      <div className="max-w-[121px] max-h[220px] bg-white  ">
-        <NavLink exact to="/content" className="w-[121px] h-[139.5px]">
+      <div className="max-w-[110px] max-h[220px] h-[220px]  bg-white  ">
+        <a href={"/content/" + items?._id} className="w-[110px] h-[139.5px]">
           <img
-            className="w-[121px] h-[139.5px]  w-[121px] h-[139.5px] ease-in-out delay-100 hover:-translate-y-1 hover:scale-105  duration-500"
-            src={banner1}
+            className="w-[110px] h-[139.5px]  w-[110px] h-[139.5px] ease-in-out delay-100 hover:-translate-y-1 hover:scale-105  duration-500"
+            src={proxyUrl(items?.imageUrl)}
             alt=""
+            title={items?.name}
           />
-        </NavLink>
-        <div className=" max-w-[121px]">
-          <NavLink exact to="/content">
+        </a>
+        <div className=" max-w-[110px]  ">
+          <a href={"/content/" + items?._id}>
             <h5
-              className="font-bold line-clamp-2 text-base	 tracking-tight text-gray-900"
-              title="The Imbecile Lord Is Married to Five Beautiful Goddess"
+              className="font-bold line-clamp-2 text-[15px] h-[50px] max-h-[50px]	 tracking-tight text-gray-900"
+              title={items?.name}
             >
-              The Imbecile Lord Is Married to Five Beautiful Goddess{" "}
+              {items?.name}
             </h5>
-          </NavLink>
-          <p className="mb-3 font-normal text-gray-700">Fantasy</p>
+          </a>
+          <a
+            href={"/genres/novels/" + items?.category?.name.toLowerCase()}
+            className="font-normal text-gray-500 "
+            title={items?.category?.name}
+          >
+            {items?.category?.name}
+          </a>
         </div>
       </div>
     </>

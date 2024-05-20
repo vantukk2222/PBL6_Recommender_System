@@ -16,7 +16,7 @@ export const TopRanking = ({ dataTopRanking }) => {
       <div className="flex flex-col w-full  pb-12 ">
         <div className="flex flex-row justify-between  border-b-2 font-bold  ">
           <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
-            {dataTopRanking?.title}
+            Top Fanfic Books
           </h1>
           <a
             className="uppercase text-blue-600 text-[16px] hover:underline hover:cursor-pointer "

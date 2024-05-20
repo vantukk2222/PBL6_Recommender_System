@@ -54,8 +54,8 @@ export const EachItemNovelGenre = ({ item }) => {
               className="mr-2 w-[16px] h-[16px] "
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M4 2h10l6 6v14H4V2zm4 4h4v2H8V6zm8 6v-2H8v2h8z"
                 fill="#000"
               ></path>

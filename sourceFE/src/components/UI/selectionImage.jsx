@@ -1,31 +1,32 @@
 import { PropTypes } from "prop-types";
 import "./css/selectionImage.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { proxyUrl } from "../../api/apiProxy";
+import banner1 from "../../assets/images/banner1.jpg";
 export const SelectionImage = ({ dataSelectionImage }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
+  useEffect(() => {
+    if (dataSelectionImage && dataSelectionImage.length > 0) {
+      setSelectedImage(dataSelectionImage[0]);
+    }
+  }, [dataSelectionImage]);
   return (
     <>
       <>
-        <div className="flex flex-col w-full  pb-12 max-h-[420px] pr-4">
+        <div className="flex flex-col w-full  pb-12 max-h-[420px] h-[420px]  pr-4">
           <div className="flex flex-row justify-between font-bold  ">
-            <h1
-              className="text-2xl text-black font-bold mb-4 pb-6 "
-              onClick={() => {
-                console.log("123");
-              }}
-            >
-              {dataSelectionImage[0]?.nameOfNovel}
+            <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
+              Rising Fictions
             </h1>
           </div>
-          <div className="flex flex-col justify-between pt-2 ml-4 bg-slate-100">
-            <div className="flex  flex-row overflow-x-auto  max-w-[648px]">
-              {dataSelectionImage.map((item, index) => {
+          <div className="flex flex-col justify-between pt-2 ml-4 bg-gray-100 h-full">
+            <div className="flex  flex-row w-[640px] max-w-[648px] ">
+              {dataSelectionImage?.map((item, index) => {
                 // if (index == 0) return null;
                 return (
                   <img
-                    className={`image-choose w-[60px] h-[80px] mr-2 my-2  rounded ${
+                    className={`image-choose w-[60px] h-[80px]  max-w-[60px] max-h-[80px] mr-2 my-2  rounded ${
                       selectedImageIndex === index
                         ? "border-2 border-blue-500 p-[1px]  ease-in-out delay-100 hover:scale-100 duration-500 transition-transform"
                         : "hover:cursor-pointer transition ease-in-out delay-100  hover:scale-105 duration-500 transition-transform"
@@ -35,8 +36,8 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                       setSelectedImage(item);
                     }}
                     key={index}
-                    src={item.image || dataSelectionImage[0].image}
-                    alt={item.nameOfNovel || dataSelectionImage[0].nameOfNovel}
+                    src={proxyUrl(item?.imageUrl) || banner1}
+                    alt={item.name || "Novel of the week"}
                   />
                 );
               })}
@@ -45,34 +46,33 @@ export const SelectionImage = ({ dataSelectionImage }) => {
               <div className="">
                 <img
                   className="w-[132px] h-[176px] rounded mr-3"
-                  src={dataSelectionImage[0]?.image}
-                  title={dataSelectionImage[0]?.nameOfNovel}
+                  src={proxyUrl(selectedImage?.imageUrl) || banner1}
+                  title={selectedImage?.name}
                 />
               </div>
 
               <div className="flex flex-col">
-                <a href="/content">
+                <a href={"/content/" + selectedImage?._id}>
                   <h3
                     className="font-bold text-[21px] text-left line-clamp-1 hover:underline cursor-pointer"
-                    title={selectedImage?.nameOfNovel}
+                    title={selectedImage?.name}
                   >
-                    {selectedImage?.nameOfNovel ||
-                      dataSelectionImage[0].nameOfNovel}
+                    {selectedImage?.name || "Novel of the week"}
                   </h3>
                 </a>
                 <a className="">
                   <h1
                     className="font-light text-[14px] text-gray-400 hover:underline cursor-pointer mb-2"
-                    title={selectedImage?.category}
+                    title={selectedImage?.category?.name}
                   >
-                    {selectedImage?.category || dataSelectionImage[0].category}
+                    {selectedImage?.category?.name || "Fantasy"}
                   </h1>
                 </a>
                 <div className="flex flex-row">
                   <a
                     className="text-[16px] text-white uppercase bg-blue-600 w-fit px-2 py-1 mr-2 rounded-xl cursor-pointer hover:shadow-md	"
                     title="Read now"
-                    href="/content"
+                    href={"/content/" + selectedImage?._id}
                   >
                     Read now
                   </a>
@@ -95,5 +95,5 @@ export const SelectionImage = ({ dataSelectionImage }) => {
 };
 
 SelectionImage.propTypes = {
-  dataSelectionImage: PropTypes.object.isRequired,
+  dataSelectionImage: PropTypes.array.isRequired,
 };

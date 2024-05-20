@@ -56,13 +56,13 @@ function HomeNavbar() {
       <nav className="navbar">
         <div className="nav-container">
           <div className="flex flex-row">
-            <NavLink exact to="/" className="nav-logo mr-10">
+            <a href="/" className="nav-logo mr-10">
               <span></span>
               {/* <i className="fas fa-code"></i> */}
               <span className="icon">
                 <CodeIcon />
               </span>
-            </NavLink>
+            </a>
 
             <ul className={click ? "nav-menu active" : "nav-menu"}>
               <li className="nav-item">
