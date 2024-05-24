@@ -18,10 +18,6 @@ export const Banner = () => {
   const [dataCarousel, setDataCarousel] = useState([]);
   useEffect(() => {
     getNovels(filter).then((data) => {
-      console.log("filter in Banner: ", filter);
-
-      console.log("data.novels, in Banner: ", data.novels);
-
       setNovelData(data);
       setListNovel((prevState) => ({
         ...prevState,

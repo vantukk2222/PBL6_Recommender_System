@@ -97,7 +97,7 @@
     height: 2rem;
   }
   
-  @media screen and (max-width: 960px) {
+  /* @media screen and (max-width: 960px) {
     .nav-menu {
       display: flex;
       flex-direction: column;
@@ -118,11 +118,6 @@
       transition: all 0.5s ease;
       z-index: 1;
     }
-/*     
-    .nav-item .active {
-      color: #ffdd40;
-      border: none;
-    } */
     .nav-links {
       color: #fff;
       padding: 1.5rem;
@@ -146,4 +141,4 @@
       cursor: pointer;
       color: #ffdd40;
     }
-  }
+  } */

@@ -13,6 +13,7 @@ import { getAuthors } from "../../ultis/utilsAuthor";
 import useAuthor from "../../hooks/useAuthor";
 import { EachRanking } from "../../components/Cards/EachRanking";
 import { EachItemTopRanking } from "./../ranking/EachItemTopRanking";
+import { Loading } from "../../components/UI/Loading";
 const Dashboard = () => {
   const dataTopRanking = [
     {
@@ -452,6 +453,8 @@ const Dashboard = () => {
   ];
   const [showAll, setShowAll] = useState(false);
 
+  const [is_loading, setIsLoading] = useState(false);
+
   const [numberList, setNumberList] = useState(5);
   const extendMoreRanking = () => {
     setShowAll(!showAll);
@@ -477,9 +480,8 @@ const Dashboard = () => {
     };
 
     getNovels(newFilter).then((data) => {
-      console.log("filter in Dashboard: ", newFilter);
+      setIsLoading(true);
 
-      console.log("data.novels, in Dashboard: ", data.novels);
       setNovelData(data);
       setListNovel((prevState) => ({
         ...prevState,
@@ -490,9 +492,10 @@ const Dashboard = () => {
         totalPages: data.page.totalPages,
       });
     });
+    setIsLoading(false);
   }, []);
 
-  return (
+  return is_loading ? (
     <div className=" flex flex-col justify-end items-center w-screen max-w-[1080px]">
       <Banner />
       <div className="flex flex-col w-full  pb-12 ">
@@ -558,7 +561,7 @@ const Dashboard = () => {
           </h1>
         </div>
         <div className="grid grid-cols-8 space-between">
-          {Array.from({ length: listNovel?.topranking?.length-2 }).map(
+          {Array.from({ length: listNovel?.topranking?.length - 2 }).map(
             (_, index) => (
               <WeeklyItem key={index} items={listNovel?.topranking[index]} />
             )
@@ -582,7 +585,7 @@ const Dashboard = () => {
           </h1>
         </div>
         <div className="grid grid-cols-8 gap-4">
-          {Array.from({ length: listNovel?.weeklyfeatured?.length-2 }).map(
+          {Array.from({ length: listNovel?.weeklyfeatured?.length - 2 }).map(
             (_, index) => (
               <WeeklyItem
                 key={index}
@@ -593,6 +596,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 };
 

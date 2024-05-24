@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { proxyUrl } from "./../../api/apiProxy";
+import ImageWithPlaceholder from "../../components/UI/ImagePlaceHolder";
 
 export const EachItemNovelGenre = ({ item }) => {
   const Url_image = proxyUrl(item?.imageUrl);
@@ -8,27 +9,28 @@ export const EachItemNovelGenre = ({ item }) => {
   return (
     <div className="each-item-novel-genre flex flex-row mt-4">
       <div className="each-item-novel-genre__img ">
-        <img
-          className="w-[90px] h-[120px] rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
-          src={Url_image}
-          title={item?.name}
+        <ImageWithPlaceholder
+          classname="w-[90px] h-[120px] max-w-[90px] max-h-[120px]   rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
+          source={Url_image}
+          title_img={item?.name ? item?.name : "Unknown"}
         />
       </div>
-      <div className="each-item-novel-genre__info pl-2">
-        <h3
-          className="text-[16px] font-semibold max-w-[250px] truncate hover:underline hover:cursor-pointer"
-          title={item?.name}
+      <div className="each-item-novel-genre__info   pl-2">
+        <a
+          href={`/content/${item?._id}`}
+          className="text-[16px] text-blue-600  font-semibold max-w-[265px] line-clamp-1 hover:underline hover:cursor-pointer "
+          title={item?.name ? item?.name : "Unknown"}
         >
-          {item?.name}
-        </h3>
+          {item?.name ? item?.name : "Unknown"}
+        </a>
         <p
           className="text-[12px] font-semibold text-slate-500 max-w-[250px] truncate"
-          title={item?.name}
+          title={item?.name ? item?.author?.name : "Unknown"}
         >
-          {item?.author?.name}
+          {item?.author?.name ? item?.author?.name : "Unknown"}
         </p>
         <p className="line-clamp-2 font-medium	 max-w-[250px]">
-          {item?.description}
+          {item?.description ? item?.description : "Unknown"}
         </p>
         <div className="flex flex-row space-x-4">
           <strong className="flex flex-row">
@@ -43,7 +45,7 @@ export const EachItemNovelGenre = ({ item }) => {
               ></path>
             </svg>
             <span className="text-[12px] font-semibold text-gray-400">
-              {item?.rating}
+              {item?.rating ? item?.rating : "0"}
             </span>
           </strong>
           <strong className="flex flex-row">
@@ -60,7 +62,7 @@ export const EachItemNovelGenre = ({ item }) => {
               ></path>
             </svg>
             <span className="text-[12px] font-semibold text-gray-400">
-              {item?.chapters}
+              {item?.chapters ? item?.chapters : "NaN"}
             </span>
           </strong>
         </div>
