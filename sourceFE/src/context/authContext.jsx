@@ -3,10 +3,16 @@ import PropTypes from 'prop-types'
 
 const AuthContext = createContext({});
 export const AuthProvider = ({children}) => {
+    const [isAuth, setIsAuth] = useState(false);
+    const [user, setUser] = useState({})
     const [accessToken, setAccessToken] = useState('');
     const contextAuthData = {
         accessToken,
-        setAccessToken
+        setAccessToken,
+        isAuth,
+        setIsAuth,
+        user,
+        setUser
     };
     return <AuthContext.Provider value={contextAuthData}>{children}</AuthContext.Provider>
 };

@@ -33,15 +33,19 @@ export const login = async(acc = {
     "username": "userT",
     "password": "P@ssword_123"
 }) => {
+    
     const response = await apiAuth.login(acc);
-    const res = response.data
-    if(res.message)
-    {
-        return result= {
-            'message': res.message
-        }
-    }
-    return result = {
-        "accessToken" : res.accessToken
-    };
+    console.log("response "+response.status);
+    return response;
+    // const res = response.data
+    // if(res.message)
+    // {
+    //     return result= {
+    //         'message': res.message
+    //     }
+    // }
+    // return result = {
+    //     "status": response.status,
+    //     "accessToken" : res.accessToken
+    // };
 }
