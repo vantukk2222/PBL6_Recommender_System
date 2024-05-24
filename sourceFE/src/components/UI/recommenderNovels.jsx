@@ -18,7 +18,7 @@ export const RecommenderNovels = ({ dataRecommenderNovels }) => {
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3 pt-3">
-          {Array.from({ length: dataRecommenderNovels?.length }).map(
+          {Array.from({ length: dataRecommenderNovels?.length-4 }).map(
             (_, index) => (
               <div className="flex flex-row" key={index}>
                 <a href={"/content/" + dataRecommenderNovels[index]?._id}>

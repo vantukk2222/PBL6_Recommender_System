@@ -1,17 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { proxyUrl } from "./../../api/apiProxy";
 
 export const EachItemNovelGenre = ({ item }) => {
-  const proxyUrl = `http://localhost:3001/proxy-image?url=${encodeURIComponent(
-    item?.imageUrl
-  )}`;
+  const Url_image = proxyUrl(item?.imageUrl);
 
   return (
     <div className="each-item-novel-genre flex flex-row mt-4">
       <div className="each-item-novel-genre__img ">
         <img
           className="w-[90px] h-[120px] rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
-          src={proxyUrl}
+          src={Url_image}
           title={item?.name}
         />
       </div>

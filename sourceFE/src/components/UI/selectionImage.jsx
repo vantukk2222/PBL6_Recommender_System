@@ -20,10 +20,10 @@ export const SelectionImage = ({ dataSelectionImage }) => {
               Rising Fictions
             </h1>
           </div>
-          <div className="flex flex-col justify-between pt-2 ml-4 bg-gray-100 h-full">
-            <div className="flex  flex-row w-[640px] max-w-[648px] ">
+          <div className="flex flex-col justify-between pt-2 ml-4 bg-gray-100 h-full ">
+            <div className="flex  flex-row w-[640px] max-w-[648px] justify-between">
               {dataSelectionImage?.map((item, index) => {
-                // if (index == 0) return null;
+                if (index == 9) return null;
                 return (
                   <img
                     className={`image-choose w-[60px] h-[80px]  max-w-[60px] max-h-[80px] mr-2 my-2  rounded ${
@@ -43,9 +43,9 @@ export const SelectionImage = ({ dataSelectionImage }) => {
               })}
             </div>
             <div className="flex flex-row py-2">
-              <div className="">
+              <div className="mb-3">
                 <img
-                  className="w-[132px] h-[176px] rounded mr-3"
+                  className="w-[132px] h-[176px] max-w-[132px]  max-h-[176px]  rounded mr-3"
                   src={proxyUrl(selectedImage?.imageUrl) || banner1}
                   title={selectedImage?.name}
                 />
@@ -68,6 +68,11 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                     {selectedImage?.category?.name || "Fantasy"}
                   </h1>
                 </a>
+                <div>
+                  <p className="line-clamp-3 text-[12px] text-gray-500 mb-2">
+                    {selectedImage?.description}
+                  </p>
+                </div>
                 <div className="flex flex-row">
                   <a
                     className="text-[16px] text-white uppercase bg-blue-600 w-fit px-2 py-1 mr-2 rounded-xl cursor-pointer hover:shadow-md	"

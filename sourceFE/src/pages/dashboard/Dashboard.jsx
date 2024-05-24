@@ -558,7 +558,7 @@ const Dashboard = () => {
           </h1>
         </div>
         <div className="grid grid-cols-8 space-between">
-          {Array.from({ length: listNovel?.topranking?.length }).map(
+          {Array.from({ length: listNovel?.topranking?.length-2 }).map(
             (_, index) => (
               <WeeklyItem key={index} items={listNovel?.topranking[index]} />
             )
@@ -582,7 +582,7 @@ const Dashboard = () => {
           </h1>
         </div>
         <div className="grid grid-cols-8 gap-4">
-          {Array.from({ length: listNovel?.weeklyfeatured?.length }).map(
+          {Array.from({ length: listNovel?.weeklyfeatured?.length-2 }).map(
             (_, index) => (
               <WeeklyItem
                 key={index}

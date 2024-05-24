@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { formatNumber } from "./../../ultis/convertNumber";
+import { proxyUrl } from "../../api/apiProxy";
 export const EachItemTopRanking = ({ item, rank }) => {
   let color;
   if (rank === 1) {
@@ -11,9 +12,7 @@ export const EachItemTopRanking = ({ item, rank }) => {
   } else {
     color = "text-gray-400	";
   }
-  const proxyUrl = `http://localhost:3001/proxy-image?url=${encodeURIComponent(
-    item?.imageUrl
-  )}`;
+  const Url_image = proxyUrl(item?.imageUrl);
   return (
     <div className="flex flex-row h-[130px] max-h-[150px]">
       <div
@@ -24,7 +23,7 @@ export const EachItemTopRanking = ({ item, rank }) => {
       <div className="image_pund w-[90px] h-[120px]">
         <img
           className="w-[90px] h-[120px] rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
-          src={proxyUrl}
+          src={Url_image}
           title={item?.name}
         />
       </div>
