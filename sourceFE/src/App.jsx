@@ -15,16 +15,23 @@ import HomeHeader from "./components/headers/HomeHeader";
 import Content from "./pages/stories/Content";
 import { Genres } from "./pages/genres/Genres";
 import { Ranking } from "./pages/ranking/Ranking";
+import Authtemplate from "./pages/auth/AuthenTemplate"
+import RequiredAuth from "./pages/auth/RequiredAuth";
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+        <Route path="login" element={<Authtemplate pages="login" />} />
+        <Route path="register" element={<Authtemplate pages="register" />} />
         <Route path="/" element={<HomeHeader />}>
+          <Route>
           <Route index element={<Dashboard />} />
           <Route path="/stories/:Id?" element={<Stories />} />
           <Route path="/content/:idCate" element={<Content />} />
           <Route path="/genres/:novel/:genres?" element={<Genres />} />
           <Route path="/ranking/:genres?" element={<Ranking />} />
+          </Route>
+          
         </Route>
       </>
     )
