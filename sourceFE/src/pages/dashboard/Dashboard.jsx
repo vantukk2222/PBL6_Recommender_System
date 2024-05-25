@@ -479,9 +479,8 @@ const Dashboard = () => {
       pageSize: 10,
     };
 
+    setIsLoading(true);
     getNovels(newFilter).then((data) => {
-      setIsLoading(true);
-
       setNovelData(data);
       setListNovel((prevState) => ({
         ...prevState,
@@ -491,11 +490,11 @@ const Dashboard = () => {
         currentPage: data.page.currentPage,
         totalPages: data.page.totalPages,
       });
+      setIsLoading(false);
     });
-    setIsLoading(false);
   }, []);
 
-  return is_loading ? (
+  return !is_loading ? (
     <div className=" flex flex-col justify-end items-center w-screen max-w-[1080px]">
       <Banner />
       <div className="flex flex-col w-full  pb-12 ">

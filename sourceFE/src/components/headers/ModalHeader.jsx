@@ -1,87 +1,48 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import useCategory from "../../hooks/useCategory";
 
 export const ModalHeader = ({ dataModal }) => {
-  const genres = dataModal;
-  const [selectedGenrez, setSelectedGenrez] = useState(Object.keys(genres)[0]);
+  const {
+    categoryData,
+    setCategoryData,
+    listCategory,
+    filter,
+    setFilter,
+    page,
+    setPage,
+    selectedCateIndex,
+    setSelectedCateIndex,
+  } = useCategory();
 
-  const [selectedGenre, setSelectedGenre] = useState(genres["Novels"]);
+  const handleModalClick = (event) => {
+    event.stopPropagation();
+  };
+
   return (
     <>
-      <div
-        className="absolute top-full left-0 hover:cursor-auto	"
-        onMouseLeave={() => setSelectedGenre(genres["Novels"])}
-        // onClick={(event) => {
-        //   event.preventDefault();
-        // }}
-      >
-        <div className="flex  flex-row bg-gray-800 h-max-[340px] h-[340px] w-max-[640px] w-max rounded-lg ">
-          <div className=" flex flex-col text-white pt-2 text-[18px] font-semibold  bg-black h-max-[340px] h-[340px] w-max-[120px] w-[120px] rounded-tl-lg	rounded-bl-lg ">
-            {Object.keys(genres)?.map((genre, index) => (
-              <a
-                href={
-                  "/genres/" +
-                  genre.toLowerCase().replace("_", "-").replace(" ", "-") +
-                  "/all"
-                }
-                key={index}
-                className={
-                  genre === selectedGenrez
-                    ? "py-2 pr-6 bg-blue-700 -lg hover:cursor-pointer  "
-                    : "py-2 pr-6 hover:cursor-pointer "
-                }
-                onMouseEnter={() => {
-                  setSelectedGenre(genres[genre]);
-                  setSelectedGenrez(genre);
-                }}
-              >
-                {genre.replace("_", "-")}
-              </a>
-            ))}
-          </div>
-          <div className="flex flex-col flex-wrap h-max-[300px]  w-[420px] ">
-            {selectedGenre?.data?.map((genre, index) => (
-              <div key={index} className="text-left">
-                {selectedGenre.data.length > 1 ? (
-                  <strong className="text-left text-gray-500 text-[13px] pl-4  uppercase ">
-                    {index === 0 ? "male lead" : "female lead"}
-                  </strong>
-                ) : (
-                  ""
-                )}
-                <div
-                  className={
-                    selectedGenre.data.length > 1
-                      ? "  flex flex-col  flex-wrap h-max-[300px] h-[300px] text-left"
-                      : " flex flex-col  flex-wrap h-max-[300px] h-[300px] text-left mt-2"
-                  }
-                >
-                  {genre.map((item, index) => (
-                    <a
-                      href={
-                        "/genres/" +
-                        selectedGenrez
-                          .toLowerCase()
-                          .replace("_", "-")
-                          .replace(" ", "-") +
-                        "/" +
-                        item
-                          .replace(/[^a-z0-9\s]/gi, "")
-                          .split(/\s+/)
-                          .join("-")
-                          .toLowerCase()
-                      }
-                      key={index}
-                      className="text-white text-[15px] pl-2 ml-2 h-fit font-bold line-clamp-1	 w-max-[120px] w-[120px] rounded hover:bg-blue-700 hover:cursor-pointer"
-                    >
-                      {item}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="absolute top-full left-0 hover:cursor-auto max-h-[260px] h-[260px] max-w-[320px]">
+        <div className="flex flex-col bg-gray-800 max-h-[260px] h-[260px] max-w-[320px] w-[280px] flex-wrap rounded-lg pt-2">
+          {dataModal?.map((item, index) => (
+            <a
+              onClick={() => {
+                setSelectedCateIndex(item?._id);
+              }}
+              href={
+                "/genres/novels/" +
+                item?.name
+                  .replace(/[^a-z0-9\s]/gi, "")
+                  .split(/\s+/)
+                  .join("-")
+                  .toLowerCase()
+              }
+              key={index}
+              className="text-white text-[15px] pl-2 ml-2 h-fit font-bold line-clamp-1 max-w-[120px] w-[120px] rounded hover:bg-blue-700 hover:cursor-pointer"
+            >
+              {item?.name.charAt(0).toUpperCase() + item?.name.slice(1)}
+            </a>
+          ))}
         </div>
       </div>
     </>

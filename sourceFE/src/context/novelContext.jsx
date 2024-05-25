@@ -10,6 +10,7 @@ export const NovelProvider = ({ children }) => {
     pageSize: 10,
     sortField: "views",
     sortOrder: "desc",
+    categoryId: "",
   });
   const [page, setPage] = useState({
     totalPages: 1,

@@ -10,10 +10,12 @@ import {
   BrowseIcon,
 } from "./icon";
 import { ModalHeader } from "./ModalHeader";
+import { getCategories } from "../../ultis/utilsCategory";
+import useCategory from "../../hooks/useCategory";
+import { Loading } from "../UI/Loading";
 
 function HomeNavbar() {
   const [isModalGenresOpen, setIsModalGenresOpen] = useState(false);
-  const [isModalRankingOpen, setIsModalRankingOpen] = useState(false);
 
   const [login, setLogin] = useState(false);
 
@@ -23,7 +25,7 @@ function HomeNavbar() {
   const handleClickProfile = () => {
     setClickProfile(!clickProfile);
   };
-
+  const [is_Loading, setIsLoading] = useState(false);
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       setClickProfile(false);
@@ -39,42 +41,14 @@ function HomeNavbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [clickProfile]);
-  const genres = {
-    Novels: {
-      data: [
-        [
-          "Urban",
-          "Fantasy",
-          "Sci-fi",
-          "Mystery",
-          "Adventure",
-          "Action",
-          "Horror",
-          "Slice of Life",
-          "School Life",
-          "Historical",
-          "Martial Arts",
-          "Sports",
-        ],
-        ["Urban", "Fantasy", "History", "Teen", "LGBT+", "Sci-fi", "General"],
-      ],
-    },
-    Fan_fic: {
-      data: [
-        [
-          "Anime & Comics",
-          "Video Games",
-          "Celebrities",
-          "Music & Bands",
-          "Movies",
-          "TV",
-          "Book & Literature",
-          "Theater",
-          "Orther",
-        ],
-      ],
-    },
-  };
+  const { categoryData, setCategoryData } = useCategory();
+  useEffect(() => {
+    setIsLoading(true);
+    getCategories().then((response) => {
+      setCategoryData(response.categories);
+      setIsLoading(false);
+    });
+  }, []);
   return (
     <>
       <nav className="navbar">
@@ -89,56 +63,42 @@ function HomeNavbar() {
             </a>
 
             <ul className="nav-menu">
-              <li className="nav-item">
+              <li
+                className="nav-item"
+                onMouseLeave={() => setIsModalGenresOpen(false)}
+                onMouseEnter={() => setIsModalGenresOpen(true)}
+                style={{ position: "relative" }}
+              >
                 <a
                   href="/genres/novels/all"
                   className="nav-links flex flex-row"
-                  onMouseEnter={() => setIsModalGenresOpen(true)}
-                  onMouseLeave={() => setIsModalGenresOpen(false)}
-                  style={{ position: "relative" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
                 >
-                  <span
-                    className="mr-2 mt-2"
-                    onClick={(event) => {
-                      event.preventDefault();
-                    }}
-                  >
+                  <span className="mr-2 mt-2">
                     <BrowseIcon />
                   </span>
                   <strong>Browse</strong>{" "}
-                  {isModalGenresOpen && <ModalHeader dataModal={genres} />}
                 </a>
+                {isModalGenresOpen &&
+                  (!is_Loading ? (
+                    <ModalHeader dataModal={categoryData} />
+                  ) : (
+                    <div className="absolute top-full left-0 hover:cursor-auto max-h-[260px] h-[260px] max-w-[320px]">
+                      <div className="flex flex-col flex-wrap items-center justify-center max-h-[260px] h-[260px] max-w-[320px] w-[280px] bg-gray-800 rounded-lg pt-2">
+                        <Loading />
+                      </div>
+                    </div>
+                  ))}
               </li>
               <li className="nav-item">
                 <a
                   href="/ranking/"
                   className="nav-links flex flex-row"
-                  onMouseEnter={() => setIsModalRankingOpen(true)}
-                  onMouseLeave={() => setIsModalRankingOpen(false)}
                   style={{ position: "relative" }}
                 >
                   <strong>Rankings</strong>
-                  {isModalRankingOpen && (
-                    <div className="absolute top-full left-0 hover:cursor-auto	">
-                      <div className=" flex flex-col text-white  pt-2 text-[18px] font-semibold  bg-black h-max-[120px] h-fit  w-max rounded-tl-lg	rounded-bl-lg ">
-                        {Object.keys(genres)?.map((genre, index) => (
-                          <NavLink
-                            to={
-                              "/ranking/" +
-                              genre
-                                .toLowerCase()
-                                .replace("_", "-")
-                                .replace(" ", "-")
-                            }
-                            key={index}
-                            className="pl-2 py-2 pr-6 hover:bg-blue-700 -lg hover:cursor-pointer  "
-                          >
-                            {genre.replace("_", "-") + " Ranking"}
-                          </NavLink>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </a>
               </li>
             </ul>

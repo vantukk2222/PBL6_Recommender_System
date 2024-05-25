@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const CategoryContext = createContext({});
@@ -15,16 +15,31 @@ export const CategoryProvider = ({ children }) => {
     totalPages: 1,
     currentPage: 1,
   });
+  const [selectedCateIndex, setSelectedCateIndex] = useState(() => {
+    const savedIndex = localStorage.getItem("selectedCateIndex");
+    return savedIndex !== null ? JSON.parse(savedIndex) : 0;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      "selectedCateIndex",
+      JSON.stringify(selectedCateIndex)
+    );
+  }, [selectedCateIndex]);
 
   const contextCategoryData = {
     categoryData,
     setCategoryData,
     listCategory,
+    setListCategory,
     filter,
     setFilter,
     page,
     setPage,
+    selectedCateIndex,
+    setSelectedCateIndex,
   };
+
   return (
     <CategoryContext.Provider value={contextCategoryData}>
       {children}
@@ -35,4 +50,5 @@ export const CategoryProvider = ({ children }) => {
 CategoryProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
+
 export default CategoryContext;

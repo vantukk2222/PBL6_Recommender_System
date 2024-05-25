@@ -19,6 +19,24 @@ export const getNovels = async (filter = {
 
     return data;
 }
+export const getNovelsByCategoryID = async (filter = {
+    'page': 1,
+    'pageSize': 10,
+    'sortField': 'views',
+    'sortOrder': 'desc',
+}) => {
+
+    const response = await apiNovel.getNovelsByCateID(filter);
+    const data = {
+        'page': {
+            'currentPage': response.data.currentPage,
+            'totalPages': response.data.totalPages,
+        },
+        'novels': response.data.novels
+    }
+
+    return data;
+}
 
 export const getNovel = async (id) => {
     if (id == null)
@@ -26,6 +44,7 @@ export const getNovel = async (id) => {
     const response = await apiNovel.getNovel(id);
     return response.data;
 }
+
 export const updateNovel = async (data) => {
     if (data.id == null)
         return 'Id can not null';

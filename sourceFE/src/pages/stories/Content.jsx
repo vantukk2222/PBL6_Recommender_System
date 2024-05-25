@@ -9,7 +9,6 @@ import { formatNumber } from "./../../ultis/convertNumber";
 const Content = () => {
   const { idCate } = useParams();
   const [dataNovel, setDataNovel] = useState(null);
-  console.log("id:", idCate);
   useEffect(() => {
     getNovel(idCate).then((res) => {
       setDataNovel(res);
@@ -29,14 +28,14 @@ const Content = () => {
       <div className="flex h-full flex-initial w-full  rounded-lg">
         <div className=" p-2  image h-[412px] w-[308px] ">
           <img
-            className="w-full h-full object-cover rounded "
+            className="h-[412px] w-[308px] max-w-[308px] max-h-[412px] object-cover rounded "
             src={proxyUrl(dataNovel?.imageUrl)}
             title={dataNovel?.name}
           />
         </div>
         <div>
           <div className="text  flex-initial w-auto pl-2 mt-5 ">
-            <h1 className="font-serif font-bold text-[35px]">
+            <h1 className="font-bold text-[34px]  antialiased	">
               {dataNovel?.name}
             </h1>
             <div className="flex py-2">
@@ -61,9 +60,10 @@ const Content = () => {
                   />
                 </svg>
                 <p className="hover:underline	ml-2">
-                  <a href="/#">
+                  <a href={"/genres/novels/" + dataNovel?.category?.name}>
                     <span className="font-bold">
-                      {dataNovel?.category?.name}
+                      {dataNovel?.category?.name.charAt(0).toUpperCase() +
+                        dataNovel?.category?.name.slice(1)}
                     </span>
                   </a>
                 </p>
@@ -82,7 +82,11 @@ const Content = () => {
                   ></path>
                 </svg>
                 <p className="	">
-                  <span>{dataNovel?.chapters} Chapters</span>
+                  <span>
+                    {dataNovel?.chapters
+                      ? dataNovel?.chapters + "Chapters"
+                      : "NaN"}{" "}
+                  </span>
                 </p>
               </div>
               <div className="flex">
@@ -158,7 +162,7 @@ const Content = () => {
           <div className="flex px-2 pt-4 pb-6 ">
             <button className="rounded-full bg-cyan-400 hover:bg-blue-700 text-white font-bold py-2 px-4 ">
               <a href={`/stories/${dataNovel?._id}`}>
-                <p className="font-serif text-lg">Read</p>
+                <p className=" text-lg">Read</p>
               </a>
             </button>
             <button className="flex justify-center items-center rounded-full ml-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ">
@@ -178,7 +182,7 @@ const Content = () => {
                   />
                 </svg>
               </div>
-              <p className="font-serif text-lg">Add to library</p>
+              <p className=" text-lg">Add to library</p>
             </button>
           </div>
         </div>

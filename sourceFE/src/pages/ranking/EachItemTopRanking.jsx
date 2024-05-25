@@ -27,7 +27,7 @@ export const EachItemTopRanking = ({ item, rank }) => {
           title={item?.name}
         />
       </div>
-      <div className="content_pund w-[510px] w-max-[510px] flex flex-col pl-2">
+      <div className="content_pund w-[510px] max-w-[510px] flex flex-col pl-2">
         <a
           href={`/content/${item?._id}`}
           title={item?.name}
@@ -51,7 +51,7 @@ export const EachItemTopRanking = ({ item, rank }) => {
               ></path>
             </svg>
             <span className="text-[12px] w-[40px] max-w-[40px] font-semibold text-gray-400">
-              {formatNumber(232332324)}
+              {formatNumber(item?.powerStone || 0)}
             </span>
           </strong>
           <i className="text-xs mx-1">|</i>
@@ -69,16 +69,17 @@ export const EachItemTopRanking = ({ item, rank }) => {
               ></path>
             </svg>
             <span className="text-[12px] font-semibold text-gray-400">
-              {item?.chapters}
+              {item?.chapters || "NaN"}
             </span>
           </strong>
           <i className="text-xs mx-1">|</i>
           <a
-            href={"/genres/" + item?.category?.name}
+            href={"/genres/novels/" + item?.category?.name}
             title="Eastern"
             className="text-gray-500 align-middle font-normal leading-4 text-xs hover:underline hover:cursor-pointer"
           >
-            {item?.category?.name}
+            {item?.category?.name.charAt(0).toUpperCase() +
+              item?.category?.name.slice(1)}
           </a>
         </p>
       </div>
