@@ -33,9 +33,13 @@ export const WeeklyItem = ({ items }) => {
           <a
             href={"/genres/novels/" + items?.category?.name.toLowerCase()}
             className="font-normal text-gray-500 "
-            title={items?.category?.name}
+            title={
+              items?.category?.name.charAt(0).toUpperCase() +
+              items?.category?.name.slice(1)
+            }
           >
-            {items?.category?.name}
+            {items?.category?.name.charAt(0).toUpperCase() +
+              items?.category?.name.slice(1)}
           </a>
         </div>
       </div>

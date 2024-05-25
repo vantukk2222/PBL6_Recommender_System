@@ -63,9 +63,13 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                 <a className="">
                   <h1
                     className="font-light text-[14px] text-gray-400 hover:underline cursor-pointer mb-2"
-                    title={selectedImage?.category?.name}
+                    title={
+                      selectedImage?.category?.name.charAt(0).toUpperCase() +
+                      selectedImage?.category?.name.slice(1)
+                    }
                   >
-                    {selectedImage?.category?.name || "Fantasy"}
+                    {selectedImage?.category?.name.charAt(0).toUpperCase() +
+                      selectedImage?.category?.name.slice(1) || "Fantasy"}
                   </h1>
                 </a>
                 <div>

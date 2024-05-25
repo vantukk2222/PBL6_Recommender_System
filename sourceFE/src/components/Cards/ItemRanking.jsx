@@ -39,9 +39,13 @@ export const ItemRanking = ({ data, rank }) => {
           <a className="">
             <h1
               className="font-light	 text-gray-400 hover:underline cursor-pointer"
-              title={data?.category?.name}
+              title={
+                data?.category?.name.charAt(0).toUpperCase() +
+                data?.category?.name.slice(1)
+              }
             >
-              {data?.category?.name}
+              {data?.category?.name.charAt(0).toUpperCase() +
+                data?.category?.name.slice(1)}
             </h1>
           </a>
           <strong className="flex flex-row justify-start w-fit	 items-center">
