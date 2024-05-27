@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate} from "react-router-dom";
 import "./css/HomeNavbar.css";
 import { Transition } from "@headlessui/react";
 
@@ -13,15 +13,16 @@ import { ModalHeader } from "./ModalHeader";
 import { getCategories } from "../../ultis/utilsCategory";
 import useCategory from "../../hooks/useCategory";
 import { Loading } from "../UI/Loading";
-
+import useAuthen from "../../hooks/useAuthen";
 function HomeNavbar() {
+  const navigate = useNavigate();
   const [isModalGenresOpen, setIsModalGenresOpen] = useState(false);
 
   const [login, setLogin] = useState(false);
 
   const [clickProfile, setClickProfile] = useState(false);
   const modalRef = useRef(null);
-
+  
   const handleClickProfile = () => {
     setClickProfile(!clickProfile);
   };
@@ -31,6 +32,21 @@ function HomeNavbar() {
       setClickProfile(false);
     }
   };
+  const {user, setUser} = useAuthen();
+  const infor = JSON.parse(localStorage.getItem("inforUser")) || {};
+  const role = JSON.parse(localStorage.getItem("Token")) || {};
+  useEffect(() =>{
+    console.log("toa chay ne");
+    if(infor?.userName && role?.role)
+      {
+        setUser({
+          'username' : infor.userName,
+          'role' : role.role
+        })
+        setLogin(true)
+      }
+  },[])
+
   useEffect(() => {
     if (clickProfile) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -49,6 +65,12 @@ function HomeNavbar() {
       setIsLoading(false);
     });
   }, []);
+  const handleSignout = () =>{
+    console.log("sign out");
+    setUser({})
+    localStorage.setItem("Token",JSON.stringify({}))
+    navigate("/login"); 
+  }
   return (
     <>
       <nav className="navbar">
@@ -155,7 +177,7 @@ function HomeNavbar() {
                   title="My Profile"
                   rel="nofollow"
                 >
-                  Sign in
+                if Sign in
                 </a>
               )}
               {clickProfile && (
@@ -174,7 +196,7 @@ function HomeNavbar() {
                         height="56"
                         className="mr-2"
                         src="//user-pic.webnovel.com/userheadimg/4327849712-10/200.jpg?uut=1716548842206&imageMogr2/quality/80"
-                        alt="DaoistpNlawl"
+                        alt="user"
                       />
                     </a>
                     <div>
@@ -184,7 +206,7 @@ function HomeNavbar() {
                           title="My Profile"
                           className="font-bold text-lg truncate"
                         >
-                          DaoistpNlawl
+                          {user?.username}
                         </a>
                         <a
                           href="/level"
@@ -303,6 +325,7 @@ function HomeNavbar() {
                         href="###"
                         title="Sign Out"
                         className="block p-3 hover:bg-gray-600"
+                        onClick={()=>{handleSignout()}}
                       >
                         Sign Out
                       </a>
