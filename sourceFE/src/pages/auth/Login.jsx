@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, resolvePath, useNavigate } from 'react-router-dom'
 import useAuthen from '../../hooks/useAuthen'
 import { setHeaderConfigAxios } from '../../api/AxiosConfig'
 import {toast} from 'react-toastify'
-import { login } from '../../ultis/utilsAuth'
+import { login,utilsDecodeToken } from '../../ultis/utilsAuth'
 const Login = () => {
   const {setIsAuth} = useAuthen();
   const navigate = useNavigate();
@@ -44,15 +44,23 @@ const Login = () => {
         if (res.status == 200 || res.status == 202) {
           const token = res.data.accessToken;
           setHeaderConfigAxios(token);
-          // const decode = utilsDecodeToken(token);
+          const decode = utilsDecodeToken(token);
+          console.log(decode);
           const inforUser = {
             // role: decode.roles[0],
             userName: user.username ?? "",
             // token: token,
-            password: checked === true ? user.password : "",
-            // exp: decode.exp,
+            password: checked === true ? user.password : "",            
+           
+    
           };
+          const accessToken = {
+            exp: decode.exp,
+            role: decode.role,
+            id: decode.id
+          }
           localStorage.setItem("inforUser", JSON.stringify(inforUser));
+          localStorage.setItem("Token",JSON.stringify(accessToken))
           setIsAuth(true);
           navigate("/");
           toast.success(`Wellcome ${user.username}!`, {
@@ -60,7 +68,7 @@ const Login = () => {
           });
         }else {
           setErr(res.data.message)
-          console.log(res.data.message);
+          console.log("mess",res.data.message);
         }
       })
       .catch(() => {
