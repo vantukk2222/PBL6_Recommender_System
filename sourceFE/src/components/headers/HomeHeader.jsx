@@ -3,7 +3,6 @@ import "./css/HomeHeader.css";
 import HomeNavbar from "./HomeNavbar";
 import { Outlet } from "react-router-dom";
 
-
 function HomeHeader() {
   return (
     <div className="container">
@@ -11,9 +10,7 @@ function HomeHeader() {
         <HomeNavbar />
       </div>
       <div className="row">
-        <div className="menu flex w-screen justify-center	items-center ">
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </div>
   );

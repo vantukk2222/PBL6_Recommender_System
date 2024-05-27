@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { proxyUrl } from "./../../api/apiProxy";
 import ImageWithPlaceholder from "../UI/ImagePlaceHolder";
+import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 export const WeeklyItem = ({ items }) => {
   return (
     <>
@@ -33,13 +34,9 @@ export const WeeklyItem = ({ items }) => {
           <a
             href={"/genres/novels/" + items?.category?.name.toLowerCase()}
             className="font-normal text-gray-500 "
-            title={
-              items?.category?.name.charAt(0).toUpperCase() +
-              items?.category?.name.slice(1)
-            }
+            title={capitalizeFirstLetter(items?.category?.name)}
           >
-            {items?.category?.name.charAt(0).toUpperCase() +
-              items?.category?.name.slice(1)}
+            {capitalizeFirstLetter(items?.category?.name)}
           </a>
         </div>
       </div>

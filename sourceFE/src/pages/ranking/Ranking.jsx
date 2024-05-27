@@ -5,8 +5,6 @@ import { getNovels } from "../../ultis/utilsNovel";
 import useNovel from "../../hooks/useNovel";
 import { Loading } from "../../components/UI/Loading";
 export const Ranking = () => {
- 
-
   const [is_Loading, setIsLoading] = useState(false);
   const {
     listNovel,
@@ -38,7 +36,7 @@ export const Ranking = () => {
     });
   }, []);
   return !is_Loading ? (
-    <div className=" flex flex-row  w-screen max-w-[1080px] max-h-[1620px] h-[1620px]">
+    <div className=" flex flex-row mx-auto   w-screen max-w-[1080px] max-h-[1620px] h-[1620px]">
       <div className="text-[20px] font-semibold text-blue-600 text-center inline-flex items-center flex-flex-col w-[191px] h-fit">
         Hot Ranking
       </div>
@@ -100,6 +98,8 @@ export const Ranking = () => {
       </div>
     </div>
   ) : (
-    <Loading />
+    <div className="flex justify-center">
+      <Loading />
+    </div>
   );
 };

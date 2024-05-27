@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useCategory from "../../hooks/useCategory";
 import { getCategories } from "../../ultis/utilsCategory";
 import PropTypes from "prop-types";
+import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 
 export const Categories = ({ genres }) => {
   const [isDropdownNovelOpen, setIsDropdownNovelOpen] = useState(true);
@@ -86,8 +87,7 @@ export const Categories = ({ genres }) => {
                   setSelectedCateIndex(eachCategory?._id);
                 }}
               >
-                {eachCategory?.name.charAt(0).toUpperCase() +
-                  eachCategory?.name.slice(1)}
+                {capitalizeFirstLetter(eachCategory?.name)}
               </a>
             ))}
           </div>

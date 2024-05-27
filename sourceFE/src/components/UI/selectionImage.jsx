@@ -3,6 +3,7 @@ import "./css/selectionImage.css";
 import { useEffect, useState } from "react";
 import { proxyUrl } from "../../api/apiProxy";
 import banner1 from "../../assets/images/banner1.jpg";
+import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 export const SelectionImage = ({ dataSelectionImage }) => {
   const [selectedImage, setSelectedImage] = useState();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -63,13 +64,10 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                 <a className="">
                   <h1
                     className="font-light text-[14px] text-gray-400 hover:underline cursor-pointer mb-2"
-                    title={
-                      selectedImage?.category?.name.charAt(0).toUpperCase() +
-                      selectedImage?.category?.name.slice(1)
-                    }
+                    title={capitalizeFirstLetter(selectedImage?.category?.name)}
                   >
-                    {selectedImage?.category?.name.charAt(0).toUpperCase() +
-                      selectedImage?.category?.name.slice(1) || "Fantasy"}
+                    {capitalizeFirstLetter(selectedImage?.category?.name) ||
+                      "Fantasy"}
                   </h1>
                 </a>
                 <div>

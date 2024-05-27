@@ -6,6 +6,7 @@ import Comment from "../../components/Comments/Comment";
 import { getNovel } from "../../ultis/utilsNovel";
 import { proxyUrl } from "../../api/apiProxy";
 import { formatNumber } from "./../../ultis/convertNumber";
+import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 const Content = () => {
   const { idCate } = useParams();
   const [dataNovel, setDataNovel] = useState(null);
@@ -62,8 +63,7 @@ const Content = () => {
                 <p className="hover:underline	ml-2">
                   <a href={"/genres/novels/" + dataNovel?.category?.name}>
                     <span className="font-bold">
-                      {dataNovel?.category?.name.charAt(0).toUpperCase() +
-                        dataNovel?.category?.name.slice(1)}
+                      {capitalizeFirstLetter(dataNovel?.category?.name)}
                     </span>
                   </a>
                 </p>

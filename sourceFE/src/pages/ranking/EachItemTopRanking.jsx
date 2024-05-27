@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { formatNumber } from "./../../ultis/convertNumber";
 import { proxyUrl } from "../../api/apiProxy";
+import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 export const EachItemTopRanking = ({ item, rank }) => {
   let color;
   if (rank === 1) {
@@ -18,7 +19,7 @@ export const EachItemTopRanking = ({ item, rank }) => {
       <div
         className={`number-ranking text-[16px] font-bold antialiased ${color} m-2`}
       >
-        <p>{rank < 10 ? "00" + rank : rank}</p>
+        <p>{rank < 10 ? "0" + rank : rank}</p>
       </div>{" "}
       <div className="image_pund w-[90px] h-[120px]">
         <img
@@ -78,8 +79,7 @@ export const EachItemTopRanking = ({ item, rank }) => {
             title="Eastern"
             className="text-gray-500 align-middle font-normal leading-4 text-xs hover:underline hover:cursor-pointer"
           >
-            {item?.category?.name.charAt(0).toUpperCase() +
-              item?.category?.name.slice(1)}
+            {capitalizeFirstLetter(item?.category?.name)}
           </a>
         </p>
       </div>

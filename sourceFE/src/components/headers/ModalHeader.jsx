@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import useCategory from "../../hooks/useCategory";
+import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 
 export const ModalHeader = ({ dataModal }) => {
   const {
@@ -40,7 +41,7 @@ export const ModalHeader = ({ dataModal }) => {
               key={index}
               className="text-white text-[15px] pl-2 ml-2 h-fit font-bold line-clamp-1 max-w-[120px] w-[120px] rounded hover:bg-blue-700 hover:cursor-pointer"
             >
-              {item?.name.charAt(0).toUpperCase() + item?.name.slice(1)}
+              {capitalizeFirstLetter(item?.name)}
             </a>
           ))}
         </div>

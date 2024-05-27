@@ -1,0 +1,6 @@
+.nav-link {
+  text-decoration: none;
+  color: black; /* Màu chữ, bạn có thể thay đổi */
+  cursor: pointer;
+  transition: text-decoration-color 0.3s;
+}

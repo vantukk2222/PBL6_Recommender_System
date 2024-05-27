@@ -75,7 +75,7 @@ export const Genres = () => {
   }, [genres]);
   return is_loading === false ? (
     <>
-      <div className=" flex flex-row  w-screen max-w-[1080px] max-h-[1620px] h-[1620px]">
+      <div className=" flex flex-row  w-screen mx-auto  max-w-[1080px] max-h-[1620px] h-[1620px]">
         <Categories genres={genres} />
         <div className="flex flex-col w-screen justify-start max-w[890px] h-fit pl-[40px] ">
           <div>
@@ -186,6 +186,8 @@ export const Genres = () => {
       </div>
     </>
   ) : (
-    <Loading />
+    <div className="flex justify-center">
+      <Loading />
+    </div>
   );
 };
