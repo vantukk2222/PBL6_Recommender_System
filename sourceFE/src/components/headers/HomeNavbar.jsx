@@ -32,21 +32,26 @@ function HomeNavbar() {
       setClickProfile(false);
     }
   };
-  const {user, setUser} = useAuthen();
-  const infor = JSON.parse(localStorage.getItem("inforUser")) || {};
-  const role = JSON.parse(localStorage.getItem("Token")) || {};
+  const {user, setUser,setIsAuth,setRole,role} = useAuthen();
+  const [infor,setInfor] = useState({});
+  const [Token, setToken] = useState({});
+  useEffect(()=>{ 
+    setInfor(JSON.parse(localStorage.getItem("inforUser")) || {});
+    setToken( JSON.parse(localStorage.getItem("Token")) ||{});
+  },[])
   useEffect(() =>{
-    console.log("toa chay ne");
-    if(infor?.userName && role?.role)
-      {
+    console.log("set thong tin va login",infor?.userName ,Token);
+    if(infor?.userName && Token?.role)
+    {
+      console.log("chay");
         setUser({
-          'username' : infor.userName,
-          'role' : role.role
+          'username' : infor?.userName || 'user',
         })
         setLogin(true)
-      }
-  },[])
-
+        
+    }
+  },[infor,Token])
+  
   useEffect(() => {
     if (clickProfile) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -68,9 +73,14 @@ function HomeNavbar() {
   const handleSignout = () =>{
     console.log("sign out");
     setUser({})
+    setIsAuth(false)
+    setRole(0)
+    setLogin(false)
+    setToken({})
     localStorage.setItem("Token",JSON.stringify({}))
     navigate("/login"); 
   }
+  
   return (
     <>
       <nav className="navbar">
@@ -83,7 +93,6 @@ function HomeNavbar() {
                 <CodeIcon />
               </span>
             </a>
-
             <ul className="nav-menu">
               <li
                 className="nav-item"
@@ -123,11 +132,13 @@ function HomeNavbar() {
                   <strong>Rankings</strong>
                 </a>
               </li>
-            </ul>
-          </div>
-
+            </ul> 
+           
+          </div> 
+          
+         
           <div className="flex flex-row items-center gap-4">
-            <a className="  " href="/search" rel="nofollow" title="Search">
+          <a className="  " href="/search" rel="nofollow" title="Search">
               <svg
                 viewBox="0 0 24 24"
                 width="24"
@@ -149,9 +160,11 @@ function HomeNavbar() {
             >
               <strong>Library</strong>
             </a>
+          
+
             <div className=" relative">
               <i className="absolute dot dn pa t-0 r-0 rounded-full z-10"></i>
-              {login ? (
+              {login == true ? (
                 <a
                   className="block"
                   href="###"
@@ -177,7 +190,7 @@ function HomeNavbar() {
                   title="My Profile"
                   rel="nofollow"
                 >
-                if Sign in
+                Sign in
                 </a>
               )}
               {clickProfile && (

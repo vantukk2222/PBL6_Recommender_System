@@ -5,17 +5,17 @@ import { Outlet } from "react-router-dom";
 import useAuthen from "../../hooks/useAuthen";
 import AdminNavbar from "./AdminNavbar";
 
-function HomeHeader() {
+function AdminHeader() {
   const {role} = useAuthen();
 
-  // const roleMemo = useMemo(()=>{
-  //   const Token = JSON.parse(localStorage.getItem("Token")) || {};
-  //   return Token.role;
-  // },[])
+//   const roleMemo = useMemo(()=>{
+//     const Token = JSON.parse(localStorage.getItem("Token")) || {};
+//     return Token.role;
+//   },[])
   return (
     <div className="container">
       <div className="headerNav">
-        <HomeNavbar /> 
+        <AdminNavbar/>
       </div>
       <div className="row">
         <Outlet />
@@ -24,4 +24,4 @@ function HomeHeader() {
   );
 }
 
-export default HomeHeader;
+export default AdminHeader;
