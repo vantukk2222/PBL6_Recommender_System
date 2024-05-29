@@ -24,34 +24,25 @@ import PageNotFound from "./pages/notFound/PageNotFound";
 import AdminHeader from "./components/headers/AdminHeader";
 const App = () => {
 
-  // const [role, setRole] = useState()
+  // const [roleMemo, setRoleMemo] = useState('customer')
   // useEffect(()=>{
   //   const Token = JSON.parse(localStorage.getItem("Token")) || {};
-  //   if(Token?.role === 'admin')
-  //   {
-  //     setRole(true);
-  //   } 
-  //   return () => {
-  //     setRole(false);
-  //   };
+  //   setRoleMemo(Token.role)
   // },[])
-
-  const [roleMemo, setRoleMemo] = useState('customer')
-  useEffect(()=>{
-    const Token = JSON.parse(localStorage.getItem("Token")) || {};
-    setRoleMemo(Token.role)
-  },[])
+  const { role } = useAuthen();
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="login" element={<Authtemplate pages="login" />} />
         <Route path="register" element={<Authtemplate pages="register" />} />
-        {roleMemo == 'admin' ?
-        <Route path="/admin" element={<AdminHeader />}>
-            <Route index element= {<AdminDashboard/>}></Route>   
-        </Route>
+        {role == 'admin' ?(
+            <Route path="/admin" element={<AdminHeader />}>
+                <Route index element= {<AdminDashboard/>}></Route>   
+            </Route>
+        )
         :
-        <Route path="/" element={<HomeHeader />}> 
+        (
+          <Route path="/" element={<HomeHeader />}> 
           <Route>
             <Route index element={<Dashboard />} />
             <Route path="/stories/:Id?" element={<Stories />} />
@@ -60,7 +51,9 @@ const App = () => {
             <Route path="/ranking/:genres?" element={<Ranking />} />
             <Route path="/:library?" element={<Library />} />
           </Route>
-        </Route>
+          </Route>
+        )
+        
         }
         <Route path="*" element={<PageNotFound />} />
       </>

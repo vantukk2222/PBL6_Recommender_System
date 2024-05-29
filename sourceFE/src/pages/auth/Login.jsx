@@ -63,8 +63,9 @@ const Login = () => {
           setIsAuth(true);
           if(decode.role == 'admin')
           {    
-            navigate("/admin/");
-            setRole(1);
+            setRole('admin');
+            navigate("/admin");
+            
           }
           else{
             navigate("/");
