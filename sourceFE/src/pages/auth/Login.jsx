@@ -5,7 +5,7 @@ import { setHeaderConfigAxios } from '../../api/AxiosConfig'
 import {toast} from 'react-toastify'
 import { login,utilsDecodeToken } from '../../ultis/utilsAuth'
 const Login = () => {
-  const {setIsAuth,setRole} = useAuthen();
+  const {setIsAuth,setRole,setUser} = useAuthen();
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -14,7 +14,7 @@ const Login = () => {
 
   const infor = JSON.parse(localStorage.getItem("inforUser")) || {};
 
-  const [user, setUser] = useState(() => {
+  const [userLogin, setUserLogin] = useState(() => {
     const user = {
       username: infor?.userName || "",
       password: infor?.password || "",
@@ -38,7 +38,7 @@ const Login = () => {
     // setIsAuth(true);
     // navigate("/"); 
     
-    login(user)
+    login(userLogin)
       .then((res) => {
         // console.log("res"+res.data.accessToken);
         if (res.status == 200 || res.status == 202) {
@@ -48,9 +48,9 @@ const Login = () => {
           console.log(decode);
           const inforUser = {
             // role: decode.roles[0],
-            userName: user.username ?? "",
+            userName: userLogin.username ?? "",
             // token: token,
-            password: checked === true ? user.password : "",            
+            password: checked === true ? userLogin.password : "",            
           };
           const accessToken = {
             exp: decode.exp,
@@ -61,6 +61,7 @@ const Login = () => {
           localStorage.setItem("inforUser", JSON.stringify(inforUser));
           localStorage.setItem("Token",JSON.stringify(accessToken))
           setIsAuth(true);
+          setUser(userLogin);
           if(decode.role == 'admin')
           {    
             setRole('admin');
@@ -71,7 +72,7 @@ const Login = () => {
             navigate("/");
           }
     
-          toast.success(`Wellcome ${user.username}!`, {
+          toast.success(`Wellcome ${userLogin.username}!`, {
             autoClose: 1000,
           });
         }else {
@@ -98,8 +99,8 @@ const Login = () => {
               type="text"
               placeholder="Username"
               className="auth--input"
-              value={user.username}
-              onChange={(e) => setUser({ ...user, username: e.target.value })}
+              value={userLogin.username}
+              onChange={(e) => setUserLogin({ ...userLogin, username: e.target.value })}
             ></input>
           </div>
           <div>
@@ -108,8 +109,8 @@ const Login = () => {
               type="password"
               placeholder="Password"
               className="auth--input"
-              value={user.password}
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
+              value={userLogin.password}
+              onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })}
             ></input>
           </div>
           <div className="flex justify-between">

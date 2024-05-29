@@ -1,4 +1,4 @@
-import {  createContext, useState } from "react";
+import {  createContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types'
 
 const AuthContext = createContext({});
@@ -7,6 +7,10 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState({})
     const [accessToken, setAccessToken] = useState('');
     const [role,setRole] = useState(0);
+    useEffect(()=>{
+        const token  = JSON.parse(localStorage.getItem('Token')) || {};
+        setRole(token.role);
+    },[])
     const contextAuthData = {
         accessToken,
         setAccessToken,
