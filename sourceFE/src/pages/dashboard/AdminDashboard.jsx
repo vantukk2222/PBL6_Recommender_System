@@ -29,8 +29,8 @@ const AdminDashboard = () => {
   // console.log(listAccount);
   return !isLoading ? (
     <div className=" flex flex-col justify-start items-center mx-auto bg-slate-200  w-screen  max-w-[1080px] ">
-      <div className="w-[1020px] h-[80px] flex items-center justify-between bg-gray-100 p-4 rounded shadow">
-        <div class="flex-none w-14 h-14 ...">
+      <div className="w-[1020px] mt-2 h-[60px] flex items-center justify-between  bg-slate-500 dark:bg-gray-700 p-4 rounded-t-lg shadow">
+        <div class="flex-none w-[20px] h-[20px]">
           
         </div>
         <div class="shrink w-[300px] h-[40px]">
@@ -59,9 +59,9 @@ const AdminDashboard = () => {
 
       </div>
       <div className="bg-while-300 w-[1020px] ">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-b-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-            <thead className="text-xs text-gray-700 uppercase bg-slate-400 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="h-[50px] text-xs text-gray-700 uppercase bg-slate-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Username
@@ -109,12 +109,12 @@ const AdminDashboard = () => {
             <tfoot>
               <tr>
                 <td colSpan="6" className="px-6 py-3">
-                  <div className="flex   items-center">
+                  <div className="flex justify-end  items-center">
                     <button
                      
                       // disabled={currentPage === 1}
                       // onClick={() => handlePageChange(currentPage - 1)}
-                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-green-300 "
+                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-green-300 mx-2"
                     >
                      <LeftIcon />
                     </button>
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
                     <button
                      // disabled={currentPage === totalPages}
                       // onClick={() => handlePageChange(currentPage + 1)}
-                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-green-300 "
+                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-green-300 mx-2"
                     >
                       <RightIcon/>
                     </button>
