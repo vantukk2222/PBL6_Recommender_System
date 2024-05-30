@@ -18,14 +18,11 @@ export const getAccounts = async (filter = {
 }
 
 export const getAccount = async (id) => {
-    if (id == null)
-        return 'Id can not null';
+
     const response = await apiAccount.getAccount(id);
     return response.data;
 }
 export const updateAccount = async (data) => {
-    if (data.id == null)
-        return 'Id can not null';
     const response = await apiAccount.updateAccount(data);
     return response;
 }
@@ -34,8 +31,6 @@ export const addAccount = async (data) => {
     return response;
 }
 export const deleteAccount = async (id) => {
-    if (id == null)
-        return 'Id can not null';
     const response = await apiAccount.deleteAccount(id);
     return response;
 }

@@ -1,62 +1,134 @@
-import React, { useEffect, useState } from 'react'
-import { getAccounts } from '../../ultis/utilsAccount'
-import useAccount from '../../hooks/useAccount'
-import { list } from 'postcss';
-import { Loading } from '../../components/UI/Loading';
-import { formatDate } from '../../ultis/convertTime';
-import { AddUserIcon, DeleteIcon, EditIcon, LeftIcon, RightIcon, SearchIcon } from '../../components/headers/icon.jsx'
+import React, { useEffect, useState } from "react";
+import { deleteAccount, getAccounts, updateAccount } from "../../ultis/utilsAccount";
+import useAccount from "../../hooks/useAccount";
+import { list } from "postcss";
+import { Loading } from "../../components/UI/Loading";
+import { formatDate } from "../../ultis/convertTime";
+import {
+  AddUserIcon,
+  DeleteIcon,
+  EditIcon,
+  LeftIcon,
+  RightIcon,
+  SearchIcon,
+} from "../../components/headers/icon.jsx";
+import Modal from "react-modal";
 const AdminDashboard = () => {
-
-  const { listAccount,
-    setListAccount,
-    page,
-    setPage,
-    filter,
-    setFilter, } = useAccount();
+  const { listAccount, setListAccount, page, setPage, filter, setFilter } =
+    useAccount();
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    getAccounts(filter).then((res) => {
-      console.log("call api", res);
-      setListAccount(res.accounts)
-      setIsLoading(false)
-    }).catch((err) => {
-      alert("An error occurred while fetching accounts. Please try again later.")
-      setIsLoading(false)
-    })
+    getAccounts(filter)
+      .then((res) => {
+        console.log("call api", res);
+        setListAccount(res.accounts);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        alert(
+          "An error occurred while fetching accounts. Please try again later."
+        );
+        setIsLoading(false);
+      });
+  }, []);
 
-  }, [])
-  // console.log(listAccount);
+
+  
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [userSelect, setUserSelect] = useState({});
+  function openModal(userInfor) {
+    console.log(userInfor);
+    setUserSelect(userInfor);
+    setIsShowModal(true);
+  }
+  function closeModal() {
+    setIsShowModal(false);
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserSelect((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmitEditUser = (e) => {
+    e.preventDefault();
+    const acc = {
+      id: userSelect._id,
+      name: userSelect.name,
+    };
+    updateAccount(acc)
+      .then((res) => {
+        console.log(res.data);
+        if(res.status == 200)
+        {
+          setListAccount((prev) =>
+            prev.map((account) => (account._id === res.data._id ? res.data : account))
+          );
+        }
+        closeModal()
+      })
+      .catch((err) => {
+        alert("Could'nt update this account");
+        closeModal()
+        setUserSelect({});
+      });
+  };
+  const handleDeleteAcc = (acc) =>{
+    deleteAccount(acc._id).then((res)=>{
+      if(res.status == 200 || res.status == 202)
+      {
+        setListAccount((prev)=> prev.filter((account)=>
+          account._id !== acc._id
+        ))
+      }
+        
+    }).catch((err)=>{
+      alert('Could not remove this account')
+    })
+  }
+  console.log("userselect", userSelect);
+  const customStyles = {
+    content: {
+      top: "55%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  console.log(listAccount);
   return !isLoading ? (
     <div className=" flex flex-col justify-start items-center mx-auto bg-slate-200  w-screen  max-w-[1080px] ">
       <div className="w-[1020px] mt-2 h-[60px] flex items-center justify-between  bg-slate-500 dark:bg-gray-700 p-4 rounded-t-lg shadow">
-        <div class="flex-none w-[20px] h-[20px]">
-          
-        </div>
-        <div class="shrink w-[300px] h-[40px]">
+        <div className="flex-none w-[20px] h-[20px]"></div>
+        <div className="shrink w-[300px] h-[40px]">
           <div className="flex bg-gray-200 rounded-lg px-4 py-2">
-            <div className='mx-2'>
-              <SearchIcon classname="text-gray-500 hover:bg-gray-400"/>
+            <div className="mx-2">
+              <SearchIcon classname="text-gray-500 hover:bg-gray-400" />
             </div>
             <input
               type="text"
               placeholder="Search"
               className="bg-transparent border-none outline-none"
             />
-
             {/* <i className="fas fa-search text-gray-500"></i> */}
           </div>
         </div>
-        <div class="flex-none w-[148px] h-[40px] ">
+        <div className="flex-none w-[148px] h-[40px] ">
           <button className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
             {/* <i className="fas fa-plus-circle mr-2"></i> */}
-            <div className='mx-1'>
-            <AddUserIcon/>
+            <div className="mx-1">
+              <AddUserIcon />
             </div>
             Add Customer
           </button>
         </div>
-
       </div>
       <div className="bg-while-300 w-[1020px] ">
         <div className="relative overflow-x-auto shadow-md sm:rounded-b-lg ">
@@ -84,50 +156,67 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody>
-
-              {listAccount.map((account, index) => (
-                <tr key={account._id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{account?.username}</th>
+              {listAccount?.map((account, index) => (
+                <tr
+                  key={account._id}
+                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {account?.username}
+                  </th>
                   <td className="px-6 py-4">{account?.email}</td>
                   <td className="px-6 py-4">{account?.name}</td>
-                  <td className="px-6 py-4">{formatDate
-                    (account?.createdAt)}</td>
-                  <td className="px-6 py-4">{formatDate
-                    (account?.updatedAt)}</td>
+                  <td className="px-6 py-4">
+                    {formatDate(account?.createdAt)}
+                  </td>
+                  <td className="px-6 py-4">
+                    {formatDate(account?.updatedAt)}
+                  </td>
                   <td className="px-6 py-4 flex flex-row justify-center item-center">
-                    <a href="#" className="mt-4 font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                    <div
+                      onClick={() => {
+                        openModal(account);
+                      }}
+                      className="mt-4 font-medium text-blue-300 dark:text-blue-500 hover:text-blue-700 "
+                    >
                       <EditIcon></EditIcon>
-                    </a>
-                    <a href="#" className="mx-2 mt-4 font-medium text-red-600 dark:text-red-500 hover:underline">
+                    </div>
+                    <button
+                      onClick={()=>{
+                        handleDeleteAcc(account)
+                      }}
+                      className="mx-2 mt-4 font-medium text-red-300 dark:text-red-500 hover:text-red-700"
+                    >
                       <DeleteIcon></DeleteIcon>
-                    </a>
+                    </button>
                   </td>
                 </tr>
               ))}
-
             </tbody>
             <tfoot>
               <tr>
                 <td colSpan="6" className="px-6 py-3">
                   <div className="flex justify-end  items-center">
                     <button
-                     
                       // disabled={currentPage === 1}
                       // onClick={() => handlePageChange(currentPage - 1)}
                       className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-green-300 mx-2"
                     >
-                     <LeftIcon />
+                      <LeftIcon />
                     </button>
                     <span>
                       {/* Page {currentPage} of {totalPages} */}
                       Page 1 of 10
                     </span>
                     <button
-                     // disabled={currentPage === totalPages}
+                      // disabled={currentPage === totalPages}
                       // onClick={() => handlePageChange(currentPage + 1)}
                       className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-green-300 mx-2"
                     >
-                      <RightIcon/>
+                      <RightIcon />
                     </button>
                   </div>
                 </td>
@@ -135,15 +224,64 @@ const AdminDashboard = () => {
             </tfoot>
           </table>
         </div>
+      </div>
+      <div>
+        <Modal
+          isOpen={isShowModal}
+          // onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <div className="w-[400px] flex items-center justify-center">
+            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+              <button onClick={closeModal}>close</button>
+              <h2 className="text-2xl font-bold text-center text-purple-700">
+                Update account
+              </h2>
+              <form className="space-y-4" onSubmit={handleSubmitEditUser}>
+                <div className="flex flex-row">
+                  <label htmlFor="username" className="px-4 py-2 w-1/3">
+                    Username{" "}
+                  </label>
+                  <p className="w-[70%] px-4 py-2 border rounded-md border-red-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    {userSelect?.username}
+                  </p>
+                </div>
+                <div className="flex flex-row">
+                  <label htmlFor="name" className="px-4 py-2 w-1/3">
+                    Name{" "}
+                  </label>
 
+                  <input
+                    type="tel"
+                    id="name"
+                    name="name"
+                    onChange={handleInputChange}
+                    placeholder="Name"
+                    value={userSelect?.name || ""}
+                    className="w-full  px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="w-full py-2 text-white bg-purple-500 rounded-md hover:bg-purple-600"
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </Modal>
       </div>
     </div>
-
   ) : (
     <div className="flex justify-center">
       <Loading />
     </div>
   );
-}
+};
 
-export default AdminDashboard
+export default AdminDashboard;
