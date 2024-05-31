@@ -49,7 +49,7 @@ const Dashboard = () => {
   ];
   const [showAll, setShowAll] = useState(false);
 
-  const [is_loading, setIsLoading] = useState(false);
+  const [is_loading, setIsLoading] = useState(true);
 
   const [numberList, setNumberList] = useState(5);
   const extendMoreRanking = () => {

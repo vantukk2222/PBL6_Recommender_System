@@ -34,3 +34,7 @@ export const deleteAccount = async (id) => {
     const response = await apiAccount.deleteAccount(id);
     return response;
 }
+export const addToLibrary = async (id_account, id_novel) => {
+    const response = await apiAccount.addToFavorite(id_account, id_novel);
+    return response;
+}

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useNavigate, useLocation, NavLink, useParams } from "react-router-dom";
 import { EachItemNovelGenre } from "./EachItemNovelGenre";
 import useCategory from "./../../hooks/useCategory";
-import { getCategories } from "../../ultis/utilsCategory";
+import { getCategories, getCategoriesByFilter } from "../../ultis/utilsCategory";
 import { getNovels, getNovelsByCategoryID } from "../../ultis/utilsNovel";
 import useNovel from "../../hooks/useNovel";
 import { Loading } from "../../components/UI/Loading";
@@ -15,7 +15,7 @@ export const Genres = () => {
   const [selectedStatus, setSelectedStatus] = useState(0);
   const [selectedSort, setSelectedSort] = useState(0);
 
-  const [is_loading, setIsLoading] = useState(false);
+  const [is_loading, setIsLoading] = useState(true);
   const {
     categoryData,
     setCategoryData,
@@ -39,7 +39,7 @@ export const Genres = () => {
   } = useNovel();
 
   useEffect(() => {
-    getCategories().then((response) => {
+    getCategoriesByFilter().then((response) => {
       setCategoryData(response.categories);
       setSelectedCateIndex(
         response.categories.find(
@@ -82,7 +82,7 @@ export const Genres = () => {
             <div
               className="text-[20px] font-semibold text-gray-500 pb-2 border-b-[1px] border-gray-200	w-full	"
               onClick={() => {
-                console.log("category data: ", genres);
+                console.log("category data: ", categoryData);
               }}
             >
               Filter By

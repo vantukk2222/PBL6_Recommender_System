@@ -50,13 +50,14 @@ export const Categories = ({ genres }) => {
         {isDropdownNovelOpen && (
           <div
             id="dropdown"
-            className="z-10 bg-white truncate flex flex-col flex-wrap max-h-[280px] mb-2"
+            className="z-10 bg-white truncate grid grid-cols-2 mb-2"
           >
             <a
               href={"/genres/novels/all"}
               key={0}
               className={
-                genres == "all"
+                genres == "all" ||
+                !categoryData.some((item) => item.name === genres)
                   ? " text-[16px] font-normal text-white rounded-md block truncate max-w-[100px] w-fit  px-2 py-2 mb-1 mr-2 bg-blue-500 hover:cursor-pointer "
                   : " text-[16px] font-normal rounded-md block truncate max-w-[100px] w-fit  px-2 py-2 mb-1 mr-2 hover:bg-blue-500 hover:text-white	hover:cursor-pointer "
               }

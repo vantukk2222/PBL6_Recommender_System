@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./css/HomeNavbar.css";
 import { Transition } from "@headlessui/react";
 
@@ -22,36 +22,36 @@ function HomeNavbar() {
 
   const [clickProfile, setClickProfile] = useState(false);
   const modalRef = useRef(null);
-  
+  const linkRef = useRef(null);
+
   const handleClickProfile = () => {
     setClickProfile(!clickProfile);
   };
-  const [is_Loading, setIsLoading] = useState(false);
+  const [is_Loading, setIsLoading] = useState(true);
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       setClickProfile(false);
     }
   };
-  const {user, setUser,setIsAuth,setRole,role} = useAuthen();
-  const [infor,setInfor] = useState({});
+  const { user, setUser, setIsAuth, setRole, role } = useAuthen();
+  const [infor, setInfor] = useState({});
   const [Token, setToken] = useState({});
-  useEffect(()=>{ 
+
+  useEffect(() => {
     setInfor(JSON.parse(localStorage.getItem("inforUser")) || {});
-    setToken( JSON.parse(localStorage.getItem("Token")) ||{});
-  },[])
-  useEffect(() =>{
-    console.log("set thong tin va login",infor?.userName ,Token);
-    if(infor?.userName && Token?.role)
-    {
+    setToken(JSON.parse(localStorage.getItem("Token")) || {});
+  }, []);
+  useEffect(() => {
+    console.log("set thong tin va login", infor?.userName, Token);
+    if (infor?.userName && Token?.role) {
       console.log("chay");
-        setUser({
-          'username' : infor?.userName || 'user',
-        })
-        setLogin(true)
-        
+      setUser({
+        username: infor?.userName || "user",
+      });
+      setLogin(true);
     }
-  },[infor,Token])
-  
+  }, [infor, Token]);
+
   useEffect(() => {
     if (clickProfile) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -62,6 +62,28 @@ function HomeNavbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [clickProfile]);
+  const handleClick = (event) => {
+    event.preventDefault();
+    alert("Please login to use this feature!");
+  };
+  useEffect(() => {
+    console.log("Token", Token);
+    if (linkRef.current) {
+      if (Token.id) {
+        linkRef.current.href = "/library";
+        linkRef.current.removeAttribute("rel");
+      } else {
+        linkRef.current.addEventListener("click", handleClick);
+      }
+    }
+
+    // Cleanup function
+    return () => {
+      if (linkRef.current) {
+        linkRef.current.removeEventListener("click", handleClick);
+      }
+    };
+  }, [Token]);
   const { categoryData, setCategoryData } = useCategory();
   useEffect(() => {
     setIsLoading(true);
@@ -70,17 +92,17 @@ function HomeNavbar() {
       setIsLoading(false);
     });
   }, []);
-  const handleSignout = () =>{
+  const handleSignout = () => {
     console.log("sign out");
-    setUser({})
-    setIsAuth(false)
-    setRole(0)
-    setLogin(false)
-    setToken({})
-    localStorage.setItem("Token",JSON.stringify({}))
-    navigate("/login"); 
-  }
-  
+    setUser({});
+    setIsAuth(false);
+    setRole(0);
+    setLogin(false);
+    setToken({});
+    localStorage.setItem("Token", JSON.stringify({}));
+    navigate("/");
+  };
+
   return (
     <>
       <nav className="navbar">
@@ -132,13 +154,11 @@ function HomeNavbar() {
                   <strong>Rankings</strong>
                 </a>
               </li>
-            </ul> 
-           
-          </div> 
-          
-         
+            </ul>
+          </div>
+
           <div className="flex flex-row items-center gap-4">
-          <a className="  " href="/search" rel="nofollow" title="Search">
+            <a className="  " href="/search" rel="nofollow" title="Search">
               <svg
                 viewBox="0 0 24 24"
                 width="24"
@@ -157,10 +177,10 @@ function HomeNavbar() {
               className="text-[17px] font-medium text-gray-500"
               href="/library"
               rel="nofollow"
+              ref={linkRef}
             >
               <strong>Library</strong>
             </a>
-          
 
             <div className=" relative">
               <i className="absolute dot dn pa t-0 r-0 rounded-full z-10"></i>
@@ -190,7 +210,7 @@ function HomeNavbar() {
                   title="My Profile"
                   rel="nofollow"
                 >
-                Sign in
+                  Sign in
                 </a>
               )}
               {clickProfile && (
@@ -338,7 +358,9 @@ function HomeNavbar() {
                         href="###"
                         title="Sign Out"
                         className="block p-3 hover:bg-gray-600"
-                        onClick={()=>{handleSignout()}}
+                        onClick={() => {
+                          handleSignout();
+                        }}
                       >
                         Sign Out
                       </a>

@@ -7,13 +7,33 @@ import { getNovel } from "../../ultis/utilsNovel";
 import { proxyUrl } from "../../api/apiProxy";
 import { formatNumber } from "./../../ultis/convertNumber";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
+import { Loading } from "../../components/UI/Loading";
+import { addToLibrary } from "../../ultis/utilsAccount";
+import { addHistory } from "../../ultis/ultisHistory";
 const Content = () => {
   const { idCate } = useParams();
   const [dataNovel, setDataNovel] = useState(null);
+  const [is_Loading, setIsLoading] = useState(true);
+  const infor = JSON.parse(localStorage.getItem("Token")) || {};
+
   useEffect(() => {
     getNovel(idCate).then((res) => {
       setDataNovel(res);
+      setIsLoading(false);
     });
+    if (infor?.id) {
+      console.log("infor in content", infor.id);
+      const data_History = {
+        account: infor.id,
+        novel: idCate,
+        lastReadChapter: 1,
+        lastReadDate: new Date().toISOString().split("T")[0],
+      };
+      addHistory(data_History).then((res) => {
+        console.log("Add history successfully");
+      });
+    }
+    console.log("Call API novel DONE");
   }, [idCate]);
   let data = {
     id: "dast43",
@@ -24,7 +44,7 @@ const Content = () => {
     src: "https://book-pic.webnovel.com/bookcover/23124855606295305?imageMogr2/thumbnail/150&imageId=1698747892444",
   };
 
-  return (
+  return is_Loading === false ? (
     <div className="containerCard p-4 w-[1080px] mx-auto bg-slate-100 ">
       <div className="flex h-full flex-initial w-full  rounded-lg">
         <div className=" p-2  image h-[412px] w-[308px] ">
@@ -84,7 +104,7 @@ const Content = () => {
                 <p className="	">
                   <span>
                     {dataNovel?.chapters
-                      ? dataNovel?.chapters + "Chapters"
+                      ? dataNovel?.chapters + " Chapters"
                       : "NaN"}{" "}
                   </span>
                 </p>
@@ -182,7 +202,18 @@ const Content = () => {
                   />
                 </svg>
               </div>
-              <p className=" text-lg">Add to library</p>
+              <p
+                className=" text-lg"
+                onClick={() => {
+                  infor.id
+                    ? addToLibrary(infor.id, dataNovel?._id).then(() => {
+                        alert("Add to library successfully");
+                      })
+                    : alert("Please login to add to library");
+                }}
+              >
+                Add to library
+              </p>
             </button>
           </div>
         </div>
@@ -212,6 +243,10 @@ const Content = () => {
           </div>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="flex justify-center">
+      <Loading />
     </div>
   );
 };
