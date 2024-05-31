@@ -1,9 +1,9 @@
-import {  createContext, useState } from "react";
+import {  createContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types'
-
+import { getAllAuthor } from "../ultis/utilsAuthor";
 const AuthorContext = createContext({});
 export const AuthorProvider = ({children}) => {
-    const [authorData, setAuthorData] = useState([]);
+    const [authorData, setAuthorData] = useState([]); // all data
     const [listAuthor, setListAuthor] = useState([]);
     const [filter, setFilter] = useState({
         page : 1 , 
@@ -16,6 +16,13 @@ export const AuthorProvider = ({children}) => {
         currentPage :1
 
     });
+    useEffect(()=>{
+        getAllAuthor().then((res)=>{
+            setAuthorData(res.data?.authors)
+        }).catch((err)=>{
+            console.log("can't get all author "+err);
+        })
+    },[])
 
     const contextAuthorData = {
         filter,

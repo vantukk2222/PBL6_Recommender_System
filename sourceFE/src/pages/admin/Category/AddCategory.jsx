@@ -3,7 +3,6 @@ import { addAccount } from '../../../ultis/utilsAccount';
 import { Link, useNavigate } from 'react-router-dom';
 import { SelectComponent } from '../../../components/Select/SelectComponent';
 import { Loading } from '../../../components/UI/Loading';
-import { addAuthor } from '../../../ultis/utilsAuthor';
 import AdBanner from '../../../components/admin/AdBanner';
 import { addCategory } from '../../../ultis/utilsCategory';
 

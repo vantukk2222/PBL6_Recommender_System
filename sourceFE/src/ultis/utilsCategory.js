@@ -41,6 +41,10 @@ export const getCategory = async (id) => {
     const response = await apiCategory.getCategory(id);
     return response.data;
 }
+export const getallCategory = async () => {
+    const response = await apiCategory.getAllCategory();
+    return response;
+}
 export const updateCategory = async (data) => {
     if (data.id == null)
         return 'Id can not null';

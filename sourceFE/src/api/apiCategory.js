@@ -16,6 +16,11 @@ const apiCategory = {
         // console.log('url',url)
         return axiosClient.get(url)
     },
+    getAllCategory: () => {
+        let url = `/category?page=1&pageSize=10000&sortField=name&sortOrder=desc`
+        // console.log('url',url)
+        return axiosClient.get(url)
+    },
     getCategory: (id) => {
         const url = `/category/${id}`
         return axiosClient.get(url)

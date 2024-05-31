@@ -1,9 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { getallCategory } from "../ultis/utilsCategory";
 
 const CategoryContext = createContext({});
 export const CategoryProvider = ({ children }) => {
   const [categoryData, setCategoryData] = useState([]);
+  const [categoryAll,setCategoryAll] = useState([]);
   const [listCategory, setListCategory] = useState([]);
   const [filter, setFilter] = useState({
     page: 1,
@@ -20,6 +22,14 @@ export const CategoryProvider = ({ children }) => {
     return savedIndex !== null ? JSON.parse(savedIndex) : 0;
   });
 
+  useEffect(()=>{
+    getallCategory().then((res)=>{
+      console.log(res?.data?.categories);
+      setCategoryAll(res?.data?.categories)
+    }).catch((err)=>{
+      console.log("Error ",err);
+    })
+  },[])
   useEffect(() => {
     localStorage.setItem(
       "selectedCateIndex",
@@ -32,6 +42,7 @@ export const CategoryProvider = ({ children }) => {
     setCategoryData,
     listCategory,
     setListCategory,
+    categoryAll,
     filter,
     setFilter,
     page,

@@ -51,7 +51,7 @@ const App = () => {
                 <Route path='/categories' element={<PageCategory/>}/>
                 <Route path='/addCategory' element={<AddCategory/>}/>
                 <Route path='/novels' element={<PageNovel/>}/>
-                <Route path='/addNovels' element={<AddNovel/>}/>
+                <Route path='/addNovel' element={<AddNovel/>}/>
             </Route>
         )
         :

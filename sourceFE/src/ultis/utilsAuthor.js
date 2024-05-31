@@ -22,6 +22,10 @@ export const getAuthor = async (id) => {
     const response = await apiAuthor.getAuthor(id);
     return response.data;
 }
+export const getAllAuthor = async ()=>{
+    const response = await apiAuthor.getAllAuthor();
+    return response;
+}
 export const updateAuthor = async (data) => {
     const response = await apiAuthor.updateAuthor(data);
     return response;
