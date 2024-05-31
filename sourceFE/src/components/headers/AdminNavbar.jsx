@@ -83,11 +83,29 @@ function AdminNavbar() {
               </li>
               <li className="nav-item">
                 <a
-                  href="/Novel"
+                  href="/novels"
                   className="nav-links flex flex-row"
                   style={{ position: "relative" }}
                 >
                   <strong>Novel</strong>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="/authors"
+                  className="nav-links flex flex-row"
+                  style={{ position: "relative" }}
+                >
+                  <strong>Author</strong>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="/categories"
+                  className="nav-links flex flex-row"
+                  style={{ position: "relative" }}
+                >
+                  <strong>Category</strong>
                 </a>
               </li>
             </ul>

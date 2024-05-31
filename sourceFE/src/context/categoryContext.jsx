@@ -7,7 +7,7 @@ export const CategoryProvider = ({ children }) => {
   const [listCategory, setListCategory] = useState([]);
   const [filter, setFilter] = useState({
     page: 1,
-    pageSize: 4,
+    pageSize: 20,
     sortField: "name",
     sortOrder: "desc",
   });

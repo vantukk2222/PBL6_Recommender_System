@@ -3,7 +3,7 @@ import apiAuthor from "../api/apiAuthor";
 
 export const getAuthors = async (filter = {
     'page': 1,
-    'pageSize': 4,
+    'pageSize': 20,
     'sortField': 'name',
     'sortOrder': 'desc'
 }) => {
@@ -19,14 +19,10 @@ export const getAuthors = async (filter = {
 }
 
 export const getAuthor = async (id) => {
-    if (id == null)
-        return 'Id can not null';
     const response = await apiAuthor.getAuthor(id);
     return response.data;
 }
 export const updateAuthor = async (data) => {
-    if (data.id == null)
-        return 'Id can not null';
     const response = await apiAuthor.updateAuthor(data);
     return response;
 }
@@ -35,8 +31,6 @@ export const addAuthor = async (data) => {
     return response;
 }
 export const deleteAuthor = async (id) => {
-    if (id == null)
-        return 'Id can not null';
     const response = await apiAuthor.deleteAuthor(id);
     return response;
 }

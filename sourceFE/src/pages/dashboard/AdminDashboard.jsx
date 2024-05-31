@@ -14,8 +14,9 @@ import {
   SearchIcon,
 } from "../../components/headers/icon.jsx";
 import Modal from "react-modal";
+import AdBanner from "../../components/admin/AdBanner";
 
-
+Modal.setAppElement('#root');
 const AdminDashboard = () => {
   const { listAccount, setListAccount, page, setPage, filter, setFilter } =
     useAccount();
@@ -131,7 +132,10 @@ const AdminDashboard = () => {
 
   // console.log(listAccount);
   return !isLoading ? (
-    <div className=" flex flex-col justify-start items-center mx-auto bg-slate-200  w-screen  max-w-[1080px]  ">
+    <div className=" flex flex-col justify-start items-center mx-auto bg-slate-200 rounded-xl w-screen  max-w-[1080px]  ">
+      <div>
+      <AdBanner name={""}/>
+      </div>
       <div className="w-[1020px] mt-2 h-[60px] flex items-center justify-between  bg-slate-500 dark:bg-gray-700 p-4 rounded-t-lg shadow">
         <div className="flex-none w-[20px] h-[20px]"></div>
         <div className="shrink w-[300px] h-[40px]">
@@ -154,7 +158,7 @@ const AdminDashboard = () => {
             <div className="mx-1">
               <AddUserIcon />
             </div>
-            Add Customer
+            Add Account
           </Link>
         </div>
       </div>

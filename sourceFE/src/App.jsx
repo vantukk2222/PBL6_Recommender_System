@@ -23,6 +23,12 @@ import useAuthen from "./hooks/useAuthen";
 import PageNotFound from "./pages/notFound/PageNotFound";
 import AdminHeader from "./components/headers/AdminHeader";
 import AddAccount from "./pages/admin/Account/AddAccount";
+import PageAuthor from "./pages/admin/Author/PageAuthor";
+import AddAuthor from "./pages/admin/Author/AddAuthor";
+import PageCategory from "./pages/admin/Category/PageCategory";
+import AddCategory from "./pages/admin/Category/AddCategory";
+import PageNovel from "./pages/admin/Novel/PageNovel";
+import AddNovel from "./pages/admin/Novel/AddNovel";
 const App = () => {
 
   // const [roleMemo, setRoleMemo] = useState('customer')
@@ -40,6 +46,12 @@ const App = () => {
             <Route path='/' element={<AdminHeader />}>
                 <Route index element= {<AdminDashboard/>}></Route>   
                 <Route path='/addAccount' element={<AddAccount/>} ></Route>
+                <Route path='/authors' element={<PageAuthor/>}/>
+                <Route path='/addAuthor' element={<AddAuthor/>}/>
+                <Route path='/categories' element={<PageCategory/>}/>
+                <Route path='/addCategory' element={<AddCategory/>}/>
+                <Route path='/novels' element={<PageNovel/>}/>
+                <Route path='/addNovels' element={<AddNovel/>}/>
             </Route>
         )
         :

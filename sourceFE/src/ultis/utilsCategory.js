@@ -14,6 +14,26 @@ export const getCategories = async () => {
 
     return data;
 }
+export const getCategoriesByFilter = async (filter = {
+    'page': 1,
+    'pageSize': 20,
+    'sortField': 'name',
+    'sortOrder': 'desc'
+}) => {
+
+    const response = await apiCategory.getCategoriesbyFilter(filter);
+    const data = {
+        'page': {
+            'currentPage': response.data.currentPage,
+            'totalPages': response.data.totalPages,
+        },
+        'categories': response.data.categories
+    }
+
+    return data;
+}
+
+
 
 export const getCategory = async (id) => {
     if (id == null)
