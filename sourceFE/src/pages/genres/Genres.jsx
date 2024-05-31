@@ -4,11 +4,15 @@ import PropTypes from "prop-types";
 import { useNavigate, useLocation, NavLink, useParams } from "react-router-dom";
 import { EachItemNovelGenre } from "./EachItemNovelGenre";
 import useCategory from "./../../hooks/useCategory";
-import { getCategories, getCategoriesByFilter } from "../../ultis/utilsCategory";
+import {
+  getCategories,
+  getCategoriesByFilter,
+} from "../../ultis/utilsCategory";
 import { getNovels, getNovelsByCategoryID } from "../../ultis/utilsNovel";
 import useNovel from "../../hooks/useNovel";
 import { Loading } from "../../components/UI/Loading";
 import { Categories } from "../../components/UI/Categories";
+import { preProcessingCategory } from "../../ultis/preProcessingCategory";
 export const Genres = () => {
   const { genres, novel } = useParams();
 
@@ -43,12 +47,7 @@ export const Genres = () => {
       setCategoryData(response.categories);
       setSelectedCateIndex(
         response.categories.find(
-          (eachCategory) =>
-            eachCategory.name
-              .replace(/[^a-z0-9\s]/gi, "")
-              .split(/\s+/)
-              .join("-")
-              .toLowerCase() === genres
+          (eachCategory) => preProcessingCategory(eachCategory.name) === genres
         )?._id || 0
       );
     });

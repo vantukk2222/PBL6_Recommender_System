@@ -4,7 +4,6 @@ import axiosClient from "./AxiosConfig";
 const apiNovel = {
     getNovels: (filter) => {
         let url = `/novel?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}`
-        console.log(url);
         return axiosClient.get(url)
     },
     getNovelsByCateID: (filter) => {
@@ -12,7 +11,6 @@ const apiNovel = {
         let url_withID = `/novel?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}&categoryId=${filter.categoryId}`
         let url_withoutID = `/novel?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}`
         let url = filter.categoryId != 0 ? url_withID : url_withoutID
-        console.log("url: ", url);
         return axiosClient.get(url)
     },
     getNovel: (id) => {

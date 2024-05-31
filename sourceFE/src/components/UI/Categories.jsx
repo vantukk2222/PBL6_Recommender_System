@@ -3,6 +3,7 @@ import useCategory from "../../hooks/useCategory";
 import { getCategories } from "../../ultis/utilsCategory";
 import PropTypes from "prop-types";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
+import { preProcessingCategory } from "../../ultis/preProcessingCategory";
 
 export const Categories = ({ genres }) => {
   const [isDropdownNovelOpen, setIsDropdownNovelOpen] = useState(true);
@@ -56,8 +57,7 @@ export const Categories = ({ genres }) => {
               href={"/genres/novels/all"}
               key={0}
               className={
-                genres == "all" ||
-                !categoryData.some((item) => item.name === genres)
+                genres == "all"
                   ? " text-[16px] font-normal text-white rounded-md block truncate max-w-[100px] w-fit  px-2 py-2 mb-1 mr-2 bg-blue-500 hover:cursor-pointer "
                   : " text-[16px] font-normal rounded-md block truncate max-w-[100px] w-fit  px-2 py-2 mb-1 mr-2 hover:bg-blue-500 hover:text-white	hover:cursor-pointer "
               }
@@ -71,12 +71,7 @@ export const Categories = ({ genres }) => {
             {categoryData?.map((eachCategory, index) => (
               <a
                 href={
-                  "/genres/novels/" +
-                  eachCategory?.name
-                    .replace(/[^a-z0-9\s]/gi, "")
-                    .split(/\s+/)
-                    .join("-")
-                    .toLowerCase()
+                  "/genres/novels/" + preProcessingCategory(eachCategory?.name)
                 }
                 key={index}
                 className={

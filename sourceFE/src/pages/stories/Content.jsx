@@ -10,6 +10,7 @@ import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 import { Loading } from "../../components/UI/Loading";
 import { addToLibrary } from "../../ultis/utilsAccount";
 import { addHistory } from "../../ultis/ultisHistory";
+import { preProcessingCategory } from "../../ultis/preProcessingCategory";
 const Content = () => {
   const { idCate } = useParams();
   const [dataNovel, setDataNovel] = useState(null);
@@ -81,7 +82,12 @@ const Content = () => {
                   />
                 </svg>
                 <p className="hover:underline	ml-2">
-                  <a href={"/genres/novels/" + dataNovel?.category?.name}>
+                  <a
+                    href={
+                      "/genres/novels/" +
+                      preProcessingCategory(dataNovel?.category?.name)
+                    }
+                  >
                     <span className="font-bold">
                       {capitalizeFirstLetter(dataNovel?.category?.name)}
                     </span>

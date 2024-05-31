@@ -10,7 +10,10 @@ import {
   BrowseIcon,
 } from "./icon";
 import { ModalHeader } from "./ModalHeader";
-import { getCategories } from "../../ultis/utilsCategory";
+import {
+  getCategories,
+  getCategoriesByFilter,
+} from "../../ultis/utilsCategory";
 import useCategory from "../../hooks/useCategory";
 import { Loading } from "../UI/Loading";
 import useAuthen from "../../hooks/useAuthen";
@@ -42,9 +45,7 @@ function HomeNavbar() {
     setToken(JSON.parse(localStorage.getItem("Token")) || {});
   }, []);
   useEffect(() => {
-    console.log("set thong tin va login", infor?.userName, Token);
     if (infor?.userName && Token?.role) {
-      console.log("chay");
       setUser({
         username: infor?.userName || "user",
       });
@@ -67,7 +68,6 @@ function HomeNavbar() {
     alert("Please login to use this feature!");
   };
   useEffect(() => {
-    console.log("Token", Token);
     if (linkRef.current) {
       if (Token.id) {
         linkRef.current.href = "/library";
@@ -87,7 +87,7 @@ function HomeNavbar() {
   const { categoryData, setCategoryData } = useCategory();
   useEffect(() => {
     setIsLoading(true);
-    getCategories().then((response) => {
+    getCategoriesByFilter().then((response) => {
       setCategoryData(response.categories);
       setIsLoading(false);
     });
@@ -138,8 +138,8 @@ function HomeNavbar() {
                   (!is_Loading ? (
                     <ModalHeader dataModal={categoryData} />
                   ) : (
-                    <div className="absolute top-full left-0 hover:cursor-auto max-h-[260px] h-[260px] max-w-[320px]">
-                      <div className="flex flex-col flex-wrap items-center justify-center max-h-[260px] h-[260px] max-w-[320px] w-[280px] bg-gray-800 rounded-lg pt-2">
+                    <div className="absolute top-full left-0 hover:cursor-auto max-h-[260px] h-[260px] h-fit">
+                      <div className="flex flex-col flex-wrap items-center justify-center max-h-[260px] h-[260px]  w-[600px] bg-gray-800 rounded-lg pt-2">
                         <Loading />
                       </div>
                     </div>
