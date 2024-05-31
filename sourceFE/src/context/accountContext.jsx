@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 const AccountContext = createContext({});
 export const AccountProvider = ({children}) => {
     const [accountData, setAccountData] = useState({});
-    const [listAccount, setListAccount] = useState({});
+    const [listAccount, setListAccount] = useState([]);
     const [filter, setFilter] = useState({
         page : 1 , 
-        pageSize : 20, 
+        pageSize : 1, 
         sortField : 'username',
         sortOrder:'desc'
     })

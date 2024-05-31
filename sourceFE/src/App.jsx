@@ -22,6 +22,7 @@ import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import useAuthen from "./hooks/useAuthen";
 import PageNotFound from "./pages/notFound/PageNotFound";
 import AdminHeader from "./components/headers/AdminHeader";
+import AddAccount from "./pages/admin/Account/AddAccount";
 const App = () => {
 
   // const [roleMemo, setRoleMemo] = useState('customer')
@@ -36,8 +37,9 @@ const App = () => {
         <Route path="login" element={<Authtemplate pages="login" />} />
         <Route path="register" element={<Authtemplate pages="register" />} />
         {role == 'admin' ?(
-            <Route path="/admin" element={<AdminHeader />}>
+            <Route path='/' element={<AdminHeader />}>
                 <Route index element= {<AdminDashboard/>}></Route>   
+                <Route path='/addAccount' element={<AddAccount/>} ></Route>
             </Route>
         )
         :

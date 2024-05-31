@@ -56,7 +56,7 @@ function AdminNavbar() {
       <nav className="navbar">
         <div className="nav-container">
           <div className="flex flex-row">
-            <Link to='/admin' className='nav-logo mr-10'>
+            <Link to='/' className='nav-logo mr-10'>
               <span></span>
               <span className="icon">
                 <CodeIcon />
@@ -68,7 +68,7 @@ function AdminNavbar() {
                 style={{ position: "relative" }}
               >
                 <a
-                  href="/admin"
+                  href="/"
                   className="nav-links flex flex-row"
                   onClick={(e) => {
                     e.stopPropagation();
