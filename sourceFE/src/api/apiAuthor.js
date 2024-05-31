@@ -6,6 +6,11 @@ const apiAuthor = {
         // console.log('url',url)
         return axiosClient.get(url)
     },
+    getAllAuthor : () =>{
+        let url  = `/author?page=1&pageSize=10000&sortField=name&sortOrder=desc`
+        // console.log('url',url)
+        return axiosClient.get(url)
+    },
     getAuthor : (id) =>{
         const url = `/author/${id}`
         return axiosClient.get(url)

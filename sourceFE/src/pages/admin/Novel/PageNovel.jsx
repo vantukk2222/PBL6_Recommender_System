@@ -128,13 +128,13 @@ const PageNovel = () => {
                     </div>
                 </div>
                 <div className="flex-none w-[148px] h-[40px] ">
-                    {/* <Link to={"/addAuthor"} className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
+                    <Link to={"/addNovel"} className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
                         
                         <div className="mx-1">
                             <AddUserIcon />
                         </div>
-                        Add Author
-                    </Link> */}
+                        Add Novel
+                    </Link>
                 </div>
             </div>
             <div className="bg-while-300 w-[1020px] min-h-screen ">
