@@ -28,6 +28,8 @@ import PageCategory from "./pages/admin/Category/PageCategory";
 import AddCategory from "./pages/admin/Category/AddCategory";
 import PageNovel from "./pages/admin/Novel/PageNovel";
 import AddNovel from "./pages/admin/Novel/AddNovel";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   // const [roleMemo, setRoleMemo] = useState('customer')
   // useEffect(()=>{
@@ -40,31 +42,28 @@ const App = () => {
       <>
         <Route path="login" element={<Authtemplate pages="login" />} />
         <Route path="register" element={<Authtemplate pages="register" />} />
-        {role == 'admin' ?(
-            <Route path='/' element={<AdminHeader />}>
-                <Route index element= {<AdminDashboard/>}></Route>   
-                <Route path='/addAccount' element={<AddAccount/>} ></Route>
-                <Route path='/authors' element={<PageAuthor/>}/>
-                <Route path='/addAuthor' element={<AddAuthor/>}/>
-                <Route path='/categories' element={<PageCategory/>}/>
-                <Route path='/addCategory' element={<AddCategory/>}/>
-                <Route path='/novels' element={<PageNovel/>}/>
-                <Route path='/addNovel' element={<AddNovel/>}/>
-            </Route>
-        )
-        :
-        (
-          <Route path="/" element={<HomeHeader />}> 
-          <Route>
-            <Route index element={<Dashboard />} />
-            <Route path="/stories/:Id?" element={<Stories />} />
-            <Route path="/content/:idCate" element={<Content />} />
-            <Route path="/genres/:novel/:genres?" element={<Genres />} />
-            <Route path="/ranking/:genres?" element={<Ranking />} />
-            <Route path="/:library?" element={<Library />} />
-            <Route path="/history?" element={<Library />} />
-
+        {role == "admin" ? (
+          <Route path="/" element={<AdminHeader />}>
+            <Route index element={<AdminDashboard />}></Route>
+            <Route path="/addAccount" element={<AddAccount />}></Route>
+            <Route path="/authors" element={<PageAuthor />} />
+            <Route path="/addAuthor" element={<AddAuthor />} />
+            <Route path="/categories" element={<PageCategory />} />
+            <Route path="/addCategory" element={<AddCategory />} />
+            <Route path="/novels" element={<PageNovel />} />
+            <Route path="/addNovel" element={<AddNovel />} />
           </Route>
+        ) : (
+          <Route path="/" element={<HomeHeader />}>
+            <Route>
+              <Route index element={<Dashboard />} />
+              <Route path="/stories/:Id?" element={<Stories />} />
+              <Route path="/content/:idCate" element={<Content />} />
+              <Route path="/genres/:novel/:genres?" element={<Genres />} />
+              <Route path="/ranking/:genres?" element={<Ranking />} />
+              <Route path="/:library?" element={<Library />} />
+              <Route path="/history?" element={<Library />} />
+            </Route>
           </Route>
         )}
         <Route path="*" element={<PageNotFound />} />
@@ -74,6 +73,7 @@ const App = () => {
   return (
     <div className="App">
       <RouterProvider router={router} />
+      <ToastContainer />
     </div>
   );
 };

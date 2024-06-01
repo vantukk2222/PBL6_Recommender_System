@@ -93,14 +93,14 @@ function HomeNavbar() {
     });
   }, []);
   const handleSignout = () => {
-    console.log("sign out");
+    setClickProfile(false);
     setUser({});
     setIsAuth(false);
     setRole(0);
     setLogin(false);
     setToken({});
     localStorage.setItem("Token", JSON.stringify({}));
-    navigate("/");
+    window.location.href = "/";
   };
 
   return (
@@ -186,7 +186,7 @@ function HomeNavbar() {
               <i className="absolute dot dn pa t-0 r-0 rounded-full z-10"></i>
               {login == true ? (
                 <a
-                  className="block"
+                  className="block hover:scale-110	 hover:cursor-pointer hover:transition-all hover:duration-300  hover:bg-gray-800 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg"
                   href="###"
                   title="My Profile"
                   rel="nofollow"

@@ -11,7 +11,7 @@ import { Loading } from "../../components/UI/Loading";
 import { EachItemInLibraries } from "./EachItemInLibraries";
 import { getHistory } from "../../ultis/ultisHistory";
 import useHistory from "../../hooks/useHistories";
-import { EachItemHistories } from "./EachItemHistories";
+import { EachItemHistories } from "./ItemHistories";
 export const Library = () => {
   const library = useLocation().pathname.split("/")[1];
   const [editClick, setEditClick] = useState(false);
@@ -36,22 +36,28 @@ export const Library = () => {
   } = useHistory();
 
   const [is_Loading, setLoading] = useState(true);
-  useEffect(() => {}, [library]);
   useEffect(() => {
-    library === "library"
-      ? getAccount(Token.id).then((res) => {
-          setLibraryData(res.likedNovels);
-          setLoading(false);
-          console.log("res", res.likedNovels);
-        })
-      : getHistory(Token?.id).then((res) => {
-          setHistoryData(res.histories);
-          setHistoryPage({
-            currentPage: res.page.currentPage,
-            totalPages: res.page.totalPages,
-          });
-          setLoading(false);
+    if (!Token?.id) {
+      alert("Please login to use this feature");
+      window.location.href = "/login";
+    }
+    if (library === "library" && Token?.id) {
+      getAccount(Token.id).then((res) => {
+        setLibraryData(res.likedNovels);
+        setLoading(false);
+        console.log("res", res.likedNovels);
+      });
+    }
+    if (library === "history" && Token?.id) {
+      getHistory(Token?.id).then((res) => {
+        setHistoryData(res.histories);
+        setHistoryPage({
+          currentPage: res.page.currentPage,
+          totalPages: res.page.totalPages,
         });
+        setLoading(false);
+      });
+    }
   }, []);
   return !is_Loading ? (
     <>

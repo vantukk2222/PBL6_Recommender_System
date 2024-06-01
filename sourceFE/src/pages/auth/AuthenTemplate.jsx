@@ -10,12 +10,20 @@ const Authtemplate = (props) => {
       <div className="auth-container">
         <div className="auth-container-item">
           <div className="p-4 auth-container-item-left">
-            <div className="auth--title">
+            <div className="auth--title text-slate-100">
               Welcome to <br />
-              web STDH
+              Web novel
             </div>
           </div>
-          <div>{pages === "login" ? <Login /> : pages === "register" ? < Register/> : <></>}</div>
+          <div>
+            {pages === "login" ? (
+              <Login />
+            ) : pages === "register" ? (
+              <Register />
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
     </>
