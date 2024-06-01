@@ -3,23 +3,46 @@ import { proxyUrl } from "../../api/apiProxy";
 import { formatNumber } from "../../ultis/convertNumber";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 import { addToLibrary } from "../../ultis/utilsAccount";
+import { useState } from "react";
+import { toast } from "react-toastify";
 export const EachItemHistories = ({ item }) => {
-  console.log("item in EachItemHistories", item);
+  const [isAddToLibrary, setIsAddToLibrary] = useState(false);
+  const handleAddtoLibrary = () => {
+    setIsAddToLibrary(true);
+    addToLibrary(item?.account, item?.novel?._id)
+      .then(() => {
+        setIsAddToLibrary(false);
+        toast.success("Add to library successfully", {
+          autoClose: 1000,
+        });
+      })
+      .catch((error) => {
+        setIsAddToLibrary(false);
+        toast.error(`Failed to add to library: ${error.message}`, {
+          autoClose: 1000,
+        });
+      });
+  };
   return (
     <>
-      <li className="flex flex-row mb-8">
+      <li
+        className="flex flex-row mb-8 hover:cursor-pointer"
+        onClick={() => {
+          window.location.href = "/content/" + item?.novel?._id;
+        }}
+      >
         <a
           className="overflow-hidden flex-none mr-6"
-          href="/book/awakening-the-weakest-talent-only-i-level-up_23151082706386505"
-          title="Awakening The Weakest Talent: Only I Level Up"
+          href={"/content/" + item?.novel?._id}
+          title={item?.novel?.name}
           data-report-eid="qi_B03"
-          data-report-bid="23151082706386505"
+          data-report-bid={item?.novel?._id}
         >
           <img
-            data-original="//book-pic.webnovel.com/bookcover/23151082706386505?imageMogr2/thumbnail/150&imageId=1662373431462"
+            data-original={proxyUrl(item?.novel?.imageUrl)}
             width="140"
             height="186"
-            alt="Awakening The Weakest Talent: Only I Level Up"
+            alt={item?.novel?.name}
             className="block"
             src={proxyUrl(item?.novel?.imageUrl)}
           />
@@ -28,22 +51,22 @@ export const EachItemHistories = ({ item }) => {
           <h3 className="pt-1 mb-1 text-lg leading-6 font-bold truncate">
             <a
               className="text-black"
-              href="/book/awakening-the-weakest-talent-only-i-level-up_23151082706386505"
-              title="Awakening The Weakest Talent: Only I Level Up"
+              href={"/content/" + item?.novel?._id}
+              title={item?.novel?.name}
               data-report-eid="qi_B03"
-              data-report-bid="23151082706386505"
+              data-report-bid={item?.novel?._id}
             >
-              Awakening The Weakest Talent: Only I Level Up
+              {item?.novel?.name}
             </a>
           </h3>
           <p className="text-gray-600 mb-2">
-            <a title="Magical Realism" href="/stories/novel-urban-male">
-              Magical Realism
+            <a title="Views" href={"/content/" + item?.novel?._id}>
+              {formatNumber(item?.novel?.views) + " Views"}
             </a>
           </p>
 
           <a
-            href="/book/awakening-the-weakest-talent-only-i-level-up_23151082706386505"
+            href={"/content/" + item?.novel?._id}
             className="text-[16px] leading-6 text-black line-clamp-4 	 overflow-hidden"
             title={item?.novel?.description}
           >
@@ -55,6 +78,7 @@ export const EachItemHistories = ({ item }) => {
           </div>
           <div className="absolute flex  bottom-0 right-0 text-[15px] gap-4">
             <a
+              href={"/content/" + item?.novel?._id}
               className=" text-blue-500 hover:cursor-pointer flex flex-row h-fit mt-4"
               title="Continue Reading"
             >
@@ -95,22 +119,14 @@ export const EachItemHistories = ({ item }) => {
             <a
               className="ml-1 hover:cursor-pointer rounded-2xl mt-4 text-blue-500 "
               title="Add to Library"
-              onClick={() => {
-                addToLibrary(item?.account, item?.novel?._id).then(() => {
-                  alert("Add to library successfully");
-                });
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddtoLibrary();
               }}
             >
-              Add to Library
+              {isAddToLibrary ? "Adding to library" : "Add to Library"}
             </a>
           </div>
-        </div>
-        <div className="absolute top-0 right-0">
-          <a title="delete" href="###" className="text-red-500">
-            <svg className="w-4 h-4">
-              <use xlinkHref="#i-del"></use>
-            </svg>
-          </a>
         </div>
       </li>
     </>

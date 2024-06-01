@@ -22,6 +22,10 @@ const apiHistory = {
     deleteHistory: (id) => {
         const url = `/history/${id}`;
         return axiosClient.delete(url);
+    },
+    deleteHistoriesByAccount: (id_account) => {
+        const url = `/history/account/${id_account}`;
+        return axiosClient.delete(url);
     }
 
 

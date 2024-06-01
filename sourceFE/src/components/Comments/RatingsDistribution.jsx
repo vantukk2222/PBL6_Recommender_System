@@ -1,5 +1,16 @@
 import PropTypes from "prop-types";
+import useComment from "../../hooks/useComment";
 export const RatingsDistribution = ({ data }) => {
+  const {
+    commentData,
+    setCommentData,
+    listComment,
+    setListComment,
+    filter,
+    setFilter,
+    page,
+    setPage,
+  } = useComment();
   return (
     <>
       <div>
@@ -63,10 +74,10 @@ export const RatingsDistribution = ({ data }) => {
         </div>
         <div className="flex">
           <p className="ms-1 text-lg font-semibold text-gray-500 dark:text-gray-600">
-            Total:{" "}
+            Total:
           </p>
           <p className="mt-1 pl-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-            1,745 global ratings{" "}
+            {listComment?.length * page?.totalPages} global ratings
           </p>
         </div>
 

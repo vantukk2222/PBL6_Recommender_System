@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
-const RatingBar = () => {
+import useComment from "../../hooks/useComment";
+import PropTypes from "prop-types";
+import { addComment, getComments } from "../../ultis/utilsComment";
+const RatingBar = ({ idCate }) => {
   const Token = JSON.parse(localStorage.getItem("Token")) || null;
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
@@ -11,6 +14,36 @@ const RatingBar = () => {
   const handleCommentChange = (event) => {
     setComment(event.target.value);
   };
+  const [is_Comment, setIs_Comment] = useState(false);
+  const {
+    commentData,
+    setCommentData,
+    listComment,
+    setListComment,
+    filter,
+    setFilter,
+    page,
+    setPage,
+  } = useComment();
+  useEffect(() => {
+    const newFilter = {
+      page: 1,
+      pageSize: 10,
+      sortField: "rating",
+      sortOrder: "desc",
+      novelId: idCate,
+      accountId: Token?.id,
+    };
+
+    const getCommentsByUser = async () => {
+      await getComments(newFilter).then((res) => {
+        setCommentData(res.comments[0]);
+        setRating(res?.comments[0]?.rating);
+        setComment(res?.comments[0]?.content);
+      });
+    };
+    getCommentsByUser();
+  }, [idCate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,34 +54,54 @@ const RatingBar = () => {
       }, 500);
       return;
     }
-
-    // try {
-    //   // Replace with your API endpoint
-    //   const response = await axios.post("https://your-api-endpoint/comments", {
-    //     comment: comment,
-    //     rating: rating,
-    //     // Add any other data you need to send
-    //   });
-
-    //   if (response.status === 200) {
-    //     toast.success("Comment posted successfully");
-    //     setComment(""); // Clear the textarea
-    //     setRating(null); // Clear the rating
-    //   } else {
-    //     toast.error("Failed to post comment");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error("An error occurred while posting your comment");
-    // }
+    const dataComment = {
+      _id: Math.floor(Date.now() / 1000),
+      content: comment,
+      novel: idCate,
+      account: Token?.id,
+      rating: rating,
+    };
+    try {
+      const addCommentByUser = async () => {
+        await addComment(dataComment).then((res) => {
+          console.log("res: ", res);
+          if (res.status === 200) {
+            toast.success("Comment posted successfully");
+            setCommentData(res.data);
+          } else {
+            toast.error(
+              "Failed to post comment: " + res.message || "Unknown error"
+            );
+          }
+        });
+      };
+      addCommentByUser();
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while posting your comment");
+    }
   };
-
+  useEffect(() => {
+    console.log("commentData updated: ", commentData);
+  }, [commentData]);
   return (
     <div className="flex">
-      <p className="text-xl font-semibold">Your rating : </p>
+      <p
+        className="text-xl font-semibold"
+        onClick={() => {
+          const dataComment = {
+            _id: Math.floor(Date.now() / 1000),
+            content: comment,
+            novel: idCate,
+            account: Token?.id,
+            rating: rating,
+          };
+          console.log(commentData);
+        }}
+      >
+        Your rating :
+      </p>
       <div className="flex flex-col gap-4  pl-5">
-        {/* <Rating unratedColor="amber" ratedColor="amber" /> */}
-
         <form className="mb-6 w-80" onSubmit={handleSubmit}>
           <div className="flex items-center">
             {[...Array(5)].map((star, index) => {
@@ -60,7 +113,9 @@ const RatingBar = () => {
                     name="rating"
                     value={currentRating}
                     onClick={() => {
-                      setRating(currentRating);
+                      if (!commentData) {
+                        setRating(currentRating);
+                      }
                     }}
                     className="hidden"
                   />
@@ -71,8 +126,16 @@ const RatingBar = () => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    onMouseEnter={() => setHover(currentRating)}
-                    onMouseLeave={() => setHover(null)}
+                    onMouseEnter={() => {
+                      if (!commentData) {
+                        setHover(currentRating);
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      if (!commentData) {
+                        setHover(null);
+                      }
+                    }}
                     className={
                       currentRating <= (hover || rating)
                         ? "cursor-pointer w-6 h-6 text-yellow-400 ms-1 "
@@ -96,6 +159,7 @@ const RatingBar = () => {
             <textarea
               id="comment"
               rows="6"
+              disabled={commentData}
               className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
               placeholder="Share your thoughts with others..."
               required
@@ -103,16 +167,20 @@ const RatingBar = () => {
               onChange={handleCommentChange}
             ></textarea>
           </div>
-          <button
-            type="submit"
-            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-500 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-700 hover:bg-blue-600"
-          >
-            Post comment
-          </button>
+          {!commentData && (
+            <button
+              type="submit"
+              className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-500 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-600"
+            >
+              Post comment
+            </button>
+          )}
         </form>
       </div>
     </div>
   );
 };
-
+RatingBar.propTypes = {
+  idCate: PropTypes.string,
+};
 export default RatingBar;

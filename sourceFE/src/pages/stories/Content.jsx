@@ -25,7 +25,6 @@ const Content = () => {
       addToLibrary(infor.id, dataNovel?._id)
         .then(() => {
           setIsAddToLibrary(false);
-
           toast.success(`Add to library successfully`, {
             autoClose: 1000,
           });
@@ -47,18 +46,17 @@ const Content = () => {
       setIsLoading(false);
     });
     if (infor?.id) {
-      console.log("infor in content", infor.id);
       const data_History = {
         account: infor.id,
         novel: idCate,
         lastReadChapter: 1,
         lastReadDate: new Date().toISOString().split("T")[0],
       };
-      addHistory(data_History).then((res) => {
-        console.log("Add history successfully");
-      });
+      const addLIbrary = async () => {
+        await addHistory(data_History);
+      };
+      addLIbrary();
     }
-    console.log("Call API novel DONE");
   }, [idCate]);
   let data = {
     id: "dast43",
@@ -267,7 +265,7 @@ const Content = () => {
         <div className="text flex-initial  mb-5 ">
           <h1 className="font-bold text-2xl">Rating</h1>
           <div className="mt-8">
-            <Comment />
+            <Comment idCate={idCate} />
           </div>
         </div>
       </div>

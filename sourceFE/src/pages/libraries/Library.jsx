@@ -9,9 +9,13 @@ import useLibrary from "./../../hooks/useLibrary";
 import useAccount from "../../hooks/useAccount";
 import { Loading } from "../../components/UI/Loading";
 import { EachItemInLibraries } from "./EachItemInLibraries";
-import { getHistory } from "../../ultis/ultisHistory";
+import {
+  deleteHistoriesByIDAccount,
+  getHistory,
+} from "../../ultis/ultisHistory";
 import useHistory from "../../hooks/useHistories";
 import { EachItemHistories } from "./ItemHistories";
+import { toast } from "react-toastify";
 export const Library = () => {
   const library = useLocation().pathname.split("/")[1];
   const [editClick, setEditClick] = useState(false);
@@ -45,12 +49,12 @@ export const Library = () => {
       getAccount(Token.id).then((res) => {
         setLibraryData(res.likedNovels);
         setLoading(false);
-        console.log("res", res.likedNovels);
       });
     }
     if (library === "history" && Token?.id) {
       getHistory(Token?.id).then((res) => {
         setHistoryData(res.histories);
+
         setHistoryPage({
           currentPage: res.page.currentPage,
           totalPages: res.page.totalPages,
@@ -59,6 +63,44 @@ export const Library = () => {
       });
     }
   }, []);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  const openAlert = () => {
+    setIsAlertOpen(true);
+  };
+
+  const closeAlert = () => {
+    setIsAlertOpen(false);
+  };
+
+  const handleYes = () => {
+    try {
+      const deletedAllHistory = async () => {
+        await deleteHistoriesByIDAccount(Token?.id).then((res) => {
+          if (res.status === 200) {
+            setHistoryData([]);
+            toast.success("All histories deleted for account");
+          } else {
+            toast.error(
+              "Failed to delete histories: " + res.message || "Unknown error"
+            );
+          }
+        });
+      };
+      deletedAllHistory();
+      closeAlert();
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while delete your histories");
+    }
+  };
+
+  const handleNo = () => {
+    closeAlert();
+  };
+  const handleDeleteAllHistory = () => {
+    historyData?.length > 0 && openAlert();
+  };
   return !is_Loading ? (
     <>
       <div className="flex flex-col item-center mx-auto  maw-w-[1080px] w-[1080px] h-fit">
@@ -66,7 +108,7 @@ export const Library = () => {
           <h2
             className="leading-10 text-[38px] font-bold"
             onClick={() => {
-              console.log("histories data: ", historyPage);
+              console.log("histories data: ", historyData);
             }}
           >
             {capitalizeFirstLetter(library || "library")}
@@ -114,66 +156,58 @@ export const Library = () => {
             </p>
             {library == "library" ? (
               <p className="flex flex-row items-center justify-center  text-[18px] text-blue-500 gap-2">
-                <a className=" flex flex-row mr-2 hover:cursor-pointer">
-                  {!editClick && (
-                    <>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20px"
-                        height="20px"
-                        viewBox="0 0 24 24"
-                        id="_24x24_On_Light_Edit"
-                        data-name="24x24/On Light/Edit"
-                        className="mt-1   hover:underline"
-                      >
-                        <rect
-                          id="view-box"
-                          width="20"
-                          height="20"
-                          fill="none"
-                        />
-                        <path
-                          id="Shape"
-                          d="M.75,17.5A.751.751,0,0,1,0,16.75V12.569a.755.755,0,0,1,.22-.53L11.461.8a2.72,2.72,0,0,1,3.848,0L16.7,2.191a2.72,2.72,0,0,1,0,3.848L5.462,17.28a.747.747,0,0,1-.531.22ZM1.5,12.879V16h3.12l7.91-7.91L9.41,4.97ZM13.591,7.03l2.051-2.051a1.223,1.223,0,0,0,0-1.727L14.249,1.858a1.222,1.222,0,0,0-1.727,0L10.47,3.91Z"
-                          transform="translate(3.25 3.25)"
-                          fill="blue"
-                        />
-                      </svg>
+                {!editClick && (
+                  <a className=" flex flex-row mr-2 hover:cursor-pointer hover:scale-105 transition duration-300 ease-in-out hover:cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      height="20px"
+                      viewBox="0 0 24 24"
+                      id="_24x24_On_Light_Edit"
+                      data-name="24x24/On Light/Edit"
+                      className="mt-1   hover:underline"
+                    >
+                      <rect id="view-box" width="20" height="20" fill="none" />
+                      <path
+                        id="Shape"
+                        d="M.75,17.5A.751.751,0,0,1,0,16.75V12.569a.755.755,0,0,1,.22-.53L11.461.8a2.72,2.72,0,0,1,3.848,0L16.7,2.191a2.72,2.72,0,0,1,0,3.848L5.462,17.28a.747.747,0,0,1-.531.22ZM1.5,12.879V16h3.12l7.91-7.91L9.41,4.97ZM13.591,7.03l2.051-2.051a1.223,1.223,0,0,0,0-1.727L14.249,1.858a1.222,1.222,0,0,0-1.727,0L10.47,3.91Z"
+                        transform="translate(3.25 3.25)"
+                        fill="blue"
+                      />
+                    </svg>
+                    <span
+                      onClick={() => {
+                        setEditClick(true);
+                      }}
+                    >
+                      Edit
+                    </span>
+                  </a>
+                )}
+                {editClick && (
+                  <a className=" flex flex-row mr-2 hover:cursor-pointer">
+                    <a
+                      title="Remove"
+                      href="###"
+                      className="text-red-400 mr-4  hover:underline"
+                    >
+                      <span>Remove</span>
+                    </a>
+                    <a
+                      title="Cancel"
+                      href="###"
+                      className="text-blue-500 mr-4  hover:underline"
+                    >
                       <span
-                        className="  hover:underline"
                         onClick={() => {
-                          setEditClick(true);
+                          setEditClick(false);
                         }}
                       >
-                        Edit
+                        Cancel
                       </span>
-                    </>
-                  )}
-                  {editClick && (
-                    <>
-                      <a
-                        title="Remove"
-                        href="###"
-                        className="text-red-400 mr-4  hover:underline"
-                      >
-                        <span>Remove</span>
-                      </a>
-                      <a
-                        title="Cancel"
-                        href="###"
-                        className="text-blue-500 mr-4  hover:underline"
-                      >
-                        <span
-                          onClick={() => {
-                            setEditClick(false);
-                          }}
-                        >
-                          Cancel
-                        </span>
-                      </a>
-                    </>
-                  )}
-                </a>
+                    </a>
+                  </a>
+                )}
                 <a className=" flex flex-row mr-2 hover:cursor-pointer ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -194,7 +228,10 @@ export const Library = () => {
                 </a>
               </p>
             ) : (
-              <p className="flex flex-row items-center justify-center  text-[18px] text-blue-500 gap-2 hover:cursor-pointer">
+              <p
+                className="flex flex-row items-center justify-center text-[18px] text-blue-500 gap-2 hover:cursor-pointer hover:scale-105 transition duration-300 ease-in-out"
+                onClick={handleDeleteAllHistory}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20px"
@@ -215,6 +252,27 @@ export const Library = () => {
             )}
           </div>
         </div>
+        {isAlertOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-400 bg-opacity-25 z-50">
+            <div className="bg-white p-6 rounded shadow-lg text-center z-60">
+              <p className="mb-4 text-lg">Do you want to remove all history?</p>
+              <div>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-red-600"
+                  onClick={handleYes}
+                >
+                  Remove
+                </button>
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  onClick={handleNo}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="flex-row w-full">
           {libraryData?.length == 0 && (
             <p className=" flex flex-col text-[16px] text-gray-400 items-center justify-center space-x-2 p-4">

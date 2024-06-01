@@ -19,7 +19,6 @@ export const getHistory = async (id_account) => {
     if (id_account == null)
         return 'Id can not null';
     const response = await apiHistory.getHistory(id_account);
-    console.log("response in getHistory", response);
     const data = {
         'page': {
             'currentPage': response.data.currentPage,
@@ -44,5 +43,11 @@ export const deleteHistory = async (id) => {
     if (id == null)
         return 'Id can not null';
     const response = await apiHistory.deleteHistory(id);
+    return response;
+}
+export const deleteHistoriesByIDAccount = async (id) => {
+    if (id == null)
+        return 'Id can not null';
+    const response = await apiHistory.deleteHistoriesByAccount(id);
     return response;
 }
