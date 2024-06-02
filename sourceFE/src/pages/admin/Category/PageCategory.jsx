@@ -15,6 +15,7 @@ import {
     SearchIcon,
 } from "../../../components/headers/icon.jsx";
 import { updateAccount } from "../../../ultis/utilsAccount.js";
+import { toast } from "react-toastify";
 Modal.setAppElement('#root');
 const PageCategory = () => {
     const {
@@ -84,11 +85,17 @@ const PageCategory = () => {
                     setListCategory((prev) =>
                         prev.map((cate) => (cate._id === res.data._id ? res.data : cate))
                     );
+                    toast.success(`Updated successful!`, {
+                        autoClose: 1000,
+                    });
                 }
                 closeModal()
             })
             .catch((err) => {
-                alert("Could'nt update category");
+                toast.error(`Couldn't update category! \n 
+                ${err.response.data.message}`, {
+                    autoClose: 1000,
+                });
                 closeModal()
                 setCategorySelect({});
             });
@@ -101,9 +108,15 @@ const PageCategory = () => {
         deleteCategory(acc._id).then((res) => {
           if (res.status === 200 || res.status === 202) {
             setListCategory((prev) => prev.filter((category) => category._id !== acc._id));
+            toast.success(`Deleted successful!`, {
+                autoClose: 1000,
+              });
           }
         }).catch((err) => {
-          alert('Could not remove this category',err);
+            toast.error(`Could not remove this category!`, {
+                autoClose: 1000,
+              });
+            console.log('Could not remove this category',err);
         });
       }}
     const handlePageChange = (newPage) => {

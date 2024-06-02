@@ -44,3 +44,13 @@ export const RegisterValidate = (user) => {
     if (user.password !== user.Confirmpass)
         return "Confirm password is not match";
 }
+export const AddAccountValidate = (acc) =>{
+    if (!acc.username)
+        return "Username is required !";
+    if (!acc.name)
+        return "Name is required !";
+    if (!acc.email)
+        return "Email is required !";
+    if (!acc.password)
+        return "Password is required !";
+}

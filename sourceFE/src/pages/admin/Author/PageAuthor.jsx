@@ -14,6 +14,7 @@ import { getAuthors, updateAuthor, addAuthor, deleteAuthor } from "../../../ulti
 import useAuthor from "../../../hooks/useAuthor.js";
 import { Loading } from "../../../components/UI/Loading.jsx";
 import AdBanner from "../../../components/admin/AdBanner.jsx";
+import { toast } from "react-toastify";
 Modal.setAppElement('#root');
 const PageAuthor = () => {
     const { filter,
@@ -81,11 +82,16 @@ const PageAuthor = () => {
                     setListAuthor((prev) =>
                         prev.map((author) => (author._id === res.data._id ? res.data : author))
                     );
+                    toast.success(`Updated successful!`, {
+                        autoClose: 1000,
+                      });
                 }
                 closeModal()
             })
             .catch((err) => {
-                alert("Could'nt update author");
+                toast.success(`Couldn't update author!`, {
+                    autoClose: 1000,
+                });
                 closeModal()
                 setUserSelect({});
             });
@@ -98,9 +104,15 @@ const PageAuthor = () => {
         deleteAuthor(auth._id).then((res) => {
           if (res.status === 200 || res.status === 202) {
             setListAuthor((prev) => prev.filter((author) => author._id !== auth._id));
+            toast.success(`Deleted successful!`, {
+                autoClose: 1000,
+              });
           }
         }).catch((err) => {
-          alert('Could not remove this author\n',err);
+            toast.console.error();(`Could not remove this author!`, {
+                autoClose: 1000,
+              });
+          console.log('Could not remove this author\n',err);
         });
       }
       }
