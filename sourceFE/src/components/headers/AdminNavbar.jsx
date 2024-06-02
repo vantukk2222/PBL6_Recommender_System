@@ -10,6 +10,8 @@ import {
   BrowseIcon,
 } from "./icon";
 import useAuthen from '../../hooks/useAuthen';
+import { getallCategory } from '../../ultis/utilsCategory';
+import { getAllAuthor } from '../../ultis/utilsAuthor';
 function AdminNavbar() {
   const navigate = useNavigate();
   const [isModalGenresOpen, setIsModalGenresOpen] = useState(false);

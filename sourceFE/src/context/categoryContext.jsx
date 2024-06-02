@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { getallCategory } from "../ultis/utilsCategory";
+import { useFetcher } from "react-router-dom";
 
 const CategoryContext = createContext({});
 export const CategoryProvider = ({ children }) => {
@@ -21,15 +22,17 @@ export const CategoryProvider = ({ children }) => {
     const savedIndex = localStorage.getItem("selectedCateIndex");
     return savedIndex !== null ? JSON.parse(savedIndex) : 0;
   });
-
   useEffect(()=>{
     getallCategory().then((res)=>{
       console.log(res?.data?.categories);
-      setCategoryAll(res?.data?.categories)
+      localStorage.setItem('categoryAll',JSON.stringify(res?.data?.categories))
+
     }).catch((err)=>{
       console.log("Error ",err);
     })
   },[])
+
+
   useEffect(() => {
     localStorage.setItem(
       "selectedCateIndex",

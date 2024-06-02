@@ -16,13 +16,15 @@ export const AuthorProvider = ({children}) => {
         currentPage :1
 
     });
+   
+    
     useEffect(()=>{
         getAllAuthor().then((res)=>{
-            setAuthorData(res.data?.authors)
+            localStorage.setItem('authorsAll',JSON.stringify(res.data?.authors))
         }).catch((err)=>{
             console.log("can't get all author "+err);
         })
-    },[])
+      },[])
 
     const contextAuthorData = {
         filter,

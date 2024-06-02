@@ -24,8 +24,9 @@ const AddNovel = () => {
   const [loading, setLoading] = useState(false)
   const [authorOption, setAuthorOption] = useState(
     () => {
-      if (authorData) {
-        return authorData?.map((auth, index) => ({
+      const authorAll = JSON.parse(localStorage.getItem('authorsAll'));
+      if (authorAll.length > 0) {
+        return authorAll?.map((auth, index) => ({
           value: auth._id,
           label: auth?.name
         }))
@@ -36,9 +37,10 @@ const AddNovel = () => {
     })
 
   const [cateOption, setCateOption] = useState(() => {
-
-    if (categoryAll) {
-      return categoryAll?.map((cate, index) => ({
+    const cateAll = JSON.parse(localStorage.getItem('categoryAll'));
+    console.log(cateAll);
+    if (cateAll.length > 0) {
+      return cateAll?.map((cate, index) => ({
         value: cate._id,
         label: cate?.name
       }))
