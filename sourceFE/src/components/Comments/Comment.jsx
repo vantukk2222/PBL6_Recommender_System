@@ -9,6 +9,7 @@ import { PaginationNav1Presentation } from "../pagination/PaginationNovel";
 const Comment = ({ idCate }) => {
   const token = JSON.parse(localStorage.getItem("Token"));
   const [is_LoadingComment, setIsLoadingComment] = useState(false);
+  const [sortState, setSortState] = useState("newest");
   const {
     commentData,
     setCommentData,
@@ -24,7 +25,7 @@ const Comment = ({ idCate }) => {
     const newFilter = {
       page: page?.currentPage || 1,
       pageSize: 10,
-      sortField: "rating",
+      sortField: sortState === "newest" ? "updatedAt" : "rating",
       sortOrder: "desc",
       novelId: idCate,
     };
@@ -37,7 +38,7 @@ const Comment = ({ idCate }) => {
         currentPage: res.page.currentPage,
       });
     });
-  }, [idCate, page?.currentPage]);
+  }, [idCate, page?.currentPage, sortState]);
   const arr = [1, 2, 3, 4, 5];
   return (
     <div className="flex flex-col h-full">
@@ -54,6 +55,31 @@ const Comment = ({ idCate }) => {
           <RatingBar idCate={idCate} />
         </div>
       </div>
+
+      <div className="flex flex-row gap-4 h-full px-6 pt-6 pb-2 text-[16px] font-semibold border-b-2	border-gray-300">
+        <a
+          className={
+            " px-2 py-1 text-center  hover:scale-105 hover:cursor-pointer " +
+            (sortState === "newest"
+              ? " rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.15)]"
+              : "")
+          }
+          onClick={() => setSortState("newest")}
+        >
+          Newest
+        </a>
+        <a
+          className={
+            " px-2 py-1 text-center  hover:scale-105 hover:cursor-pointer " +
+            (sortState !== "newest"
+              ? " rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.15)]"
+              : "")
+          }
+          onClick={() => setSortState("Popular")}
+        >
+          Popular
+        </a>
+      </div>
       {is_LoadingComment && (
         <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
           <span className="sr-only">Loading...</span>
@@ -62,7 +88,6 @@ const Comment = ({ idCate }) => {
           <div className="h-2 w-2 bg-black rounded-full animate-bounce"></div>
         </div>
       )}
-
       {!is_LoadingComment && (
         <div className="mt-8 w-full">
           {listComment?.map((item, index) => {

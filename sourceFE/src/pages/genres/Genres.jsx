@@ -109,7 +109,7 @@ export const Genres = () => {
   // }, []);
   return is_loading === false ? (
     <>
-      <div className=" flex flex-row  w-screen mx-auto  max-w-[1080px] max-h-[1620px] h-[1620px]">
+      <div className=" flex flex-row  w-screen mx-auto  max-w-[1080px] max-h-[1620px] ">
         <Categories genres={genres} />
         <div className="flex flex-col w-screen justify-start max-w[890px] h-fit pl-[40px] ">
           <div>
@@ -218,13 +218,6 @@ export const Genres = () => {
                   return <EachItemNovelGenre key={index} item={eachNovel} />;
                 })}
               </div>
-              <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
-                <PaginationNav1Presentation
-                  pageIndex={page?.currentPage}
-                  setPageIndex={setPage}
-                  pageCount={page?.totalPages}
-                />
-              </div>
             </>
           )}
           {loadingMoreNovel && (
@@ -235,6 +228,13 @@ export const Genres = () => {
               <div className="h-2 w-2 bg-black rounded-full animate-bounce"></div>
             </div>
           )}
+          <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
+            <PaginationNav1Presentation
+              pageIndex={page?.currentPage}
+              setPageIndex={setPage}
+              pageCount={page?.totalPages}
+            />
+          </div>
         </div>
       </div>
     </>

@@ -42,7 +42,7 @@ const RatingBar = ({ idCate }) => {
         setComment(res?.comments[0]?.content);
       });
     };
-    getCommentsByUser();
+    Token?.id && getCommentsByUser();
   }, [idCate]);
 
   const handleSubmit = async (event) => {
