@@ -15,7 +15,7 @@ import {
 } from "../../components/headers/icon.jsx";
 import Modal from "react-modal";
 import AdBanner from "../../components/admin/AdBanner";
-
+import { toast } from "react-toastify";
 Modal.setAppElement('#root');
 const AdminDashboard = () => {
   const { listAccount, setListAccount, page, setPage, filter, setFilter } =
@@ -81,11 +81,17 @@ const AdminDashboard = () => {
           setListAccount((prev) =>
             prev.map((account) => (account._id === res.data._id ? res.data : account))
           );
+          toast.success(`Update account successful!`, {
+            autoClose: 1000,
+          });
         }
         closeModal()
       })
       .catch((err) => {
-        alert("Could'nt update this account");
+        toast.error(`Couldn't updated account!`, {
+          autoClose: 1000,
+        });
+        console.log('update acc err', err);
         closeModal()
         setUserSelect({});
       });
@@ -99,8 +105,14 @@ const AdminDashboard = () => {
       if (res.status === 200 || res.status === 202) {
         setListAccount((prev) => prev.filter((account) => account._id !== acc._id));
       }
+      toast.success(`Deleted account successful!`, {
+        autoClose: 1000,
+      });
     }).catch((err) => {
-      alert('Could not remove this account');
+      toast.error(`Couldn't remove account!`, {
+        autoClose: 1000,
+      });
+      console.log('remove acc err: ', err);
     });
   }
   }

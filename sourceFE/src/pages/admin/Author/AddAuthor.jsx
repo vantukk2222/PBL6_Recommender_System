@@ -5,6 +5,7 @@ import { SelectComponent } from '../../../components/Select/SelectComponent';
 import { Loading } from '../../../components/UI/Loading';
 import { addAuthor } from '../../../ultis/utilsAuthor';
 import AdBanner from '../../../components/admin/AdBanner';
+import { toast } from "react-toastify";
 
 const AddAuthor = () => {
     const navigate = useNavigate()
@@ -25,17 +26,24 @@ const AddAuthor = () => {
         addAuthor(userSelect).then((res) => {
             console.log(res);
             if (res.status == 200 || res.status == 202) {
-                alert("Add authors successful")
+                toast.success(`Create new author successful!`, {
+                    autoClose: 1000,
+                });
 
             }
             else {
-                alert("Couldn't add authors\n ", err.response.data.message)
+                toast.error(`Couldn't add authors!`, {
+                    autoClose: 1000,
+                  });
+                console.log("Couldn't add authors\n ", err.response.data.message)
             }
             setLoading(false)
             navigate("/authors")
         }).catch((err) => {
             console.log("err: ", err.response.data.message);
-            alert("Couldn't add authors\n" + err.response.data.message)
+            toast.error(`Couldn't add authors!`, {
+                autoClose: 1000,
+              });
             setLoading(false)
             navigate("/authors")
         })

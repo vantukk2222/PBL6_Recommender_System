@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../ultis/convertTime.js";
 import Modal from "react-modal";
+import { toast } from "react-toastify";
 import {
     AddUserIcon,
     DeleteIcon,
@@ -11,13 +12,13 @@ import {
     SearchIcon,
 } from "../../../components/headers/icon.jsx";
 import useNovel from "../../../hooks/useNovel.js";
-import { getNovels, updateNovel } from "../../../ultis/utilsNovel.js";
+import { deleteNovel, getNovels, updateNovel } from "../../../ultis/utilsNovel.js";
 import { Loading } from "../../../components/UI/Loading.jsx";
 import AdBanner from "../../../components/admin/AdBanner.jsx";
 Modal.setAppElement('#root');
 
 const PageNovel = () => {
-    
+
     const { novelData,
         setNovelData,
         listNovel,
@@ -30,6 +31,7 @@ const PageNovel = () => {
     const searchInputRef = useRef(null);
     const [isShowModal, setIsShowModal] = useState(false);
     const [novelSelect, setNovelSelect] = useState({});
+    const [err, setErr] = useState("");
     useEffect(() => {
         setIsLoading(true)
         getNovels(filter)
@@ -58,34 +60,57 @@ const PageNovel = () => {
     }
     function closeModal() {
         setIsShowModal(false);
-    }   
+    }
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNovelSelect((prev) => ({
             ...prev,
             [name]: value,
         }));
-        
+
     };
+    const validateNovel = (novel) => {
+        if (novel.views === "" || novel.chapters === "" || novel.powerStone === "" || novel.name === "") {
+            return true
+        }
+        return false;
+    }
     // console.log(userSelect);
     const handleSubmitEditUser = (e) => {
         e.preventDefault();
-        const acc = {
+        let novel = {
             id: novelSelect._id,
             name: novelSelect.name,
+            description: novelSelect.description,
+            views: novelSelect.views,
+            powerStone: novelSelect.powerStone,
+            chapters: novelSelect.chapters
         };
-        updateAuthor(acc)
+        if (validateNovel(novel)) {
+            setErr("Value of Views, PowerStone, Chapters and Name is not null")
+            return;
+        }
+        updateNovel(novel)
             .then((res) => {
                 // console.log(res.data);
                 if (res.status == 200) {
-                    setListAuthor((prev) =>
-                        prev.map((author) => (author._id === res.data._id ? res.data : author))
+                    setListNovel((prev) =>
+                        prev.map((novl) => (novl._id === res.data._id ? res.data : novl))
                     );
+                    toast.success(`Update successful!`, {
+                        autoClose: 1000,
+                    });
                 }
+                setNovelSelect({});
+                setErr("")
                 closeModal()
+
             })
             .catch((err) => {
-                alert("Could'nt update author");
+                toast.success(`Could'nt update novel!`, {
+                    autoClose: 1000,
+                });
+                //alert("");
                 closeModal()
                 setNovelSelect({});
             });
@@ -106,7 +131,27 @@ const PageNovel = () => {
             transform: "translate(-50%, -50%)",
         },
     };
-    return !isLoading ?(
+    const handleDeleteNovel = (acc) =>{
+        const userConfirmed = window.confirm("Are you sure you want to delete this novel?");
+    
+      // If the user confirmed, proceed with the deletion
+      if (userConfirmed) {
+        deleteNovel(acc._id).then((res) => {
+          if (res.status === 200 || res.status === 202) {
+            setListNovel((prev) => prev.filter((novel) => novel._id !== acc._id));
+            toast.success(`Delete successful!`, {
+                autoClose: 1000,
+            });
+          }
+        }).catch((err) => {
+            toast.success(`Could not remove this novel!`, {
+                autoClose: 1000,
+              });
+          //alert('Could not remove this novel');
+        });
+      }
+      }
+    return !isLoading ? (
         <div className=" flex flex-col justify-start items-center mx-auto bg-slate-200 rounded-xl w-screen  max-w-[1080px]  ">
             <div>
                 <AdBanner name={""} />
@@ -129,7 +174,7 @@ const PageNovel = () => {
                 </div>
                 <div className="flex-none w-[148px] h-[40px] ">
                     <Link to={"/addNovel"} className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
-                        
+
                         <div className="mx-1">
                             <AddUserIcon />
                         </div>
@@ -157,34 +202,42 @@ const PageNovel = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listNovel && listNovel?.map((novel,index)=>(
-                                  <tr
-                                  key={novel._id}
-                                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                            {listNovel && listNovel?.map((novel, index) => (
+                                <tr
+                                    key={novel._id}
+                                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                                 >
-                                  <th
-                                    scope="row"
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                  >
-                                    {novel?.name}
-                                  </th>
-                                  
-                                  <td className="px-6 py-4">
-                                    {formatDate(novel?.createdAt)}
-                                  </td>
-                                  <td className="px-6 py-4">
-                                    {formatDate(novel?.updatedAt)}
-                                  </td>
-                                  <td className="px-6 py-4 ">
-                                    <div
-                                          onClick={() => {
-                                            openModal(novel);
-                                          }}
-                                          className="mt-2 font-medium text-blue-300 dark:text-blue-500 hover:text-blue-700 "
+                                    <th
+                                        scope="row"
+                                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        <EditIcon></EditIcon>
-                                    </div>
-                                  </td>
+                                        {novel?.name}
+                                    </th>
+
+                                    <td className="px-6 py-4">
+                                        {formatDate(novel?.createdAt)}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {formatDate(novel?.updatedAt)}
+                                    </td>
+                                    <td className="px-6 py-4 flex flex-row  item-center ">
+                                        <div
+                                            onClick={() => {
+                                                openModal(novel);
+                                            }}
+                                            className="mt-2 font-medium text-blue-300 dark:text-blue-500 hover:text-blue-700 "
+                                        >
+                                            <EditIcon></EditIcon>
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                handleDeleteNovel(novel)
+                                            }}
+                                            className="mx-2 mt-2 font-medium text-red-300 dark:text-red-500 hover:text-red-700"
+                                        >
+                                            <DeleteIcon></DeleteIcon>
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -214,10 +267,10 @@ const PageNovel = () => {
                             </tr>
                         </tfoot>
                     </table>
-                    
+
                 </div>
             </div>
-           
+
             <div>
                 <Modal
                     isOpen={isShowModal}
@@ -229,13 +282,16 @@ const PageNovel = () => {
                     <div className="w-[600px] flex items-center justify-center">
                         <div className="w-full  p-8 space-y-6 bg-white rounded-lg shadow-md">
                             <button onClick={closeModal} className="rounded-md border-2 bg-slay-200 px-2">close</button>
+                            <div>
+                                {err !== "" ? <div className="text-red-500 mb-1">{err}</div> : <></>}
+                            </div>
                             <h2 className="text-2xl font-bold text-center text-purple-700">
-                                Update account
+                                Update Novel
                             </h2>
                             <form className="space-y-4" onSubmit={handleSubmitEditUser}>
-                                
+
                                 <div className="flex flex-row">
-                                    <label htmlFor="username" className="px-4 py-2 w-[131px]">
+                                    <label htmlFor="id" className="px-4 py-2 w-[131px]">
                                         ID{" "}
                                     </label>
                                     <p className="w-auto  px-4 py-2 border rounded-md border-red-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
@@ -246,7 +302,8 @@ const PageNovel = () => {
                                     </label>
 
                                     <input
-                                        type="tel"
+                                        type="number"
+                                        min="0"
                                         id="chapters"
                                         name="chapters"
                                         onChange={handleInputChange}
@@ -256,34 +313,35 @@ const PageNovel = () => {
                                     />
                                 </div>
                                 <div className="flex flex-row">
-                                        <label htmlFor="name" className="px-4 py-2 w-[131px]">
-                                            Name{" "}
-                                        </label>
+                                    <label htmlFor="name" className="px-4 py-2 w-[131px]">
+                                        Name{" "}
+                                    </label>
 
-                                        <input
-                                            type="tel"
-                                            id="name"
-                                            name="name"
-                                            onChange={handleInputChange}
-                                            placeholder="Name"
-                                            value={novelSelect?.name || ""}
-                                            className="w-full  px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                                        />
-                                   
-                                    
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        onChange={handleInputChange}
+                                        placeholder="Name"
+                                        value={novelSelect?.name || ""}
+                                        className="w-full  px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    />
+
+
                                 </div>
                                 <div className="flex flex-row">
                                     <label htmlFor="powerStone" className="px-4 py-2 w-[131px]">
-                                    powerStone{" "}
+                                        Power Stone{" "}
                                     </label>
 
                                     <input
                                         type="number"
                                         id="powerStone"
+                                        min="0"
                                         name="powerStone"
                                         onChange={handleInputChange}
                                         placeholder="powerStone"
-                                        value={novelSelect?.powerStone || 0}
+                                        value={novelSelect?.powerStone || ""}
                                         className="w-full  px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                                     />
                                 </div>
@@ -293,7 +351,7 @@ const PageNovel = () => {
                                     </label>
 
                                     <textarea
-                                        type="tel"
+                                        type="text"
                                         id="description"
                                         name="description"
                                         onChange={handleInputChange}
@@ -308,6 +366,7 @@ const PageNovel = () => {
                                     </label>
 
                                     <input
+                                        min="0"
                                         type="number"
                                         id="views"
                                         name="views"
@@ -317,7 +376,7 @@ const PageNovel = () => {
                                         className="w-full   px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <button
                                         type="submit"
@@ -331,7 +390,7 @@ const PageNovel = () => {
                     </div>
                 </Modal>
             </div>
-            
+
         </div>
     ) : (
         <div className="flex justify-center">

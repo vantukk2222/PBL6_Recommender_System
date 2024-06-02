@@ -62,7 +62,7 @@ const Login = () => {
           setUser(userLogin);
           if (decode.role == "admin") {
             setRole("admin");
-            navigate("/admin");
+            navigate("/");
           } else {
             navigate(-1);
           }

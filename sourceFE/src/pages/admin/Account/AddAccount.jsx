@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addAccount } from '../../../ultis/utilsAccount';
 import { Link, useNavigate } from 'react-router-dom';
 import { SelectComponent } from '../../../components/Select/SelectComponent';
 import { Loading } from '../../../components/UI/Loading';
-
+import { AddAccountValidate } from '../../../ultis/utilsAuth';
+import { toast } from 'react-toastify';
 const AddAccount = () => {
     const navigate = useNavigate()
-    const [userSelect, setUserSelect] = useState({role:'customer'})
+    const [userSelect, setUserSelect] = useState({ role: 'customer' })
     const roleOption = [
         { value: 'customer', label: 'Customer' },
         { value: 'admin', label: 'Admin' },
 
     ]
+    const [error, setError] = useState("");
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserSelect((prev) => ({
@@ -19,25 +21,41 @@ const AddAccount = () => {
             [name]: value,
         }));
     }
+    useEffect(() => {
+        setError(AddAccountValidate(userSelect))
+    }, [userSelect])
     const [loading, setLoading] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(userSelect);
+        if (error) {
+            console.log("err", error);
+            return;
+        }
         setLoading(true)
         addAccount(userSelect).then((res) => {
             console.log(res);
             if (res.status == 200 || res.status == 202) {
-                alert("Add user successful")
-                
+                //alert("Add user successful")
+                toast.success(`Create new account successful!`, {
+                    autoClose: 1000,
+                });
             }
             else {
-                alert("Couldn't add account\n ", err.response.data.message)
+                toast.error(`Couldn't add account!`, {
+                    autoClose: 1000,
+                  });
+                console.log("Couldn't add account\n ", err.response.data.message)
             }
             setLoading(false)
             navigate("/")
         }).catch((err) => {
             console.log("err: ", err.response.data.message);
-            alert("Couldn't add account\n" + err.response.data.message)
+            toast.error(`Couldn't add account! \n 
+            ${err.response.data.message}`, {
+                autoClose: 2000,
+              });
+            //alert("Couldn't add account\n" + err.response.data.message)
             setLoading(false)
             navigate("/")
         })
@@ -113,13 +131,13 @@ const AddAccount = () => {
                             />
                         </div>
                         <div className="flex flex-row">
-                            <label htmlFor="password" className="px-4 py-2  w-[100px]">
-                                Password{" "}
+                            <label htmlFor="password" className="px-4 py-3  w-[100px]">
+                                Role{" "}
                             </label>
                             <SelectComponent
                                 className={"w-full  px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"}
                                 value={roleOption.find(option => option.value === userSelect.role) || roleOption[0]}
-                                name ='role'
+                                name='role'
                                 options={roleOption}
                                 isRequired={true}
                                 isMulti={false}
@@ -136,15 +154,18 @@ const AddAccount = () => {
                             </button>
                         </div>
                     </form>
+                    <div>
+                        {error !== "" ? <div className="text-red-500 mb-1">{error}</div> : <></>}
+                    </div>
                 </div>
 
             </div>
 
         </div>
-    ): (
+    ) : (
         <div className="flex justify-center">
-      <Loading />
-    </div>
+            <Loading />
+        </div>
     )
 }
 

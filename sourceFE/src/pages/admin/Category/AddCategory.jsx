@@ -5,6 +5,7 @@ import { SelectComponent } from '../../../components/Select/SelectComponent';
 import { Loading } from '../../../components/UI/Loading';
 import AdBanner from '../../../components/admin/AdBanner';
 import { addCategory } from '../../../ultis/utilsCategory';
+import { toast } from 'react-toastify';
 
 const AddCategory = () => {
     const navigate = useNavigate()
@@ -25,17 +26,25 @@ const AddCategory = () => {
         addCategory(userSelect).then((res) => {
             console.log(res);
             if (res.status == 200 || res.status == 202) {
-                alert("Add category successful")
+                toast.success(`Create new category successful!`, {
+                    autoClose: 1000,
+                });
 
             }
             else {
-                alert("Couldn't add category\n ", err.response.data.message)
+                toast.error(`Couldn't add category!`, {
+                    autoClose: 1000,
+                });
+                console.log("err: \t ", err.response.data.message)
+
             }
             setLoading(false)
             navigate("/categories")
         }).catch((err) => {
             console.log("err: ", err.response.data.message);
-            alert("Couldn't add category\n" + err.response.data.message)
+            toast.error(`Couldn't add category!`, {
+                autoClose: 1000,
+              });
             setLoading(false)
             navigate("/categories")
         })

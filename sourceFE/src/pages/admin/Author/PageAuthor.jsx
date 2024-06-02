@@ -10,10 +10,11 @@ import {
     RightIcon,
     SearchIcon,
 } from "../../../components/headers/icon.jsx";
-import { getAuthors, updateAuthor, addAuthor } from "../../../ultis/utilsAuthor.js";
+import { getAuthors, updateAuthor, addAuthor, deleteAuthor } from "../../../ultis/utilsAuthor.js";
 import useAuthor from "../../../hooks/useAuthor.js";
 import { Loading } from "../../../components/UI/Loading.jsx";
 import AdBanner from "../../../components/admin/AdBanner.jsx";
+import { toast } from "react-toastify";
 Modal.setAppElement('#root');
 const PageAuthor = () => {
     const { filter,
@@ -65,7 +66,7 @@ const PageAuthor = () => {
             ...prev,
             [name]: value,
         }));
-        
+
     };
     // console.log(userSelect);
     const handleSubmitEditUser = (e) => {
@@ -81,15 +82,40 @@ const PageAuthor = () => {
                     setListAuthor((prev) =>
                         prev.map((author) => (author._id === res.data._id ? res.data : author))
                     );
+                    toast.success(`Updated successful!`, {
+                        autoClose: 1000,
+                      });
                 }
                 closeModal()
             })
             .catch((err) => {
-                alert("Could'nt update author");
+                toast.success(`Couldn't update author!`, {
+                    autoClose: 1000,
+                });
                 closeModal()
                 setUserSelect({});
             });
     };
+    const handleDeleteAuth = (auth) =>{
+        const userConfirmed = window.confirm("Are you sure you want to delete this author?");
+    
+      // If the user confirmed, proceed with the deletion
+      if (userConfirmed) {
+        deleteAuthor(auth._id).then((res) => {
+          if (res.status === 200 || res.status === 202) {
+            setListAuthor((prev) => prev.filter((author) => author._id !== auth._id));
+            toast.success(`Deleted successful!`, {
+                autoClose: 1000,
+              });
+          }
+        }).catch((err) => {
+            toast.console.error();(`Could not remove this author!`, {
+                autoClose: 1000,
+              });
+          console.log('Could not remove this author\n',err);
+        });
+      }
+      }
     const handlePageChange = (newPage) => {
         setFilter((prevFilter) => ({
             ...prevFilter,
@@ -157,33 +183,42 @@ const PageAuthor = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listAuthor && listAuthor?.map((author,index)=>(
-                                  <tr
-                                  key={author._id}
-                                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                            {listAuthor && listAuthor?.map((author, index) => (
+                                <tr
+                                    key={author._id}
+                                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                                 >
-                                  <th
-                                    scope="row"
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                  >
-                                    {author?.name}
-                                  </th>
-                                  <td className="px-6 py-4">
-                                    {formatDate(author?.createdAt)}
-                                  </td>
-                                  <td className="px-6 py-4">
-                                    {formatDate(author?.updatedAt)}
-                                  </td>
-                                  <td className="px-6 py-4 ">
-                                    <div
-                                          onClick={() => {
-                                            openModal(author);
-                                          }}
-                                          className="mt-2 font-medium text-blue-300 dark:text-blue-500 hover:text-blue-700 "
+                                    <th
+                                        scope="row"
+                                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        <EditIcon></EditIcon>
-                                    </div>
-                                  </td>
+                                        {author?.name}
+                                    </th>
+                                    <td className="px-6 py-4">
+                                        {formatDate(author?.createdAt)}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {formatDate(author?.updatedAt)}
+                                    </td>
+                                    <td className="px-6 py-4 flex flex-row justify-center item-center">
+
+                                        <div
+                                            onClick={() => {
+                                                openModal(author);
+                                            }}
+                                            className="mt-2 font-medium text-blue-300 dark:text-blue-500 hover:text-blue-700 "
+                                        >
+                                            <EditIcon></EditIcon>
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                handleDeleteAuth(author)
+                                            }}
+                                            className="mx-2 mt-2 font-medium text-red-300 dark:text-red-500 hover:text-red-700"
+                                        >
+                                            <DeleteIcon></DeleteIcon>
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -213,10 +248,10 @@ const PageAuthor = () => {
                             </tr>
                         </tfoot>
                     </table>
-                    
+
                 </div>
             </div>
-           
+
             <div>
                 <Modal
                     isOpen={isShowModal}
@@ -268,7 +303,7 @@ const PageAuthor = () => {
                     </div>
                 </Modal>
             </div>
-            
+
         </div>
     ) : (
         <div className="flex justify-center">

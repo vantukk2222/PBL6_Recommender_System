@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../ultis/convertTime";
-import {  getCategoriesByFilter, updateCategory } from "../../../ultis/utilsCategory";
+import { deleteCategory, getCategoriesByFilter, updateCategory } from "../../../ultis/utilsCategory";
 import Modal from "react-modal";
 import useCategory from "../../../hooks/useCategory";
 import { Loading } from "../../../components/UI/Loading";
@@ -15,6 +15,7 @@ import {
     SearchIcon,
 } from "../../../components/headers/icon.jsx";
 import { updateAccount } from "../../../ultis/utilsAccount.js";
+import { toast } from "react-toastify";
 Modal.setAppElement('#root');
 const PageCategory = () => {
     const {
@@ -84,15 +85,40 @@ const PageCategory = () => {
                     setListCategory((prev) =>
                         prev.map((cate) => (cate._id === res.data._id ? res.data : cate))
                     );
+                    toast.success(`Updated successful!`, {
+                        autoClose: 1000,
+                    });
                 }
                 closeModal()
             })
             .catch((err) => {
-                alert("Could'nt update category");
+                toast.error(`Couldn't update category! \n 
+                ${err.response.data.message}`, {
+                    autoClose: 1000,
+                });
                 closeModal()
                 setCategorySelect({});
             });
     };
+    const handleDeleteCate = (acc) =>{
+        const userConfirmed = window.confirm("Are you sure you want to delete this category?");
+    
+      // If the user confirmed, proceed with the deletion
+      if (userConfirmed) {
+        deleteCategory(acc._id).then((res) => {
+          if (res.status === 200 || res.status === 202) {
+            setListCategory((prev) => prev.filter((category) => category._id !== acc._id));
+            toast.success(`Deleted successful!`, {
+                autoClose: 1000,
+              });
+          }
+        }).catch((err) => {
+            toast.error(`Could not remove this category!`, {
+                autoClose: 1000,
+              });
+            console.log('Could not remove this category',err);
+        });
+      }}
     const handlePageChange = (newPage) => {
         setFilter((prevFilter) => ({
             ...prevFilter,
@@ -155,7 +181,7 @@ const PageCategory = () => {
                                 <th scope="col" className="px-6 py-3">
                                     Update at
                                 </th>
-                                <th scope="col" className="px-6 py-3">
+                                <th scope="col" className="px-6  py-3">
                                     Action
                                 </th>
                             </tr>
@@ -178,7 +204,7 @@ const PageCategory = () => {
                                     <td className="px-6 py-4">
                                         {formatDate(category?.updatedAt)}
                                     </td>
-                                    <td className="px-6 py-4 ">
+                                    <td className="px-6 py-4 flex flex-row  item-center ">
                                         <div
                                             onClick={() => {
                                                 openModal(category);
@@ -187,6 +213,14 @@ const PageCategory = () => {
                                         >
                                             <EditIcon></EditIcon>
                                         </div>
+                                        <button
+                                            onClick={() => {
+                                                handleDeleteCate(category)
+                                            }}
+                                            className="mx-2 mt-2 font-medium text-red-300 dark:text-red-500 hover:text-red-700"
+                                        >
+                                            <DeleteIcon></DeleteIcon>
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

@@ -38,33 +38,33 @@ const App = () => {
   // },[])
   const { role } = useAuthen();
   const router = createBrowserRouter(
-    createRoutesFromElements(
+      createRoutesFromElements(
       <>
-        <Route path="login" element={<Authtemplate pages="login" />} />
-        <Route path="register" element={<Authtemplate pages="register" />} />
-        {role == "admin" ? (
-          <Route path="/" element={<AdminHeader />}>
-            <Route index element={<AdminDashboard />}></Route>
-            <Route path="/addAccount" element={<AddAccount />}></Route>
-            <Route path="/authors" element={<PageAuthor />} />
-            <Route path="/addAuthor" element={<AddAuthor />} />
-            <Route path="/categories" element={<PageCategory />} />
-            <Route path="/addCategory" element={<AddCategory />} />
-            <Route path="/novels" element={<PageNovel />} />
-            <Route path="/addNovel" element={<AddNovel />} />
-          </Route>
+          <Route path="login" element={<Authtemplate pages="login" />} />
+          <Route path="register" element={<Authtemplate pages="register" />} />
+          {role == "admin" ? (
+              <Route path="/" element={<AdminHeader />}>
+                  <Route index element={<AdminDashboard />}></Route>
+                  <Route path="/addAccount" element={<AddAccount />}></Route>
+                  <Route path="/authors" element={<PageAuthor />} />
+                  <Route path="/addAuthor" element={<AddAuthor />} />
+                  <Route path="/categories" element={<PageCategory />} />
+                  <Route path="/addCategory" element={<AddCategory />} />
+                  <Route path="/novels" element={<PageNovel />} />
+                  <Route path="/addNovel" element={<AddNovel />} />
+              </Route>
         ) : (
-          <Route path="/" element={<HomeHeader />}>
-            <Route>
-              <Route index element={<Dashboard />} />
-              <Route path="/stories/:Id?" element={<Stories />} />
-              <Route path="/content/:idCate" element={<Content />} />
-              <Route path="/genres/:novel/:genres?" element={<Genres />} />
-              <Route path="/ranking/:genres?" element={<Ranking />} />
-              <Route path="/:library?" element={<Library />} />
-              <Route path="/history?" element={<Library />} />
-            </Route>
-          </Route>
+              <Route path="/" element={<HomeHeader />}>
+                  <Route>
+                      <Route index element={<Dashboard />} />
+                      <Route path="/stories/:Id?" element={<Stories />} />
+                      <Route path="/content/:idCate" element={<Content />} />
+                      <Route path="/genres/:novel/:genres?" element={<Genres />} />
+                      <Route path="/ranking/:genres?" element={<Ranking />} />
+                      <Route path="/:library?" element={<Library />} />
+                      <Route path="/history?" element={<Library />} />
+                  </Route>
+              </Route>
         )}
         <Route path="*" element={<PageNotFound />} />
       </>

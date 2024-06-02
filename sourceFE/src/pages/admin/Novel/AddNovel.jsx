@@ -8,11 +8,17 @@ import AdBanner from '../../../components/admin/AdBanner';
 import useImageUpload from '../../../hooks/useCloud';
 import useCategory from '../../../hooks/useCategory';
 import useAuthor from '../../../hooks/useAuthor';
+
+import { toast } from "react-toastify";
 const AddNovel = () => {
-  const { categoryAll } = useCategory();
-  const { authorData } = useAuthor();
   const navigate = useNavigate()
-  const [userSelect, setUserSelect] = useState({view:0})
+  const [userSelect, setUserSelect] = useState({ 
+    view: 0,
+    name:"",
+    chapters:0,
+    powerStone:0,
+    description:"",
+  })
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,8 +30,9 @@ const AddNovel = () => {
   const [loading, setLoading] = useState(false)
   const [authorOption, setAuthorOption] = useState(
     () => {
-      if (authorData) {
-        return authorData?.map((auth, index) => ({
+      const authorAll = JSON.parse(localStorage.getItem('authorsAll'));
+      if (authorAll.length > 0) {
+        return authorAll?.map((auth, index) => ({
           value: auth._id,
           label: auth?.name
         }))
@@ -36,9 +43,10 @@ const AddNovel = () => {
     })
 
   const [cateOption, setCateOption] = useState(() => {
-
-    if (categoryAll) {
-      return categoryAll?.map((cate, index) => ({
+    const cateAll = JSON.parse(localStorage.getItem('categoryAll'));
+    console.log(cateAll);
+    if (cateAll.length > 0) {
+      return cateAll?.map((cate, index) => ({
         value: cate._id,
         label: cate?.name
       }))
@@ -48,40 +56,60 @@ const AddNovel = () => {
     }
   })
   const [selectedFiles, setSelectedFiles] = useState(null);
+  const [error, setError] = useState("")
   const uploadUrl = useImageUpload(selectedFiles);
   const handleFileChange = (e) => {
     const selectFile = e.target.files[0];
     setSelectedFiles(selectFile);
   };
+
+  const validateNovel = (novel) => {
+    if (novel.views === "" || novel.chapters === "" || novel.powerStone === "" || novel.name === "") {
+      return true
+    }
+    return false;
+  }
   // console.log(authorOption);
   const handleSubmit = (e) => {
     e.preventDefault();
+    let newUser = userSelect
+
+    if (validateNovel(newUser)) {
+      setError("Value of Views, PowerStone, Chapters and Name is not null")
+      return;
+    }
     setLoading(true)
-    let newUser =  userSelect
-    if(uploadUrl !== null)
-    {
-      newUser = {...newUser, imageUrl:uploadUrl}
+    if (uploadUrl !== null) {
+      newUser = { ...newUser, imageUrl: uploadUrl }
     }
     console.log(newUser);
     addNovel(newUser).then((res) => {
       console.log(res);
       if (res.status == 200 || res.status == 202) {
-        alert("Add novel successful")
-
+        // alert("Add novel successful")
+        toast.success(`Create new novel successful!`, {
+          autoClose: 1000,
+        });
       }
       else {
-        alert("Couldn't add novel\n ", err.response.data.message)
+        toast.success(`Couldn't add novel\n `, {
+          autoClose: 1000,
+        });
+        console.log("Couldn't add novel\n ", err.response.data.message)
       }
       setLoading(false)
       navigate("/novels")
     }).catch((err) => {
       console.log("err: ", err.response.data.message);
-      alert("Couldn't add novel\n" + err.response.data.message)
+      toast.success(`Couldn't add novel `, {
+        autoClose: 1000,
+      });
+      // alert("Couldn't add novel\n" + err.response.data.message)
       setLoading(false)
-      navigate("/novel")
+      navigate("/novels")
     })
   }
-  
+
   // console.log(uploadUrl);
   console.log(userSelect);
   return !loading ? (
@@ -119,6 +147,7 @@ const AddNovel = () => {
 
               <input
                 type="number"
+                min ="0"
                 id="powerStone"
                 name="powerStone"
                 onChange={handleInputChange}
@@ -133,6 +162,7 @@ const AddNovel = () => {
               <input
                 type="number"
                 id="chapters"
+                min ="0"
                 name="chapters"
                 onChange={handleInputChange}
                 placeholder="chapters"
@@ -158,7 +188,7 @@ const AddNovel = () => {
               />
 
               <label htmlFor="category" className="px-4 py-2 ">
-              Category{" "}
+                Category{" "}
               </label>
 
               <SelectComponent
@@ -185,7 +215,7 @@ const AddNovel = () => {
                 placeholder="chapters"
                 accept="image/*"
                 className="w-2/3  px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              /> 
+              />
             </div>
             {uploadUrl !== null && <p className='px-4 py-2 text-green-300'>Upload file successful !!</p>}
             <div className="flex flex-row">
@@ -204,6 +234,9 @@ const AddNovel = () => {
               />
             </div>
             <div className='mt-10'>
+              <div>
+                {error !== "" ? <div className="text-red-500 mb-1">{error}</div> : <></>}
+              </div>
               <button
                 type="submit"
                 className="w-[100px] py-2 text-white bg-purple-500 rounded-md hover:bg-purple-600"
