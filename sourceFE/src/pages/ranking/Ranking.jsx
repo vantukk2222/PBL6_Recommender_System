@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { getNovels } from "../../ultis/utilsNovel";
 import useNovel from "../../hooks/useNovel";
 import { Loading } from "../../components/UI/Loading";
+import { PaginationNav1Presentation } from "../../components/pagination/PaginationNovel";
 export const Ranking = () => {
   const [is_Loading, setIsLoading] = useState(true);
+  const [is_LoadingPage, setIsLoadingPage] = useState(false);
   const {
     listNovel,
     setListNovel,
@@ -15,14 +17,16 @@ export const Ranking = () => {
     setPage: setPageNovel,
   } = useNovel();
   useEffect(() => {
+    setIsLoadingPage(true);
     const newFilter = {
       ...filterNovel,
-      page: 1,
+      page: pageNovel?.currentPage || 1,
       pageSize: 20,
       sortOrder: "desc",
       sortField: "powerStone",
     };
     getNovels(newFilter).then((data) => {
+      setIsLoadingPage(false);
       setListNovel((prevState) => ({
         ...prevState,
         ranking1: data.novels,
@@ -33,9 +37,9 @@ export const Ranking = () => {
       });
       setIsLoading(false);
     });
-  }, []);
+  }, [pageNovel.currentPage]);
   return !is_Loading ? (
-    <div className=" flex flex-row mx-auto   w-screen max-w-[1080px] max-h-[1620px] h-[1620px]">
+    <div className=" relative flex flex-row mx-auto   w-screen max-w-[1080px] max-h-[1620px] h-[1620px]">
       <div className="text-[20px] font-semibold text-blue-600 text-center inline-flex items-center flex-flex-col w-[191px] h-fit">
         Hot Ranking
       </div>
@@ -46,7 +50,7 @@ export const Ranking = () => {
           </div>
 
           <div className="flex flex-row justify-between">
-            <div className="flex flex-col pb-2">
+            <div className="flex flex-col pb-2  w-full">
               <legend className="text-[12px] text-gray-400 font-medium mt-2 mb-1">
                 Filter by Book’s Release Time
               </legend>
@@ -80,16 +84,33 @@ export const Ranking = () => {
                   All-time
                 </p>
               </div>
-              <div className="grid grid-cols-1 w-full ">
-                {listNovel?.ranking1?.map((eachNovel, index) => {
-                  return (
-                    <EachItemTopRanking
-                      key={index}
-                      item={eachNovel}
-                      rank={index + 1}
-                    />
-                  );
-                })}
+              {is_LoadingPage && (
+                <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
+                  <span className="sr-only">Loading...</span>
+                  <div className="h-2 w-2 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="h-2 w-2 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="h-2 w-2 bg-black rounded-full animate-bounce"></div>
+                </div>
+              )}
+              {!is_LoadingPage && (
+                <div className="grid grid-cols-1 w-full transition duration-300 ease-in-out ">
+                  {listNovel?.ranking1?.map((eachNovel, index) => {
+                    return (
+                      <EachItemTopRanking
+                        key={index}
+                        item={eachNovel}
+                        rank={index + 1 + (pageNovel?.currentPage - 1) * 20}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+              <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
+                <PaginationNav1Presentation
+                  pageIndex={pageNovel?.currentPage}
+                  setPageIndex={setPageNovel}
+                  pageCount={pageNovel?.totalPages}
+                />
               </div>
             </div>
           </div>

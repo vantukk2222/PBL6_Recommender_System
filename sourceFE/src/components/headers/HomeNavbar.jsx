@@ -17,6 +17,7 @@ import {
 import useCategory from "../../hooks/useCategory";
 import { Loading } from "../UI/Loading";
 import useAuthen from "../../hooks/useAuthen";
+import { toast } from "react-toastify";
 function HomeNavbar() {
   const navigate = useNavigate();
   const [isModalGenresOpen, setIsModalGenresOpen] = useState(false);
@@ -65,7 +66,10 @@ function HomeNavbar() {
   }, [clickProfile]);
   const handleClick = (event) => {
     event.preventDefault();
-    alert("Please login to use this feature!");
+    toast.error("Please login to use this feature!");
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 500);
   };
   useEffect(() => {
     if (linkRef.current) {

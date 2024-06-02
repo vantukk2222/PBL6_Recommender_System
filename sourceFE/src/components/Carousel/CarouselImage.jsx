@@ -64,7 +64,7 @@ export const CarouselItem = ({ dataCarousel }) => {
           <h4>
             <a
               className="font-bold hover:underline  max-w-[310px] line-clamp-1 text-xl"
-              href="/book/my-enchanting-system_22600918205369205"
+              href="/content/my-enchanting-system_22600918205369205"
               title="The Boss Behind The Game The Boss Behind The Game The Boss Behind"
             >
               The Boss Behind The Game The Boss Behind The Game The Boss Behind

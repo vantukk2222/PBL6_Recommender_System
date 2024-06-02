@@ -13,12 +13,16 @@ import useNovel from "../../hooks/useNovel";
 import { Loading } from "../../components/UI/Loading";
 import { Categories } from "../../components/UI/Categories";
 import { preProcessingCategory } from "../../ultis/preProcessingCategory";
+
+import debounce from "lodash/debounce";
+import { PaginationNav1Presentation } from "../../components/pagination/PaginationNovel";
+
 export const Genres = () => {
   const { genres, novel } = useParams();
 
   const [selectedStatus, setSelectedStatus] = useState(0);
   const [selectedSort, setSelectedSort] = useState(0);
-
+  const [loadingMoreNovel, setLoadingMoreNovel] = useState(true);
   const [is_loading, setIsLoading] = useState(true);
   const {
     categoryData,
@@ -50,14 +54,15 @@ export const Genres = () => {
           (eachCategory) => preProcessingCategory(eachCategory.name) === genres
         )?._id || 0
       );
+      setIsLoading(false);
     });
   }, [genres]);
   useEffect(() => {
-    setIsLoading(true);
+    setLoadingMoreNovel(true);
     const newFilter = {
       ...filter,
       categoryId: genres == "all" ? 0 : selectedCateIndex,
-      page: 1,
+      page: page.currentPage,
       pageSize: 20,
     };
     getNovelsByCategoryID(newFilter).then((data) => {
@@ -65,13 +70,43 @@ export const Genres = () => {
         ...prevState,
         genres1: data.novels,
       }));
+
       setPage({
         currentPage: data.page.currentPage,
         totalPages: data.page.totalPages,
       });
-      setIsLoading(false);
+
+      setLoadingMoreNovel(false);
     });
-  }, [genres]);
+  }, [genres, page.currentPage]);
+
+  // useEffect(() => {
+  //   const handleScroll = debounce(() => {
+  //     const scrollPosition = window.scrollY;
+  //     const windowHeight = window.innerHeight;
+  //     const fullHeight = document.documentElement.scrollHeight;
+
+  //     if (windowHeight + scrollPosition >= fullHeight) {
+  //       setPage((prevPage) => {
+  //         if (prevPage.currentPage < prevPage.totalPages) {
+  //           return {
+  //             ...prevPage,
+  //             currentPage: prevPage.currentPage + 1,
+  //           };
+  //         } else {
+  //           return prevPage;
+  //         }
+  //       });
+  //     }
+  //   }, 200); // Adjust the debounce delay as needed
+
+  //   window.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //     handleScroll.cancel(); // Cancel the debounce function on cleanup
+  //   };
+  // }, []);
   return is_loading === false ? (
     <>
       <div className=" flex flex-row  w-screen mx-auto  max-w-[1080px] max-h-[1620px] h-[1620px]">
@@ -81,7 +116,7 @@ export const Genres = () => {
             <div
               className="text-[20px] font-semibold text-gray-500 pb-2 border-b-[1px] border-gray-200	w-full	"
               onClick={() => {
-                console.log("category data: ", categoryData);
+                console.log("category data: ", page);
               }}
             >
               Filter By
@@ -176,16 +211,35 @@ export const Genres = () => {
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 ">
-            {listNovel?.genres1?.map((eachNovel, index) => {
-              return <EachItemNovelGenre key={index} item={eachNovel} />;
-            })}
-          </div>
+          {!loadingMoreNovel && (
+            <>
+              <div className="grid grid-cols-2 justify-center ">
+                {listNovel?.genres1?.map((eachNovel, index) => {
+                  return <EachItemNovelGenre key={index} item={eachNovel} />;
+                })}
+              </div>
+              <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
+                <PaginationNav1Presentation
+                  pageIndex={page?.currentPage}
+                  setPageIndex={setPage}
+                  pageCount={page?.totalPages}
+                />
+              </div>
+            </>
+          )}
+          {loadingMoreNovel && (
+            <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
+              <span className="sr-only">Loading...</span>
+              <div className="h-2 w-2 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div className="h-2 w-2 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div className="h-2 w-2 bg-black rounded-full animate-bounce"></div>
+            </div>
+          )}
         </div>
       </div>
     </>
   ) : (
-    <div className="flex justify-center">
+    <div className="flex justify-center max-h-[1620px] h-[1620px]">
       <Loading />
     </div>
   );

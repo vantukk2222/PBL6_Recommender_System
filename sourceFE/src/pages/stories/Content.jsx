@@ -12,6 +12,9 @@ import { addToLibrary } from "../../ultis/utilsAccount";
 import { addHistory } from "../../ultis/ultisHistory";
 import { preProcessingCategory } from "../../ultis/preProcessingCategory";
 import { toast } from "react-toastify";
+import { Banner } from "../../components/banners/Banner";
+import useNovel from "../../hooks/useNovel";
+import { WeeklyItem } from "../../components/Cards/WeeklyItem";
 const Content = () => {
   const { idCate } = useParams();
   const [dataNovel, setDataNovel] = useState(null);
@@ -40,6 +43,17 @@ const Content = () => {
       window.location.href = "/login";
     }
   };
+
+  const {
+    novelData,
+    setNovelData,
+    listNovel,
+    setListNovel,
+    filter,
+    setFilter,
+    page,
+    setPage,
+  } = useNovel();
   useEffect(() => {
     getNovel(idCate).then((res) => {
       setDataNovel(res);
@@ -261,6 +275,21 @@ const Content = () => {
           </div>
         </div>
       </div> */}
+      <div className="flex flex-col flex-wrap  pb-12 w-full">
+        <div className="flex flex-row justify-between  border-b-2 font-bold  ">
+          <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
+            You may also like
+          </h1>
+        </div>
+
+        <div className="grid grid-cols-8 space-between">
+          {Array.from({ length: listNovel?.recommenderEachNovel?.length - 2 }).map(
+            (_, index) => (
+              <WeeklyItem key={index} items={listNovel?.topranking[index]} />
+            )
+          )}
+        </div>
+      </div>
       <div className="flex size-4/5 w-full border-b-4 ">
         <div className="text flex-initial  mb-5 ">
           <h1 className="font-bold text-2xl">Rating</h1>

@@ -119,7 +119,12 @@ const Login = () => {
             </div>
           </div>
         )}
-        <div className="text-3xl">Login</div>
+        <div className="flex flex-col text-3xl">
+          <a href="/" className="text-blue-500 text-lg w-fit">
+            <i className="fas fa-arrow-left">Back</i>
+          </a>
+          <span>Login</span>
+        </div>
         <form className="flex flex-col gap-6" onSubmit={(e) => handleSubmit(e)}>
           <div>
             <div>Username</div>

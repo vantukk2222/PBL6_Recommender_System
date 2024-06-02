@@ -17,6 +17,34 @@ import useHistory from "../../hooks/useHistories";
 import { EachItemHistories } from "./ItemHistories";
 import { toast } from "react-toastify";
 export const Library = () => {
+  const dataEachHistoryTemplate = {
+    _id: "017172645716924557",
+    account: "017172302625194566",
+    novel: {
+      _id: "23772970705037005",
+      name: "Jack Hanma: True might [reworked 2]",
+      description:
+        "Jack Hanma is one of if not the most disrespected character of the baki series despite him being one of the strongest in it.\nbut what if that changed what if him being an unpure hanma had a different meaning then what you would expect.\n\nNote: this my first time writing and English isn't my native language so the first two chapters are a bit rough but it gets better from chapter 3 and onwards.\n\nThe cover image isn't mine.\n\nnote: under the recent changes I decided That I well be posting this story on RoyalRoad.com and Fanfiction.net under the same name for both the story and the account.",
+      chapters: 117,
+      views: 2,
+      powerStone: 766,
+      imageUrl:
+        "https://book-pic.webnovel.com/bookcover/23772970705037005?imageMogr2/thumbnail/600&imageId=1664311544617",
+      author: "017172302840748368",
+      category: "017172293720079532",
+      totalRating: 6,
+      ratingCount: 2,
+      averageRating: 3,
+      createdAt: "2024-06-01T10:47:31.578Z",
+      updatedAt: "2024-06-02T03:53:08.376Z",
+      __v: 0,
+    },
+    lastReadChapter: 1,
+    lastReadDate: "2024-06-01T00:00:00.000Z",
+    createdAt: "2024-06-01T17:56:11.692Z",
+    updatedAt: "2024-06-01T17:56:11.692Z",
+    __v: 0,
+  };
   const library = useLocation().pathname.split("/")[1];
   const [editClick, setEditClick] = useState(false);
   const [hoveredLink, setHoveredLink] = useState("");
@@ -42,7 +70,7 @@ export const Library = () => {
   const [is_Loading, setLoading] = useState(true);
   useEffect(() => {
     if (!Token?.id) {
-      alert("Please login to use this feature");
+      toast.error("Please login to use this feature");
       window.location.href = "/login";
     }
     if (library === "library" && Token?.id) {
@@ -292,7 +320,10 @@ export const Library = () => {
               <div className="grid grid-cols-7 mt-4">
                 {libraryData?.map((eachLibraryItem, idx) => {
                   return (
-                    <EachItemInLibraries key={idx} id_novel={eachLibraryItem} />
+                    <EachItemInLibraries
+                      key={idx}
+                      id_novel={eachLibraryItem || dataEachHistoryTemplate}
+                    />
                   );
                 })}
               </div>

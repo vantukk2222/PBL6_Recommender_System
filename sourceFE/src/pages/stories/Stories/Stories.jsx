@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HeaderStory from "./HeaderStory";
 import VerticalNavbar from "../../../components/Menu/VerticalNavbar";
 import ListChapters from "../chapters/ListChapters";
+import { getNovel } from "../../../ultis/utilsNovel";
+import { proxyUrl } from "../../../api/apiProxy";
 const Stories = () => {
-  let { idCate } = useParams();
-
+  let { Id } = useParams();
+  console.log("id", Id);
   let data = {
     name: "The Imbecile Lord Is Married to Five Beautiful Goddess",
     src: "https://anhanime.com/wp-content/uploads/2023/11/Anh-Gojo-Satoru-dep.jpg",
@@ -30,6 +32,13 @@ const Stories = () => {
       { name: "chapter9", direc: "direction of chapter 9" },
     ],
   };
+  const [dataNovel, setDataNovel] = useState(null);
+
+  useEffect(() => {
+    getNovel(Id).then((res) => {
+      setDataNovel(res);
+    });
+  }, []);
 
   const sentenceList = data?.content.split("\n").map((sentence, index) => (
     <p
@@ -66,22 +75,24 @@ const Stories = () => {
   ];
 
   return (
-    <div className="p-4 w-[1080px] mx-auto bg-slate-50">
-      <div>
-        <div className="flex">
-          <div className={showChapter === true ? "w-3/4" : ""}>
-            <HeaderStory name={data.name} src={data.src} author={data.author} />
-            <div className="text-[20px] mx-auto px-8 break-words ">
-              {sentenceList}
-            </div>
-          </div>
-          <div className="w-1/4 ">
-            {showChapter == true && <ListChapters list={data.chapters} />}
+    <div className="p-4 w-[1080px] h-full mb-20 mx-auto bg-slate-50">
+      <div className="flex">
+        <div className="w-screen">
+          <HeaderStory
+            name={dataNovel?.name}
+            src={proxyUrl(dataNovel?.imageUrl)}
+            author={dataNovel?.author?.name}
+          />
+          <div className="flex flex-col items-center justify-center text-[20px] mx-auto px-8 break-words w-full">
+            {sentenceList}
           </div>
         </div>
-        <div className="absolute  right-2 top-24 w-20 h-screen ">
-          <VerticalNavbar list={iconMenuList} />
+        <div className="">
+          {showChapter == true && <ListChapters list={data.chapters} />}
         </div>
+      </div>
+      <div className="absolute  right-2 top-24 w-20 h-screen ">
+        <VerticalNavbar list={iconMenuList} />
       </div>
     </div>
   );

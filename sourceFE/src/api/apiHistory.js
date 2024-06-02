@@ -12,7 +12,7 @@ const apiHistory = {
         return axiosClient.get(url)
     },
     getHistory: (id) => {
-        const url = `/history/${id}`
+        const url = `/history/${id}?pageSize=20&sortField=updatedAt&sortOrder=desc`
         return axiosClient.get(url)
     },
     updateHistory: (data) => {
