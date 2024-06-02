@@ -7,13 +7,56 @@ import { getNovel } from "../../ultis/utilsNovel";
 import { proxyUrl } from "../../api/apiProxy";
 import { formatNumber } from "./../../ultis/convertNumber";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
+import { Loading } from "../../components/UI/Loading";
+import { addToLibrary } from "../../ultis/utilsAccount";
+import { addHistory } from "../../ultis/ultisHistory";
+import { preProcessingCategory } from "../../ultis/preProcessingCategory";
+import { toast } from "react-toastify";
 const Content = () => {
   const { idCate } = useParams();
   const [dataNovel, setDataNovel] = useState(null);
+  const [is_Loading, setIsLoading] = useState(true);
+  const infor = JSON.parse(localStorage.getItem("Token")) || {};
+
+  const [isAddToLibrary, setIsAddToLibrary] = useState(false);
+  const handleAddtoLibrary = () => {
+    setIsAddToLibrary(true);
+    if (infor.id) {
+      addToLibrary(infor.id, dataNovel?._id)
+        .then(() => {
+          setIsAddToLibrary(false);
+          toast.success(`Add to library successfully`, {
+            autoClose: 1000,
+          });
+        })
+        .catch((error) => {
+          setIsAddToLibrary(false);
+          toast.error(`Failed to add to library: ${error.message}`, {
+            autoClose: 1000,
+          });
+        });
+    } else {
+      alert("Please login to add to library");
+      window.location.href = "/login";
+    }
+  };
   useEffect(() => {
     getNovel(idCate).then((res) => {
       setDataNovel(res);
+      setIsLoading(false);
     });
+    if (infor?.id) {
+      const data_History = {
+        account: infor.id,
+        novel: idCate,
+        lastReadChapter: 1,
+        lastReadDate: new Date().toISOString().split("T")[0],
+      };
+      const addLIbrary = async () => {
+        await addHistory(data_History);
+      };
+      addLIbrary();
+    }
   }, [idCate]);
   let data = {
     id: "dast43",
@@ -24,8 +67,8 @@ const Content = () => {
     src: "https://book-pic.webnovel.com/bookcover/23124855606295305?imageMogr2/thumbnail/150&imageId=1698747892444",
   };
 
-  return (
-    <div className="containerCard p-4 w-[1080px] mx-auto bg-slate-100 ">
+  return is_Loading === false ? (
+    <div className="containerCard p-4 w-[1080px] mx-auto bg-slate-50 ">
       <div className="flex h-full flex-initial w-full  rounded-lg">
         <div className=" p-2  image h-[412px] w-[308px] ">
           <img
@@ -61,7 +104,12 @@ const Content = () => {
                   />
                 </svg>
                 <p className="hover:underline	ml-2">
-                  <a href={"/genres/novels/" + dataNovel?.category?.name}>
+                  <a
+                    href={
+                      "/genres/novels/" +
+                      preProcessingCategory(dataNovel?.category?.name)
+                    }
+                  >
                     <span className="font-bold">
                       {capitalizeFirstLetter(dataNovel?.category?.name)}
                     </span>
@@ -84,7 +132,7 @@ const Content = () => {
                 <p className="	">
                   <span>
                     {dataNovel?.chapters
-                      ? dataNovel?.chapters + "Chapters"
+                      ? dataNovel?.chapters + " Chapters"
                       : "NaN"}{" "}
                   </span>
                 </p>
@@ -124,7 +172,7 @@ const Content = () => {
             </div>
             <div className="flex justify-start text-left mt-2">
               <div className="flex">
-                {[...Array(5)].map((i, index) => {
+                {[...Array(5)].map((_i, index) => {
                   const curIndex = index + 1;
                   return (
                     <svg
@@ -167,22 +215,31 @@ const Content = () => {
             </button>
             <button className="flex justify-center items-center rounded-full ml-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ">
               <div className="mr-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
+                {!isAddToLibrary && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+                )}
               </div>
-              <p className=" text-lg">Add to library</p>
+              <p
+                className=" text-lg"
+                onClick={() => {
+                  handleAddtoLibrary();
+                }}
+              >
+                {isAddToLibrary ? "Adding to Library" : "Add to Library"}
+              </p>
             </button>
           </div>
         </div>
@@ -196,22 +253,26 @@ const Content = () => {
           </p>
         </div>
       </div>
-      <div className="flex size-4/5 w-full border-b-4 ">
+      {/* <div className="flex size-4/5 w-full border-b-4 ">
         <div className="text flex-initial w-2/3 mb-5 ">
           <h1 className="font-bold text-2xl ">Tags</h1>
           <div className="mt-2 ">
             <Tag></Tag>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="flex size-4/5 w-full border-b-4 ">
-        <div className="text flex-initial w-2/3 mb-5 ">
+        <div className="text flex-initial  mb-5 ">
           <h1 className="font-bold text-2xl">Rating</h1>
-          <div className="mt-2">
-            <Comment />
+          <div className="mt-8">
+            <Comment idCate={idCate} />
           </div>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="flex justify-center">
+      <Loading />
     </div>
   );
 };

@@ -16,7 +16,7 @@ export const getCategories = async () => {
 }
 export const getCategoriesByFilter = async (filter = {
     'page': 1,
-    'pageSize': 20,
+    'pageSize': 50,
     'sortField': 'name',
     'sortOrder': 'desc'
 }) => {

@@ -15,41 +15,9 @@ import { EachRanking } from "../../components/Cards/EachRanking";
 import { EachItemTopRanking } from "./../ranking/EachItemTopRanking";
 import { Loading } from "../../components/UI/Loading";
 const Dashboard = () => {
-  const dataHomeTags = [
-    {
-      title: "Top Fanfic Tags",
-      tags: [
-        { name: "Action" },
-        { name: "Adventure" },
-        { name: "Comedy" },
-        { name: "Drama" },
-        { name: "Fantasy" },
-        { name: "Horror" },
-        { name: "Mystery" },
-        { name: "Romance" },
-        { name: "Sci-fi" },
-        { name: "Slice of Life" },
-      ],
-    },
-    {
-      title: "Popular Tags",
-      tags: [
-        { name: "Action" },
-        { name: "Adventure" },
-        { name: "Comedy" },
-        { name: "Drama" },
-        { name: "Fantasy" },
-        { name: "Horror" },
-        { name: "Mystery" },
-        { name: "Romance" },
-        { name: "Sci-fi" },
-        { name: "Slice of Life" },
-      ],
-    },
-  ];
   const [showAll, setShowAll] = useState(false);
 
-  const [is_loading, setIsLoading] = useState(false);
+  const [is_loading, setIsLoading] = useState(true);
 
   const [numberList, setNumberList] = useState(5);
   const extendMoreRanking = () => {
@@ -148,7 +116,7 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-      <HomeTags dataHomeTags={dataHomeTags[1]} />
+      <HomeTags />
       <div className="flex flex-col flex-wrap  pb-12 w-full">
         <div className="flex flex-row justify-between  border-b-2 font-bold  ">
           <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">

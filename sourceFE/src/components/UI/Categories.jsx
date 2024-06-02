@@ -3,6 +3,7 @@ import useCategory from "../../hooks/useCategory";
 import { getCategories } from "../../ultis/utilsCategory";
 import PropTypes from "prop-types";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
+import { preProcessingCategory } from "../../ultis/preProcessingCategory";
 
 export const Categories = ({ genres }) => {
   const [isDropdownNovelOpen, setIsDropdownNovelOpen] = useState(true);
@@ -50,7 +51,7 @@ export const Categories = ({ genres }) => {
         {isDropdownNovelOpen && (
           <div
             id="dropdown"
-            className="z-10 bg-white truncate flex flex-col flex-wrap max-h-[280px] mb-2"
+            className="z-10 bg-white truncate grid grid-cols-2 mb-2"
           >
             <a
               href={"/genres/novels/all"}
@@ -70,12 +71,7 @@ export const Categories = ({ genres }) => {
             {categoryData?.map((eachCategory, index) => (
               <a
                 href={
-                  "/genres/novels/" +
-                  eachCategory?.name
-                    .replace(/[^a-z0-9\s]/gi, "")
-                    .split(/\s+/)
-                    .join("-")
-                    .toLowerCase()
+                  "/genres/novels/" + preProcessingCategory(eachCategory?.name)
                 }
                 key={index}
                 className={

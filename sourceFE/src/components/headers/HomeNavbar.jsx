@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./css/HomeNavbar.css";
 import { Transition } from "@headlessui/react";
 
@@ -10,7 +10,10 @@ import {
   BrowseIcon,
 } from "./icon";
 import { ModalHeader } from "./ModalHeader";
-import { getCategories } from "../../ultis/utilsCategory";
+import {
+  getCategories,
+  getCategoriesByFilter,
+} from "../../ultis/utilsCategory";
 import useCategory from "../../hooks/useCategory";
 import { Loading } from "../UI/Loading";
 import useAuthen from "../../hooks/useAuthen";
@@ -22,36 +25,34 @@ function HomeNavbar() {
 
   const [clickProfile, setClickProfile] = useState(false);
   const modalRef = useRef(null);
-  
+  const linkRef = useRef(null);
+
   const handleClickProfile = () => {
     setClickProfile(!clickProfile);
   };
-  const [is_Loading, setIsLoading] = useState(false);
+  const [is_Loading, setIsLoading] = useState(true);
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       setClickProfile(false);
     }
   };
-  const {user, setUser,setIsAuth,setRole,role} = useAuthen();
-  const [infor,setInfor] = useState({});
+  const { user, setUser, setIsAuth, setRole, role } = useAuthen();
+  const [infor, setInfor] = useState({});
   const [Token, setToken] = useState({});
-  useEffect(()=>{ 
+
+  useEffect(() => {
     setInfor(JSON.parse(localStorage.getItem("inforUser")) || {});
-    setToken( JSON.parse(localStorage.getItem("Token")) ||{});
-  },[])
-  useEffect(() =>{
-    console.log("set thong tin va login",infor?.userName ,Token);
-    if(infor?.userName && Token?.role)
-    {
-      console.log("chay");
-        setUser({
-          'username' : infor?.userName || 'user',
-        })
-        setLogin(true)
-        
+    setToken(JSON.parse(localStorage.getItem("Token")) || {});
+  }, []);
+  useEffect(() => {
+    if (infor?.userName && Token?.role) {
+      setUser({
+        username: infor?.userName || "user",
+      });
+      setLogin(true);
     }
-  },[infor,Token])
-  
+  }, [infor, Token]);
+
   useEffect(() => {
     if (clickProfile) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -62,25 +63,46 @@ function HomeNavbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [clickProfile]);
+  const handleClick = (event) => {
+    event.preventDefault();
+    alert("Please login to use this feature!");
+  };
+  useEffect(() => {
+    if (linkRef.current) {
+      if (Token.id) {
+        linkRef.current.href = "/library";
+        linkRef.current.removeAttribute("rel");
+      } else {
+        linkRef.current.addEventListener("click", handleClick);
+      }
+    }
+
+    // Cleanup function
+    return () => {
+      if (linkRef.current) {
+        linkRef.current.removeEventListener("click", handleClick);
+      }
+    };
+  }, [Token]);
   const { categoryData, setCategoryData } = useCategory();
   useEffect(() => {
     setIsLoading(true);
-    getCategories().then((response) => {
+    getCategoriesByFilter().then((response) => {
       setCategoryData(response.categories);
       setIsLoading(false);
     });
   }, []);
-  const handleSignout = () =>{
-    console.log("sign out");
-    setUser({})
-    setIsAuth(false)
-    setRole(0)
-    setLogin(false)
-    setToken({})
-    localStorage.setItem("Token",JSON.stringify({}))
-    navigate("/login"); 
-  }
-  
+  const handleSignout = () => {
+    setClickProfile(false);
+    setUser({});
+    setIsAuth(false);
+    setRole(0);
+    setLogin(false);
+    setToken({});
+    localStorage.setItem("Token", JSON.stringify({}));
+    window.location.href = "/";
+  };
+
   return (
     <>
       <nav className="navbar">
@@ -116,8 +138,8 @@ function HomeNavbar() {
                   (!is_Loading ? (
                     <ModalHeader dataModal={categoryData} />
                   ) : (
-                    <div className="absolute top-full left-0 hover:cursor-auto max-h-[260px] h-[260px] max-w-[320px]">
-                      <div className="flex flex-col flex-wrap items-center justify-center max-h-[260px] h-[260px] max-w-[320px] w-[280px] bg-gray-800 rounded-lg pt-2">
+                    <div className="absolute top-full left-0 hover:cursor-auto max-h-[260px] h-[260px] h-fit">
+                      <div className="flex flex-col flex-wrap items-center justify-center max-h-[260px] h-[260px]  w-[600px] bg-gray-800 rounded-lg pt-2">
                         <Loading />
                       </div>
                     </div>
@@ -132,13 +154,11 @@ function HomeNavbar() {
                   <strong>Rankings</strong>
                 </a>
               </li>
-            </ul> 
-           
-          </div> 
-          
-         
+            </ul>
+          </div>
+
           <div className="flex flex-row items-center gap-4">
-          <a className="  " href="/search" rel="nofollow" title="Search">
+            <a className="  " href="/search" rel="nofollow" title="Search">
               <svg
                 viewBox="0 0 24 24"
                 width="24"
@@ -157,16 +177,16 @@ function HomeNavbar() {
               className="text-[17px] font-medium text-gray-500"
               href="/library"
               rel="nofollow"
+              ref={linkRef}
             >
               <strong>Library</strong>
             </a>
-          
 
             <div className=" relative">
               <i className="absolute dot dn pa t-0 r-0 rounded-full z-10"></i>
               {login == true ? (
                 <a
-                  className="block"
+                  className="block hover:scale-110	 hover:cursor-pointer hover:transition-all hover:duration-300  hover:bg-gray-800 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg"
                   href="###"
                   title="My Profile"
                   rel="nofollow"
@@ -190,7 +210,7 @@ function HomeNavbar() {
                   title="My Profile"
                   rel="nofollow"
                 >
-                Sign in
+                  Sign in
                 </a>
               )}
               {clickProfile && (
@@ -338,7 +358,9 @@ function HomeNavbar() {
                         href="###"
                         title="Sign Out"
                         className="block p-3 hover:bg-gray-600"
-                        onClick={()=>{handleSignout()}}
+                        onClick={() => {
+                          handleSignout();
+                        }}
                       >
                         Sign Out
                       </a>

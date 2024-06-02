@@ -5,7 +5,7 @@ import { getNovels } from "../../ultis/utilsNovel";
 import useNovel from "../../hooks/useNovel";
 import { Loading } from "../../components/UI/Loading";
 export const Ranking = () => {
-  const [is_Loading, setIsLoading] = useState(false);
+  const [is_Loading, setIsLoading] = useState(true);
   const {
     listNovel,
     setListNovel,
@@ -15,7 +15,6 @@ export const Ranking = () => {
     setPage: setPageNovel,
   } = useNovel();
   useEffect(() => {
-    setIsLoading(true);
     const newFilter = {
       ...filterNovel,
       page: 1,

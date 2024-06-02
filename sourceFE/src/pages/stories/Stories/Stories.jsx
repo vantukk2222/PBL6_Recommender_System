@@ -65,7 +65,6 @@ const Stories = () => {
     },
   ];
 
-  console.log(showChapter);
   return (
     <div className="p-4 w-[1080px] mx-auto bg-slate-50">
       <div>

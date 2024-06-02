@@ -3,7 +3,7 @@ import apiComment from "../api/apiComment";
 
 export const getComments = async (filter = {
     'page': 1,
-    'pageSize': 4,
+    'pageSize': 10,
     'sortField': 'rating',
     'sortOrder': 'desc'
 }) => {
