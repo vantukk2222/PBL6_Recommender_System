@@ -56,8 +56,6 @@ export const addCategory = async (data) => {
     return response;
 }
 export const deleteCategory = async (id) => {
-    if (id == null)
-        return 'Id can not null';
     const response = await apiCategory.deleteCategory(id);
     return response;
 }
