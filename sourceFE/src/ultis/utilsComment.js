@@ -10,6 +10,7 @@ export const getComments = async (filter = {
     const response = await apiComment.getComments(filter);
     const data = {
         'page': {
+            'total': response.data.total,
             'currentPage': response.data.currentPage,
             'totalPages': response.data.totalPages,
         },

@@ -8,6 +8,7 @@ import { PaginationNav1Presentation } from "../../components/pagination/Paginati
 export const Ranking = () => {
   const [is_Loading, setIsLoading] = useState(true);
   const [is_LoadingPage, setIsLoadingPage] = useState(false);
+  const [sortBy, setSortBy] = useState("powerStone");
   const {
     listNovel,
     setListNovel,
@@ -16,6 +17,7 @@ export const Ranking = () => {
     page: pageNovel,
     setPage: setPageNovel,
   } = useNovel();
+
   useEffect(() => {
     setIsLoadingPage(true);
     const newFilter = {
@@ -23,7 +25,7 @@ export const Ranking = () => {
       page: pageNovel?.currentPage || 1,
       pageSize: 20,
       sortOrder: "desc",
-      sortField: "powerStone",
+      sortField: sortBy || "powerStone",
     };
     getNovels(newFilter).then((data) => {
       setIsLoadingPage(false);
@@ -59,29 +61,31 @@ export const Ranking = () => {
                   className={
                     "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] bg-sky-100 text-blue-500 hover:cursor-pointer"
                   }
+                  onClick={() => {
+                    setSortBy("powerStone");
+                  }}
                 >
-                  Monthly
+                  PowerStone
                 </p>
                 <p
                   className={
                     "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px]  text-gray-400 hover:cursor-pointer"
                   }
+                  onClick={() => {
+                    setSortBy("views");
+                  }}
                 >
-                  Season
+                  View
                 </p>
                 <p
                   className={
                     "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px]  text-gray-400  hover:cursor-pointer"
                   }
+                  onClick={() => {
+                    setSortBy("averageRating");
+                  }}
                 >
-                  Annual
-                </p>
-                <p
-                  className={
-                    "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px]  text-gray-400  hover:cursor-pointer"
-                  }
-                >
-                  All-time
+                  Rating
                 </p>
               </div>
               {is_LoadingPage && (

@@ -29,8 +29,9 @@ const apiComment = {
     },
     getComments: (filter) => {
         let url = ''
+        if (!filter.novelId) url = `/comment?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}&accountId=${filter.accountId}`
         if (!filter.accountId) { url = `/comment?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}&novelId=${filter.novelId}` }
-        else {
+        if (filter.accountId && filter.novelId) {
             url = `/comment?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}&novelId=${filter.novelId}&accountId=${filter.accountId}`
             console.log("url: ", url);
         }

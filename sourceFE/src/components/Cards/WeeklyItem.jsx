@@ -8,7 +8,7 @@ import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
 export const WeeklyItem = ({ items }) => {
   return (
     <>
-      <div className="max-w-[110px] max-h[220px] h-[220px]  bg-white  ">
+      <div className="max-w-[110px] w-[110px] max-h[220px] h-[220px]  bg-white  ">
         <a href={"/content/" + items?._id} className="w-[110px] h-[139.5px]">
           {/* <img
             className="w-[110px] h-[139.5px]  w-[110px] h-[139.5px] ease-in-out delay-100 hover:-translate-y-1 hover:scale-105  duration-500"

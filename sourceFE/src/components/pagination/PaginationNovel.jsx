@@ -37,7 +37,7 @@ function PaginationNav1({
     let numberOfButtons =
       pageCount < visiblePageButtonCount ? pageCount : visiblePageButtonCount;
     const pageIndices = [pageIndex];
-    numberOfButtons--;
+    numberOfButtons;
     [...Array(numberOfButtons)].forEach((_item, itemIndex) => {
       const pageNumberBefore = pageIndices[0] - 1;
       const pageNumberAfter = pageIndices[pageIndices.length - 1] + 1;

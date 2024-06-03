@@ -17,10 +17,10 @@ export const RecommenderNovels = ({ dataRecommenderNovels }) => {
             Switch
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-3 pt-3">
+        <div className="flex flex-row flex-wrap w-full gap-3 justify-between pt-3">
           {Array.from({ length: dataRecommenderNovels?.length - 4 }).map(
             (_, index) => (
-              <div className="flex flex-row" key={index}>
+              <div className="flex flex-row w-[190px] " key={index}>
                 <a href={"/content/" + dataRecommenderNovels[index]?._id}>
                   <img
                     className=" rounded w-[65px] h-[90px] max-w-[65px] shadow-lg hover:underline   hover:cursor-pointer transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-102 duration-500"

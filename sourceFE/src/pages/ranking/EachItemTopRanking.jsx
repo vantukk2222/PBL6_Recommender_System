@@ -2,7 +2,37 @@ import PropTypes from "prop-types";
 import { formatNumber } from "./../../ultis/convertNumber";
 import { proxyUrl } from "../../api/apiProxy";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
+import { useState } from "react";
+import { addToLibrary } from "../../ultis/utilsAccount";
+import { toast } from "react-toastify";
+import ImageWithPlaceholder from "./../../components/UI/ImagePlaceHolder";
 export const EachItemTopRanking = ({ item, rank }) => {
+  const Token = JSON.parse(localStorage.getItem("Token"));
+
+  const [isAddToLibrary, setIsAddToLibrary] = useState(false);
+  const handleAddtoLibrary = () => {
+    setIsAddToLibrary(true);
+    if (Token?.id) {
+      addToLibrary(Token.id, item?._id)
+        .then(() => {
+          setIsAddToLibrary(false);
+          toast.success(`Add to library successfully`, {
+            autoClose: 1000,
+          });
+        })
+        .catch((error) => {
+          setIsAddToLibrary(false);
+          toast.error(`Failed to add to library: ${error.message}`, {
+            autoClose: 1000,
+          });
+        });
+    } else {
+      setIsAddToLibrary(false);
+
+      alert("Please login to add to library");
+      window.location.href = "/login";
+    }
+  };
   let color;
   if (rank === 1) {
     color = "text-red-400	";
@@ -21,11 +51,16 @@ export const EachItemTopRanking = ({ item, rank }) => {
       >
         <p>{rank < 10 ? "0" + rank : rank}</p>
       </div>{" "}
-      <div className="image_pund w-[90px] h-[120px]">
-        <img
-          className="w-[90px] h-[120px] rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
-          src={Url_image}
-          title={item?.name}
+      <div
+        className="image_pund w-[90px] h-[120px]"
+        onClick={() => {
+          window.location.href = `/content/${item?._id}`;
+        }}
+      >
+        <ImageWithPlaceholder
+          classname="w-[90px] h-[120px] rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
+          source={Url_image}
+          title_name={item?.name}
         />
       </div>
       <div className="content_pund w-[510px] max-w-[510px] flex flex-col pl-2">
@@ -87,14 +122,19 @@ export const EachItemTopRanking = ({ item, rank }) => {
         <a
           className="flex flex-row hover:cursor-pointer mr-3 py-2 space-x-1 h-fit"
           title="Add to library"
+          onClick={() => {
+            handleAddtoLibrary();
+          }}
         >
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-6">
-            <path
-              d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10zm-11-1H6v2h5v5h2v-5h5v-2h-5V6h-2v5z"
-              fill="#004AF4"
-            />
-          </svg>
-          <span>Add</span>
+          {!isAddToLibrary && (
+            <svg viewBox="0 0 24 24" fill="none" className="h-4 w-6">
+              <path
+                d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10zm-11-1H6v2h5v5h2v-5h5v-2h-5V6h-2v5z"
+                fill="#004AF4"
+              />
+            </svg>
+          )}
+          <span>{isAddToLibrary ? "Adding..." : "ADD"}</span>
         </a>
         <a className="flex  hover:cursor-pointer text-white bg-blue-500 h-fit px-3 py-1 rounded-xl">
           <span>Read</span>
