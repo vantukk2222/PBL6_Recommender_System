@@ -10,6 +10,7 @@ import {
   DeleteIcon,
   EditIcon,
   LeftIcon,
+  ResetIcon,
   RightIcon,
   SearchIcon,
 } from "../../components/headers/icon.jsx";
@@ -22,20 +23,29 @@ const AdminDashboard = () => {
     useAccount();
   // const handleFilter = (list) =>{
   //   return list.filter((value)=>(value?.role?.name !== 'admin' ));
-     
+
   // }
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    setIsLoading(true)
     getAccounts(filter)
       .then((res) => {
         console.log("call api", res);
         // const listAcc  = handleFilter(res.accounts)
         // console.log('list',listAcc);
-        setListAccount(res.accounts);
+       // setListAccount(res.accounts);
+        const list = res.accounts
+        if (list.length > 0) {
+          setListAccount(list);
+        } else {
+          toast.error(`Can't find this account!`, {
+            autoClose: 1000,
+          });
+        }
         setIsLoading(false);
         setPage({
-          totalPages :res.page.totalPages,
-          currentPage :res.page.currentPage
+          totalPages: res.page.totalPages,
+          currentPage: res.page.currentPage
         })
       })
       .catch((err) => {
@@ -46,7 +56,7 @@ const AdminDashboard = () => {
       });
   }, [filter]);
 
-  
+
   const searchInputRef = useRef(null);
   const [isShowModal, setIsShowModal] = useState(false);
   const [userSelect, setUserSelect] = useState({});
@@ -76,8 +86,7 @@ const AdminDashboard = () => {
     updateAccount(acc)
       .then((res) => {
         // console.log(res.data);
-        if(res.status == 200)
-        {
+        if (res.status == 200) {
           setListAccount((prev) =>
             prev.map((account) => (account._id === res.data._id ? res.data : account))
           );
@@ -96,25 +105,25 @@ const AdminDashboard = () => {
         setUserSelect({});
       });
   };
-  const handleDeleteAcc = (acc) =>{
+  const handleDeleteAcc = (acc) => {
     const userConfirmed = window.confirm("Are you sure you want to delete this account?");
 
-  // If the user confirmed, proceed with the deletion
-  if (userConfirmed) {
-    deleteAccount(acc._id).then((res) => {
-      if (res.status === 200 || res.status === 202) {
-        setListAccount((prev) => prev.filter((account) => account._id !== acc._id));
-      }
-      toast.success(`Deleted account successful!`, {
-        autoClose: 1000,
+    // If the user confirmed, proceed with the deletion
+    if (userConfirmed) {
+      deleteAccount(acc._id).then((res) => {
+        if (res.status === 200 || res.status === 202) {
+          setListAccount((prev) => prev.filter((account) => account._id !== acc._id));
+        }
+        toast.success(`Deleted account successful!`, {
+          autoClose: 1000,
+        });
+      }).catch((err) => {
+        toast.error(`Couldn't remove account!`, {
+          autoClose: 1000,
+        });
+        console.log('remove acc err: ', err);
       });
-    }).catch((err) => {
-      toast.error(`Couldn't remove account!`, {
-        autoClose: 1000,
-      });
-      console.log('remove acc err: ', err);
-    });
-  }
+    }
   }
   const handlePageChange = (newPage) => {
     setFilter((prevFilter) => ({
@@ -122,15 +131,15 @@ const AdminDashboard = () => {
       page: newPage,
     }));
   };
-  // const handleSearch = () => {
-  //   const query = searchInputRef.current.value;
-  //   console.log('listacc',listAccount);
-  //   const filtered = listAccount.filter(account => 
-  //     account?.name.toLowerCase().includes(query.toLowerCase())
-  //   );
-  //   setListAccount(filtered);
-  // };
-  // console.log("userselect", userSelect);
+  const [searchText, setSearchText] = useState("")
+  const handleSearch = () => {
+    console.log('searchText: ', searchText);
+    setFilter((prev) => ({
+      ...prev,
+      search: searchText
+    }))
+  };
+  console.log("userselect", userSelect);
   const customStyles = {
     content: {
       top: "55%",
@@ -146,21 +155,32 @@ const AdminDashboard = () => {
   return !isLoading ? (
     <div className=" flex flex-col justify-start items-center mx-auto bg-slate-200 rounded-xl w-screen  max-w-[1080px]  ">
       <div>
-      <AdBanner name={""}/>
+        <AdBanner name={""} />
       </div>
       <div className="w-[1020px] mt-2 h-[60px] flex items-center justify-between  bg-slate-500 dark:bg-gray-700 p-4 rounded-t-lg shadow">
         <div className="flex-none w-[20px] h-[20px]"></div>
         <div className="shrink w-[300px] h-[40px]">
-          <div className="flex bg-gray-200 rounded-lg px-4 py-2">
-            <button className="mx-2" >
-              <SearchIcon classname="text-gray-500 hover:bg-gray-400" />
+          <div className="flex bg-gray-200 relative rounded-lg px-4 py-2">
+            <button className="mx-2 hover:text-blue-500" onClick={handleSearch} >
+              <SearchIcon classname="text-gray-500 " />
             </button>
             <input
               type="text"
               placeholder="Search"
-              ref={searchInputRef} 
+              onChange={(e) => setSearchText(e.target.value)}
+              value={searchText}
               className="bg-transparent border-none outline-none"
             />
+            <button className="mx-4 absolute inset-y-0 right-0 hover:text-green-400 "
+              onClick={() => {
+                setSearchText('')
+                setFilter((prev) => ({
+                  ...prev,
+                  search: ''
+                }))
+              }}>
+              <ResetIcon classname="text-gray-500 " />
+            </button>
             {/* <i className="fas fa-search text-gray-500"></i> */}
           </div>
         </div>
@@ -220,27 +240,27 @@ const AdminDashboard = () => {
                     {formatDate(account?.updatedAt)}
                   </td>
                   <td className="px-6 py-4 flex flex-row justify-center item-center">
-                    {account?.role?.name==='admin' ? (
-                    <div>
+                    {account?.role?.name === 'admin' ? (
+                      <div>
 
-                    </div>):(
+                      </div>) : (
                       <>
-                      <div
-                      onClick={() => {
-                        openModal(account);
-                      }}
-                      className="mt-2 font-medium text-blue-300 dark:text-blue-500 hover:text-blue-700 "
-                    >
-                      <EditIcon></EditIcon>
-                    </div>
-                    <button
-                      onClick={()=>{
-                        handleDeleteAcc(account)
-                      }}
-                      className="mx-2 mt-2 font-medium text-red-300 dark:text-red-500 hover:text-red-700"
-                    >
-                      <DeleteIcon></DeleteIcon>
-                    </button>
+                        <div
+                          onClick={() => {
+                            openModal(account);
+                          }}
+                          className="mt-2 font-medium text-blue-300 dark:text-blue-500 hover:text-blue-700 "
+                        >
+                          <EditIcon></EditIcon>
+                        </div>
+                        <button
+                          onClick={() => {
+                            handleDeleteAcc(account)
+                          }}
+                          className="mx-2 mt-2 font-medium text-red-300 dark:text-red-500 hover:text-red-700"
+                        >
+                          <DeleteIcon></DeleteIcon>
+                        </button>
                       </>
                     )}
                   </td>

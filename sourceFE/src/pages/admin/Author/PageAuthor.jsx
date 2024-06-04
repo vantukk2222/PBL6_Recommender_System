@@ -9,6 +9,7 @@ import {
     LeftIcon,
     RightIcon,
     SearchIcon,
+    ResetIcon
 } from "../../../components/headers/icon.jsx";
 import { getAuthors, updateAuthor, addAuthor, deleteAuthor } from "../../../ultis/utilsAuthor.js";
 import useAuthor from "../../../hooks/useAuthor.js";
@@ -36,7 +37,16 @@ const PageAuthor = () => {
                 console.log("call api", res);
                 // const listAcc  = handleFilter(res.accounts)
                 // console.log('list',listAcc);
-                setListAuthor(res.authors);
+                const list = res.authors
+                if(list.length > 0)
+                {
+                    setListAuthor(res.authors);
+                }else{
+                    toast.error(`Can't find this author!`, {
+                        autoClose: 1000,
+                    });
+                }
+                
                 setIsLoading(false);
                 setPage({
                     totalPages: res.page.totalPages,
@@ -68,6 +78,16 @@ const PageAuthor = () => {
         }));
 
     };
+    const[searchText, setSearchText] = useState("")
+    const handleSearch = () => {
+      console.log('searchText: ',searchText);
+      setFilter((prev)=>({
+        ...prev,
+        search : searchText
+      }))
+    };
+
+
     // console.log(userSelect);
     const handleSubmitEditUser = (e) => {
         e.preventDefault();
@@ -89,7 +109,7 @@ const PageAuthor = () => {
                 closeModal()
             })
             .catch((err) => {
-                toast.success(`Couldn't update author!`, {
+                toast.error(`Couldn't update author!`, {
                     autoClose: 1000,
                 });
                 closeModal()
@@ -140,16 +160,27 @@ const PageAuthor = () => {
             <div className="w-[1020px] mt-2 h-[60px] flex items-center justify-between  bg-slate-500 dark:bg-gray-700 p-4 rounded-t-lg shadow">
                 <div className="flex-none w-[20px] h-[20px]"></div>
                 <div className="shrink w-[300px] h-[40px]">
-                    <div className="flex bg-gray-200 rounded-lg px-4 py-2">
-                        <button className="mx-2" >
-                            <SearchIcon classname="text-gray-500 hover:bg-gray-400" />
+                    <div className="flex bg-gray-200 relative  rounded-lg px-4 py-2">
+                        <button className="mx-2 hover:text-blue-500" onClick={handleSearch}>
+                            <SearchIcon classname="text-gray-500 " />
                         </button>
                         <input
                             type="text"
                             placeholder="Search"
-                            ref={searchInputRef}
+                            onChange={(e)=>setSearchText(e.target.value)}
+                            value={searchText}
                             className="bg-transparent border-none outline-none"
                         />
+                        <button  className="mx-4 absolute inset-y-0 right-0 hover:text-green-400 "
+                        onClick={()=>{
+                            setSearchText('')
+                            setFilter((prev)=>({
+                                ...prev,
+                                search : ''
+                            }))
+                        }}>
+                            <ResetIcon classname="text-gray-500 hover:bg-gray-400"/>
+                        </button>
                         {/* <i className="fas fa-search text-gray-500"></i> */}
                     </div>
                 </div>

@@ -7,10 +7,11 @@ export const NovelProvider = ({ children }) => {
   const [listNovel, setListNovel] = useState([]);
   const [filter, setFilter] = useState({
     page: 1,
-    pageSize: 10,
+    pageSize: 20,
     sortField: "views",
     sortOrder: "desc",
     categoryId: "",
+    search:'',
   });
   const [page, setPage] = useState({
     totalPages: 1,

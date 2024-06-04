@@ -8,6 +8,7 @@ import {
     DeleteIcon,
     EditIcon,
     LeftIcon,
+    ResetIcon,
     RightIcon,
     SearchIcon,
 } from "../../../components/headers/icon.jsx";
@@ -39,7 +40,15 @@ const PageNovel = () => {
                 console.log("call api", res);
                 // const listAcc  = handleFilter(res.accounts)
                 // console.log('list',listAcc);
-                setListNovel(res.novels);
+                //setListNovel(res.novels);
+                const list = res.novels
+                if (list.length > 0) {
+                    setListNovel(list);
+                } else {
+                    toast.error(`Can't find this novel!`, {
+                        autoClose: 1000,
+                    });
+                }
                 setIsLoading(false);
                 setPage({
                     totalPages: res.page.totalPages,
@@ -121,6 +130,14 @@ const PageNovel = () => {
             page: newPage,
         }));
     };
+    const[searchText, setSearchText] = useState("")
+    const handleSearch = () => {
+      console.log('searchText: ',searchText);
+      setFilter((prev)=>({
+        ...prev,
+        search : searchText
+      }))
+    };
     const customStyles = {
         content: {
             top: "55%",
@@ -131,26 +148,26 @@ const PageNovel = () => {
             transform: "translate(-50%, -50%)",
         },
     };
-    const handleDeleteNovel = (acc) =>{
+    const handleDeleteNovel = (acc) => {
         const userConfirmed = window.confirm("Are you sure you want to delete this novel?");
-    
-      // If the user confirmed, proceed with the deletion
-      if (userConfirmed) {
-        deleteNovel(acc._id).then((res) => {
-          if (res.status === 200 || res.status === 202) {
-            setListNovel((prev) => prev.filter((novel) => novel._id !== acc._id));
-            toast.success(`Delete successful!`, {
-                autoClose: 1000,
+
+        // If the user confirmed, proceed with the deletion
+        if (userConfirmed) {
+            deleteNovel(acc._id).then((res) => {
+                if (res.status === 200 || res.status === 202) {
+                    setListNovel((prev) => prev.filter((novel) => novel._id !== acc._id));
+                    toast.success(`Delete successful!`, {
+                        autoClose: 1000,
+                    });
+                }
+            }).catch((err) => {
+                toast.success(`Could not remove this novel!`, {
+                    autoClose: 1000,
+                });
+                //alert('Could not remove this novel');
             });
-          }
-        }).catch((err) => {
-            toast.success(`Could not remove this novel!`, {
-                autoClose: 1000,
-              });
-          //alert('Could not remove this novel');
-        });
-      }
-      }
+        }
+    }
     return !isLoading ? (
         <div className=" flex flex-col justify-start items-center mx-auto bg-slate-200 rounded-xl w-screen  max-w-[1080px]  ">
             <div>
@@ -159,16 +176,27 @@ const PageNovel = () => {
             <div className="w-[1020px] mt-2 h-[60px] flex items-center justify-between  bg-slate-500 dark:bg-gray-700 p-4 rounded-t-lg shadow">
                 <div className="flex-none w-[20px] h-[20px]"></div>
                 <div className="shrink w-[300px] h-[40px]">
-                    <div className="flex bg-gray-200 rounded-lg px-4 py-2">
-                        <button className="mx-2" >
-                            <SearchIcon classname="text-gray-500 hover:bg-gray-400" />
+                    <div className="flex bg-gray-200 relative rounded-lg px-4 py-2">
+                        <button className="mx-2 hover:text-blue-500" onClick={handleSearch} >
+                            <SearchIcon classname="text-gray-500 " />
                         </button>
                         <input
                             type="text"
                             placeholder="Search"
-                            ref={searchInputRef}
+                            onChange={(e)=>setSearchText(e.target.value)}
+                            value={searchText}
                             className="bg-transparent border-none outline-none"
                         />
+                        <button  className="mx-4 absolute inset-y-0 right-0 hover:text-green-400 "
+                        onClick={()=>{
+                            setSearchText('')
+                            setFilter((prev)=>({
+                                ...prev,
+                                search : ''
+                            }))
+                        }}>
+                            <ResetIcon classname="text-gray-500 hover:bg-gray-400"/>
+                        </button>
                         {/* <i className="fas fa-search text-gray-500"></i> */}
                     </div>
                 </div>
