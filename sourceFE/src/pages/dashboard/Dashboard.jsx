@@ -40,13 +40,13 @@ const Dashboard = () => {
     setPage,
   } = useNovel();
   useEffect(() => {
-    NovelRecommender(Token?.id || "017173780861571831")
-      .then((data) => {
-        setIdNovelRecommender(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    // NovelRecommender(Token?.id || "017173780861571831")
+    //   .then((data) => {
+    //     setIdNovelRecommender(data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
     const newFilter = {
       ...filter,
       sortField: "powerStone",
@@ -123,17 +123,17 @@ const Dashboard = () => {
         <div className="flex flex-col justify-between">
           <div className="list-ranking flex flex-row flex-wrap justify-between">
             <EachRanking
-              dataEachRanking={listNovel?.topranking}
+              dataEachRanking={listNovel?.topranking?.slice(0, 10)}
               numberList={numberList}
               rank_tilte="Power Ranking"
             />
             <EachRanking
-              dataEachRanking={listNovel?.weeklyfeatured}
+              dataEachRanking={listNovel?.weeklyfeatured.slice(0, 10)}
               numberList={numberList}
               rank_tilte="Top View"
             />
             <EachRanking
-              dataEachRanking={listNovel?.ratingRanking}
+              dataEachRanking={listNovel?.ratingRanking.slice(0, 10)}
               numberList={numberList}
               rank_tilte="Top Vote"
             />
@@ -181,14 +181,9 @@ const Dashboard = () => {
           </h1>
         </div>
         <div className="grid grid-cols-8 gap-4">
-          {Array.from({ length: listNovel?.weeklyfeatured?.length - 2 }).map(
-            (_, index) => (
-              <WeeklyItem
-                key={index}
-                items={listNovel?.weeklyfeatured[index]}
-              />
-            )
-          )}
+          {listNovel?.weeklyfeatured?.slice(0, 8).map((item, index) => (
+            <WeeklyItem key={index} items={item} />
+          ))}
         </div>
       </div>
     </div>

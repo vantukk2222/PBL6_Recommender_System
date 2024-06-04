@@ -3,11 +3,10 @@ import axiosClient from "./AxiosConfig";
 
 const apiNovel = {
     getNovels: (filter) => {
-        let url = `/novel?page=${filter.page}
-        &pageSize=${filter.pageSize}
-        &sortField=${filter.sortField}
-        &sortOrder=${filter.sortOrder}
-        &search=${filter.search}`
+        let url = `/novel?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}`
+        if (filter.search)
+            url +=
+                `&search=${filter.search}`
         return axiosClient.get(url)
     },
     getNovelsByCateID: (filter) => {

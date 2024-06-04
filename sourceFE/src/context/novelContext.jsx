@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 const NovelContext = createContext({});
@@ -11,13 +11,20 @@ export const NovelProvider = ({ children }) => {
     sortField: "views",
     sortOrder: "desc",
     categoryId: "",
-    search:'',
+    search: "",
   });
   const [page, setPage] = useState({
     totalPages: 1,
     currentPage: 1,
   });
+  const [search, setSearch] = useState(() => {
+    const savedSearch = localStorage.getItem("search");
+    return savedSearch ? JSON.parse(savedSearch) : "";
+  });
 
+  useEffect(() => {
+    localStorage.setItem("search", JSON.stringify(search));
+  }, [search]);
   const contextNovelData = {
     novelData,
     setNovelData,
@@ -27,6 +34,8 @@ export const NovelProvider = ({ children }) => {
     setFilter,
     page,
     setPage,
+    search,
+    setSearch,
   };
   return (
     <NovelContext.Provider value={contextNovelData}>

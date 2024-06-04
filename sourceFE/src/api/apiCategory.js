@@ -12,12 +12,10 @@ const apiCategory = {
         return axiosClient.get(url)
     },
     getCategoriesbyFilter: (filter) => {
-        let url = `/category?page=${filter.page}
-        &pageSize=${filter.pageSize}
-        &sortField=${filter.sortField}
-        &sortOrder=${filter.sortOrder}
-        &search=${filter.search}`
-        console.log('get category url',url)
+        let url = `/category?page=${filter.page}&pageSize=${filter.pageSize}&sortField=${filter.sortField}&sortOrder=${filter.sortOrder}`
+        if (filter.search)
+            url +=
+                `&search=${filter.search}`
         return axiosClient.get(url)
     },
     getAllCategory: () => {
