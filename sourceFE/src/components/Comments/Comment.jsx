@@ -31,9 +31,11 @@ const Comment = ({ idCate }) => {
     };
 
     getComments(newFilter).then((res) => {
+      console.log("res: ", res);
       setListComment(res.comments);
       setIsLoadingComment(false);
       setPage({
+        total: res.page.total,
         totalPages: res.page.totalPages,
         currentPage: res.page.currentPage,
       });
@@ -41,17 +43,17 @@ const Comment = ({ idCate }) => {
   }, [idCate, page?.currentPage, sortState]);
   const arr = [1, 2, 3, 4, 5];
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full">
       <p
         onClick={() => {
           console.log(listComment);
         }}
       ></p>
-      <div className="grid grid-cols-2 gap-2 border-y-[1px] border-slate-400 my-2">
-        <div className="border-r-[1px] border-r-slate-400 p-2">
+      <div className="gap-2 border-y-[1px] border-slate-400 my-2 w-full flex">
+        <div className="border-r-[1px] border-r-slate-400 p-2 flex-1">
           <RatingsDistribution data={{ axx: "123" }} />
         </div>
-        <div>
+        <div className="flex-1">
           <RatingBar idCate={idCate} />
         </div>
       </div>
@@ -97,9 +99,9 @@ const Comment = ({ idCate }) => {
       )}
       <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
         <PaginationNav1Presentation
-          pageIndex={page?.currentPage}
+          pageIndex={page?.currentPage || 1}
           setPageIndex={setPage}
-          pageCount={page?.totalPages}
+          pageCount={page?.totalPages || 1}
         />
       </div>
     </div>

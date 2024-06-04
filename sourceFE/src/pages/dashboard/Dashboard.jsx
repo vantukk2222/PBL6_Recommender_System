@@ -14,7 +14,10 @@ import useAuthor from "../../hooks/useAuthor";
 import { EachRanking } from "../../components/Cards/EachRanking";
 import { EachItemTopRanking } from "./../ranking/EachItemTopRanking";
 import { Loading } from "../../components/UI/Loading";
+import { NovelRecommender } from "../../api/apiRecommender";
+import { toast } from "react-toastify";
 const Dashboard = () => {
+  const Token = JSON.parse(localStorage.getItem("Token"));
   const [showAll, setShowAll] = useState(false);
 
   const [is_loading, setIsLoading] = useState(true);
@@ -24,6 +27,7 @@ const Dashboard = () => {
     setShowAll(!showAll);
     setNumberList(numberList === 5 ? 10 : 5);
   };
+  const [idNovelRecommender, setIdNovelRecommender] = useState();
 
   const {
     novelData,
@@ -36,31 +40,74 @@ const Dashboard = () => {
     setPage,
   } = useNovel();
   useEffect(() => {
+    NovelRecommender(Token?.id || "017173780861571831")
+      .then((data) => {
+        setIdNovelRecommender(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     const newFilter = {
       ...filter,
       sortField: "powerStone",
       sortOrder: "desc",
       pageSize: 10,
     };
+    const ratingFilter = {
+      ...filter,
+      sortField: "averageRating",
+    };
 
+    console.log("list ID", idNovelRecommender);
     setIsLoading(true);
-    getNovels(newFilter).then((data) => {
-      setNovelData(data);
-      setListNovel((prevState) => ({
-        ...prevState,
-        topranking: data.novels,
-      }));
-      setPage({
-        currentPage: data.page.currentPage,
-        totalPages: data.page.totalPages,
+    Promise.all([
+      getNovels(newFilter),
+      getNovels(filter),
+      getNovels(ratingFilter),
+    ])
+      .then(([data1, data2, data3, data4]) => {
+        setNovelData(data1);
+        setListNovel((prevState) => ({
+          ...prevState,
+          topranking: data1.novels,
+          ratingRanking: data3.novels,
+          weeklyfeatured: data2.novels,
+        }));
+        setPage({
+          currentPage: data1.page.currentPage,
+          totalPages: data1.page.totalPages,
+        });
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error);
+        setIsLoading(false);
       });
-      setIsLoading(false);
-    });
+    // getNovels(newFilter).then((data) => {
+    //   setNovelData(data);
+    //   setListNovel((prevState) => ({
+    //     ...prevState,
+    //     topranking: data.novels,
+    //   }));
+    //   setPage({
+    //     currentPage: data.page.currentPage,
+    //     totalPages: data.page.totalPages,
+    //   });
+    //   setIsLoading(false);
+    // });
+    // getNovels(filter).then((data) => {
+    //   setNovelData(data);
+    //   setListNovel((prevState) => ({
+    //     ...prevState,
+    //     weeklyfeatured: data.novels,
+    //   }));
+    //   setIsLoading(false);
+    // });
   }, []);
 
   return !is_loading ? (
     <div className=" flex flex-col justify-end items-center mx-auto  w-screen max-w-[1080px]">
-      <Banner />
+      <Banner setIsLoading={setIsLoading} />
       <div className="flex flex-col w-full  pb-12 ">
         <div className="flex flex-row justify-between  border-b-2 font-bold  ">
           <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
@@ -68,13 +115,13 @@ const Dashboard = () => {
           </h1>
           <a
             className="uppercase text-blue-600 text-[16px] hover:underline hover:cursor-pointer "
-            href="/ranking/fanfic/..."
+            href="/ranking/"
           >
             More
           </a>
         </div>
         <div className="flex flex-col justify-between">
-          <div className="list-ranking grid grid-cols-3">
+          <div className="list-ranking flex flex-row flex-wrap justify-between">
             <EachRanking
               dataEachRanking={listNovel?.topranking}
               numberList={numberList}
@@ -83,12 +130,12 @@ const Dashboard = () => {
             <EachRanking
               dataEachRanking={listNovel?.weeklyfeatured}
               numberList={numberList}
-              rank_tilte="Collection Ranking"
+              rank_tilte="Top View"
             />
             <EachRanking
-              dataEachRanking={listNovel?.topranking}
+              dataEachRanking={listNovel?.ratingRanking}
               numberList={numberList}
-              rank_tilte="Active Ranking"
+              rank_tilte="Top Vote"
             />
           </div>
           {!showAll ? (
@@ -117,20 +164,6 @@ const Dashboard = () => {
         </div>
       </div>
       <HomeTags />
-      <div className="flex flex-col flex-wrap  pb-12 w-full">
-        <div className="flex flex-row justify-between  border-b-2 font-bold  ">
-          <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
-            Potential Starlet
-          </h1>
-        </div>
-        <div className="grid grid-cols-8 space-between">
-          {Array.from({ length: listNovel?.topranking?.length - 2 }).map(
-            (_, index) => (
-              <WeeklyItem key={index} items={listNovel?.topranking[index]} />
-            )
-          )}
-        </div>
-      </div>
       <div className="flex flex-row ">
         <div style={{ flex: 6 }}>
           <SelectionImage dataSelectionImage={listNovel?.topranking} />

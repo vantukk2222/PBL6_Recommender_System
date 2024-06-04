@@ -187,7 +187,6 @@ function HomeNavbar() {
             </a>
 
             <div className=" relative">
-              <i className="absolute dot dn pa t-0 r-0 rounded-full z-10"></i>
               {login == true ? (
                 <a
                   className="block hover:scale-110	 hover:cursor-pointer hover:transition-all hover:duration-300  hover:bg-gray-800 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg"
@@ -224,7 +223,7 @@ function HomeNavbar() {
                 >
                   <div className="flex p-3 border-b">
                     <a
-                      href="/profile/4327849712"
+                      href={"/profile/" + Token?.id}
                       title="My Profile"
                       className="flex-shrink-0"
                     >
@@ -232,131 +231,24 @@ function HomeNavbar() {
                         width="56"
                         height="56"
                         className="mr-2"
-                        src="//user-pic.webnovel.com/userheadimg/4327849712-10/200.jpg?uut=1716548842206&imageMogr2/quality/80"
+                        src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
                         alt="user"
                       />
                     </a>
                     <div>
                       <div className="flex items-center mb-1">
                         <a
-                          href="/profile/4327849712"
+                          href={"/profile/" + Token?.id}
                           title="My Profile"
                           className="font-bold text-lg truncate"
                         >
                           {user?.username}
                         </a>
-                        <a
-                          href="/level"
-                          title="My level"
-                          className="ml-1 text-sm font-medium"
-                        >
-                          Lv 1
-                        </a>
-                      </div>
-                      <div className="flex">
-                        <a
-                          className="flex items-center mr-4"
-                          href="/bill/fastpass"
-                          title="Fast pass"
-                        >
-                          <img
-                            className="w-5 h-5"
-                            src="//www.yueimg.com/en/images/fastpass.deb1e01a.png"
-                            alt="fastpass"
-                          />
-                          <em className="ml-1 font-bold">0</em>
-                        </a>
-                        <a
-                          className="flex items-center"
-                          href="/bill/power"
-                          title="Power Stones"
-                        >
-                          <img
-                            className="w-5 h-5"
-                            src="//www.yueimg.com/en/images/power.dfd3f629.png"
-                            alt="power"
-                          />
-                          <em className="ml-1 font-bold">1</em>
-                        </a>
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center p-2 border-b">
-                    <a
-                      className="flex items-center mr-4"
-                      href="/bill/coin"
-                      title="Coins"
-                      data-report-eid="qi_A13"
-                    >
-                      <img
-                        className="w-6 h-6 mr-1"
-                        src="//www.yueimg.com/en/images/coin.2d25dfa5.png"
-                        alt="coin"
-                      />
-                      <em className="font-bold">0</em>
-                    </a>
-                    <a
-                      href="###"
-                      className="text-sm font-medium"
-                      data-report-eid="qi_A14"
-                    >
-                      Get More
-                    </a>
-                  </div>
-                  <div className="p-2 border-b">
-                    <section className="relative p-3 border rounded-md bg-warning-gradient">
-                      <h5 className="font-bold text-lg mb-1">Get Membership</h5>
-                      <p className="text-xs mb-2">Get Extra 60% Bonus</p>
-                      <span className="btn btn-xs btn-warning">Go</span>
-                      <a
-                        href="###"
-                        className="absolute inset-0"
-                        data-report-eid="qi_A_membership"
-                        title="Get Membership"
-                      >
-                        <span className="sr-only">more</span>
-                      </a>
-                    </section>
-                  </div>
+
                   <ul>
-                    <li>
-                      <a
-                        href="###"
-                        title="show task panel"
-                        className="block p-3 hover:bg-gray-600"
-                        data-active-type="1"
-                      >
-                        <strong className="block">Earn Rewards</strong>
-                        <small className="text-xs">by check-in and more</small>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/giftcard"
-                        title="Redeem"
-                        className="block p-3 hover:bg-gray-600"
-                      >
-                        Redeem
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/transactions"
-                        title="Purchase History"
-                        className="block p-3 hover:bg-gray-600"
-                      >
-                        Purchase History
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/events"
-                        title="Inbox"
-                        className="block p-3 hover:bg-gray-600"
-                      >
-                        Inbox
-                      </a>
-                    </li>
                     <li>
                       <a
                         href="###"

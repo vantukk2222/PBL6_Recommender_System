@@ -14,6 +14,7 @@ export const CommentProvider = ({ children }) => {
     novelId: "",
   });
   const [page, setPage] = useState({
+    total: 0,
     totalPages: 1,
     currentPage: 1,
   });

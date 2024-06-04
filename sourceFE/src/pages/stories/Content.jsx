@@ -17,15 +17,15 @@ import useNovel from "../../hooks/useNovel";
 import { WeeklyItem } from "../../components/Cards/WeeklyItem";
 const Content = () => {
   const { idCate } = useParams();
-  const [dataNovel, setDataNovel] = useState(null);
+  // const [dataNovel, setDataNovel] = useState(null);
   const [is_Loading, setIsLoading] = useState(true);
   const infor = JSON.parse(localStorage.getItem("Token")) || {};
 
   const [isAddToLibrary, setIsAddToLibrary] = useState(false);
   const handleAddtoLibrary = () => {
     setIsAddToLibrary(true);
-    if (infor.id) {
-      addToLibrary(infor.id, dataNovel?._id)
+    if (infor?.id) {
+      addToLibrary(infor?.id, dataNovel?._id)
         .then(() => {
           setIsAddToLibrary(false);
           toast.success(`Add to library successfully`, {
@@ -45,8 +45,8 @@ const Content = () => {
   };
 
   const {
-    novelData,
-    setNovelData,
+    novelData: dataNovel,
+    setNovelData: setDataNovel,
     listNovel,
     setListNovel,
     filter,
@@ -55,10 +55,15 @@ const Content = () => {
     setPage,
   } = useNovel();
   useEffect(() => {
-    getNovel(idCate).then((res) => {
-      setDataNovel(res);
-      setIsLoading(false);
-    });
+    getNovel(idCate)
+      .then((res) => {
+        setDataNovel(res);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsLoading(false);
+      });
     if (infor?.id) {
       const data_History = {
         account: infor.id,
@@ -66,10 +71,10 @@ const Content = () => {
         lastReadChapter: 1,
         lastReadDate: new Date().toISOString().split("T")[0],
       };
-      const addLIbrary = async () => {
+      const addtoHistory = async () => {
         await addHistory(data_History);
       };
-      addLIbrary();
+      addtoHistory();
     }
   }, [idCate]);
   let data = {
@@ -121,7 +126,7 @@ const Content = () => {
                   <a
                     href={
                       "/genres/novels/" +
-                      preProcessingCategory(dataNovel?.category?.name)
+                      preProcessingCategory(dataNovel?.category?.name || "NaN")
                     }
                   >
                     <span className="font-bold">
@@ -211,7 +216,10 @@ const Content = () => {
                   );
                 })}
               </div>
-              <p className="text-xl ml-2">{dataNovel?.rating} (48 ratings)</p>
+              <p className="text-xl ml-2">
+                {dataNovel?.averageRating}{" "}
+                {"  " + dataNovel?.ratingCount + " ratings"}
+              </p>
             </div>
 
             <div className="icons">
@@ -283,17 +291,17 @@ const Content = () => {
         </div>
 
         <div className="grid grid-cols-8 space-between">
-          {Array.from({ length: listNovel?.recommenderEachNovel?.length - 2 }).map(
-            (_, index) => (
-              <WeeklyItem key={index} items={listNovel?.topranking[index]} />
-            )
-          )}
+          {Array.from({
+            length: listNovel?.recommenderEachNovel?.length - 2,
+          }).map((_, index) => (
+            <WeeklyItem key={index} items={listNovel?.topranking[index]} />
+          ))}
         </div>
       </div>
       <div className="flex size-4/5 w-full border-b-4 ">
-        <div className="text flex-initial  mb-5 ">
+        <div className="text flex-initial  mb-5 w-full ">
           <h1 className="font-bold text-2xl">Rating</h1>
-          <div className="mt-8">
+          <div className="mt-8 w-full">
             <Comment idCate={idCate} />
           </div>
         </div>

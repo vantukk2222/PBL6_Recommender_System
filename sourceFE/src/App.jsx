@@ -30,6 +30,7 @@ import PageNovel from "./pages/admin/Novel/PageNovel";
 import AddNovel from "./pages/admin/Novel/AddNovel";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Profile } from "./pages/profile/Profile";
 const App = () => {
   // const [roleMemo, setRoleMemo] = useState('customer')
   // useEffect(()=>{
@@ -63,6 +64,7 @@ const App = () => {
                       <Route path="/ranking/:genres?" element={<Ranking />} />
                       <Route path="/:library?" element={<Library />} />
                       <Route path="/history?" element={<Library />} />
+                      <Route path = "/profile/:Id" element={<Profile />} />
                   </Route>
               </Route>
         )}

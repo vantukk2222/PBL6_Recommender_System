@@ -61,7 +61,7 @@ export const ItemRanking = ({ data, rank }) => {
                 console.log("data in EachItemTopRanking: ", data);
               }}
             >
-              {Number(data?.rating).toFixed(1)}
+              {Number(data?.averageRating).toFixed(1)}
             </span>
           </strong>
         </div>

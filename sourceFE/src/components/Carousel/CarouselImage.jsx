@@ -4,6 +4,9 @@ import banner1 from "../../assets/images/banner1.jpg";
 import banner2 from "../../assets/images/banner2.jpg";
 import banner3 from "../../assets/images/banner3.jpg";
 import { PropTypes } from "prop-types";
+import { proxyUrl } from "../../api/apiProxy";
+import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
+import ImageWithPlaceholder from "../UI/ImagePlaceHolder";
 export const CarouselItem = ({ dataCarousel }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lastClickTime, setLastClickTime] = useState(Date.now());
@@ -42,9 +45,43 @@ export const CarouselItem = ({ dataCarousel }) => {
                 transition: "transform 0.5s ease",
               }}
             >
-              <img src={banner1} alt="Image 1" className="carousel-image" />
-              <img src={banner2} alt="Image 2" className="carousel-image" />
-              <img src={banner3} alt="Image 3" className="carousel-image" />
+              <img
+                onClick={() => {
+                  window.location.href =
+                    "/content/" + dataCarousel?.weeklyfeatured?.[0]?._id;
+                }}
+                src={
+                  proxyUrl(dataCarousel?.weeklyfeatured?.[0]?.imageUrl) ||
+                  banner1
+                }
+                alt="Image 1"
+                className="carousel-image"
+              />
+
+              <img
+                onClick={() => {
+                  window.location.href =
+                    "/content/" + dataCarousel?.weeklyfeatured?.[1]?._id;
+                }}
+                src={
+                  proxyUrl(dataCarousel?.weeklyfeatured?.[1]?.imageUrl) ||
+                  banner1
+                }
+                alt="Image 2"
+                className="carousel-image"
+              />
+              <img
+                onClick={() => {
+                  window.location.href =
+                    "/content/" + dataCarousel?.weeklyfeatured?.[2]?._id;
+                }}
+                src={
+                  proxyUrl(dataCarousel?.weeklyfeatured?.[2]?.imageUrl) ||
+                  banner1
+                }
+                alt="Image 3"
+                className="carousel-image"
+              />
             </div>
           </div>
           <button
@@ -64,33 +101,34 @@ export const CarouselItem = ({ dataCarousel }) => {
           <h4>
             <a
               className="font-bold hover:underline  max-w-[310px] line-clamp-1 text-xl"
-              href="/content/my-enchanting-system_22600918205369205"
-              title="The Boss Behind The Game The Boss Behind The Game The Boss Behind"
+              href={
+                "/content/" + dataCarousel?.weeklyfeatured?.[activeIndex]?._id
+              }
+              title={dataCarousel?.weeklyfeatured?.[activeIndex]?.name}
             >
-              The Boss Behind The Game The Boss Behind The Game The Boss Behind
+              {dataCarousel?.weeklyfeatured?.[activeIndex]?.name}
             </a>
           </h4>
           <p className="mb8 tac fw400 lh20 fs14 ls0.2 tac ell">
-            {" "}
             <a
               className=" hover:underline"
-              href="/stories/novel-games-male"
-              title="Games"
+              href={
+                "/genres/" +
+                capitalizeFirstLetter(
+                  dataCarousel?.weeklyfeatured?.[activeIndex]?.category?.name
+                )
+              }
+              title={capitalizeFirstLetter(
+                dataCarousel?.weeklyfeatured?.[activeIndex]?.category?.name
+              )}
             >
-              Games
-            </a>{" "}
-            · <span>Slashing Blade</span>{" "}
+              {capitalizeFirstLetter(
+                dataCarousel?.weeklyfeatured?.[activeIndex]?.category?.name
+              )}
+            </a>
           </p>
           <p className="  line-clamp-6 leading-normal  text-justify tracking-wide		">
-            "Did I really die?" Cain Lisworth woke up in the adventurer guild,
-            he had returned to the start of his journey after being killed by
-            the cosmos guards. Armed with his knowledge, he started his life
-            once again trying to break the heavenly orders and escape the mortal
-            world. This time, without mistakes he will raise back to the top and
-            reclaim his throne as the strongest enchanter in history! **** This
-            story finally has a Discord server. Please visit it to see character
-            art, or demand art to be created for a specific character. Only ask
-            how someone looks, and I will get it out.
+            {dataCarousel?.weeklyfeatured?.[activeIndex]?.description}
           </p>
         </div>
       </div>
