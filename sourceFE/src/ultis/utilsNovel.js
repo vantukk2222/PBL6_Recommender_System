@@ -46,6 +46,12 @@ export const getNovel = async (id) => {
     const response = await apiNovel.getNovel(id);
     return response.data;
 }
+export const getNovelbyListId = async(list=[]) =>{
+    const listId = list.map((val)=>val['novel_id'])
+    console.log('listId', listId);
+    const response = await apiNovel.getNovelbyListId(list)
+    return response;
+}
 
 export const updateNovel = async (data) => {
     if (data.id == null)

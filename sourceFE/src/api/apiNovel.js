@@ -20,6 +20,11 @@ const apiNovel = {
         const url = `/novel/${id}`
         return axiosClient.get(url)
     },
+    getNovelbyListId: (list=[]) =>{
+        
+        const url = `/novel/ids=${list.map((val,idx)=>(val+','))}`
+        return axiosClient.get(url)
+    },
     updateNovel: (data) => {
         const url = `/novel/${data.id}`
         return axiosClient.put(url, data)

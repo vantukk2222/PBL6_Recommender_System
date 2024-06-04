@@ -3,7 +3,7 @@ import { NavLink, useParams, Link } from "react-router-dom";
 import "./css/Content.css";
 import Tag from "../../components/Tags/Tag";
 import Comment from "../../components/Comments/Comment";
-import { getNovel } from "../../ultis/utilsNovel";
+import { getNovel, getNovelbyListId } from "../../ultis/utilsNovel";
 import { proxyUrl } from "../../api/apiProxy";
 import { formatNumber } from "./../../ultis/convertNumber";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { Banner } from "../../components/banners/Banner";
 import useNovel from "../../hooks/useNovel";
 import { WeeklyItem } from "../../components/Cards/WeeklyItem";
+import { getNovelRecomment } from "../../ultis/utilsRecomment";
 const Content = () => {
   const { idCate } = useParams();
   // const [dataNovel, setDataNovel] = useState(null);
@@ -86,6 +87,26 @@ const Content = () => {
     src: "https://book-pic.webnovel.com/bookcover/23124855606295305?imageMogr2/thumbnail/150&imageId=1698747892444",
   };
 
+  //console.log('idNovel',dataNovel?._id,idCate);
+  const [listRecomment, setListReComment] = useState();
+  useEffect(()=>{
+    if(idCate)
+    {
+      getNovelRecomment(idCate).then((res)=>{
+        console.log(res);
+        setListReComment(res.data)
+      }).catch((err)=>{
+        console.log(err);
+      })
+    }
+  },[])
+  useEffect(()=>{
+    console.log(listRecomment.length);
+    if(listRecomment.length > 0)
+      {
+        // getNovelbyListId(listRecomment) viet tiep get api
+      }
+  },[listRecomment])
   return is_Loading === false ? (
     <div className="containerCard p-4 w-[1080px] mx-auto bg-slate-50 ">
       <div className="flex h-full flex-initial w-full  rounded-lg">
