@@ -36,7 +36,7 @@ export const RatingsDistribution = ({ data }) => {
           ))}
           <div className="flex mt-3 ">
             <p className="ms-1 text-lg font-medium text-gray-500 dark:text-gray-600">
-              {novelData?.averageRating || "NaN"}
+              {Number(novelData?.averageRating.toFixed(1))|| "NaN"}
             </p>
             <p className="ms-1 text-lg font-medium text-gray-500 dark:text-gray-600">
               out of

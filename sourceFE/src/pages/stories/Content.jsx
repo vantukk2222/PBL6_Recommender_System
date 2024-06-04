@@ -197,8 +197,8 @@ const Content = () => {
                     <svg
                       key={index}
                       className={
-                        curIndex <= data.star
-                          ? "w-6 h-6 text-yellow-300 me-1"
+                        curIndex <= Number(dataNovel?.averageRating.toFixed(1))
+                          ? "w-6 h-6 text-[#EAB308] me-1"
                           : "w-6 h-6 text-slare-300 me-1"
                       }
                       aria-hidden="true"
@@ -217,7 +217,7 @@ const Content = () => {
                 })}
               </div>
               <p className="text-xl ml-2">
-                {dataNovel?.averageRating}{" "}
+                {Number(dataNovel?.averageRating.toFixed(1))}
                 {"  " + dataNovel?.ratingCount + " ratings"}
               </p>
             </div>
@@ -291,10 +291,8 @@ const Content = () => {
         </div>
 
         <div className="grid grid-cols-8 space-between">
-          {Array.from({
-            length: listNovel?.recommenderEachNovel?.length - 2,
-          }).map((_, index) => (
-            <WeeklyItem key={index} items={listNovel?.topranking[index]} />
+          {listNovel?.topranking?.slice(0, 8)?.map((item, index) => (
+            <WeeklyItem key={index} items={item} />
           ))}
         </div>
       </div>

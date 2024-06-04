@@ -18,6 +18,9 @@ import useCategory from "../../hooks/useCategory";
 import { Loading } from "../UI/Loading";
 import useAuthen from "../../hooks/useAuthen";
 import { toast } from "react-toastify";
+import { set } from "lodash";
+import useNovel from "../../hooks/useNovel";
+import { getNovels } from "../../ultis/utilsNovel";
 function HomeNavbar() {
   const navigate = useNavigate();
   const [isModalGenresOpen, setIsModalGenresOpen] = useState(false);
@@ -27,6 +30,7 @@ function HomeNavbar() {
   const [clickProfile, setClickProfile] = useState(false);
   const modalRef = useRef(null);
   const linkRef = useRef(null);
+  const searchInputRef = useRef();
 
   const handleClickProfile = () => {
     setClickProfile(!clickProfile);
@@ -40,6 +44,22 @@ function HomeNavbar() {
   const { user, setUser, setIsAuth, setRole, role } = useAuthen();
   const [infor, setInfor] = useState({});
   const [Token, setToken] = useState({});
+  const {
+    novelData,
+    setNovelData,
+    listNovel,
+    setListNovel,
+    filter,
+    setFilter,
+    page,
+    setPage,
+    search: searchNovel,
+    setSearch: setSearchNovel,
+  } = useNovel();
+  const handleSearch = (zzzSearch) => {
+    setSearchNovel(zzzSearch);
+    window.location.href = "/search";
+  };
 
   useEffect(() => {
     setInfor(JSON.parse(localStorage.getItem("inforUser")) || {});
@@ -162,23 +182,47 @@ function HomeNavbar() {
           </div>
 
           <div className="flex flex-row items-center gap-4">
-            <a className="  " href="/search" rel="nofollow" title="Search">
-              <svg
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                className="fill-slate-400 border-1 rounded border-blue-400 hover:border-slate-500 hover:fill-slate-500 transition-all duration-300"
+            <a
+              className="w-full flex flex-row items-center hover:cursor-pointer hover:transition-all hover:duration-300 hover:scale-110 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg"
+              rel="nofollow"
+              title="Search"
+            >
+              <input
+                type="text"
+                id="Search"
+                name="Search"
+                ref={searchInputRef}
+                placeholder="Type to search..."
+                className=" text-[16px] px-4 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={() => {
+                  console.log("seach: ", searchInputRef.current.value);
+
+                  if (searchInputRef.current.value) {
+                    handleSearch(searchInputRef.current.value);
+                  } else {
+                    searchInputRef.current.focus();
+                  }
+                }}
               >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M14.745 16.442a8 8 0 111.697-1.697L21 19.303 19.303 21l-4.558-4.558zM15.6 10a5.6 5.6 0 11-11.2 0 5.6 5.6 0 0111.2 0z"
-                ></path>
-              </svg>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  className="fill-slate-400 border-1 rounded border-blue-400 hover:border-slate-500 hover:fill-slate-500 transition-all duration-300"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M14.745 16.442a8 8 0 111.697-1.697L21 19.303 19.303 21l-4.558-4.558zM15.6 10a5.6 5.6 0 11-11.2 0 5.6 5.6 0 0111.2 0z"
+                  ></path>
+                </svg>
+              </button>
             </a>
             <a
               title="Library"
-              className="text-[17px] font-medium text-gray-500"
+              className="text-[17px] font-medium text-gray-500 w-full "
               href="/library"
               rel="nofollow"
               ref={linkRef}
@@ -186,7 +230,7 @@ function HomeNavbar() {
               <strong>Library</strong>
             </a>
 
-            <div className=" relative">
+            <div className=" relative w-full ">
               {login == true ? (
                 <a
                   className="block hover:scale-110	 hover:cursor-pointer hover:transition-all hover:duration-300  hover:bg-gray-800 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg"

@@ -39,7 +39,7 @@ export const Ranking = () => {
       });
       setIsLoading(false);
     });
-  }, [pageNovel.currentPage]);
+  }, [pageNovel.currentPage, sortBy]);
   return !is_Loading ? (
     <div className=" relative flex flex-row mx-auto   w-screen max-w-[1080px] max-h-[1620px] h-[1620px]">
       <div className="text-[20px] font-semibold text-blue-600 text-center inline-flex items-center flex-flex-col w-[191px] h-fit">
@@ -48,19 +48,29 @@ export const Ranking = () => {
       <div className="flex flex-col w-full">
         <div>
           <div className="text-[20px] font-semibold text-gray-500 pb-2 border-b-[1px] border-gray-200 w-full	">
-            Power Ranking
+            {sortBy === "powerStone"
+              ? "Power "
+              : sortBy === "views"
+              ? "View "
+              : "Rating "}
+            Ranking
           </div>
 
           <div className="flex flex-row justify-between">
             <div className="flex flex-col pb-2  w-full">
               <legend className="text-[12px] text-gray-400 font-medium mt-2 mb-1">
-                Filter by Book’s Release Time
+                Filter by Book’s{" "}
+                {sortBy === "powerStone"
+                  ? "PowerStone "
+                  : sortBy === "views"
+                  ? "Views"
+                  : "Rating"}
               </legend>
-              <div className="flex flex-row space-x-4 mb-4 ">
+              <div className="flex flex-row space-x-4 mb-4 text-gray-400 text-[14px] font-medium">
                 <p
-                  className={
-                    "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] bg-sky-100 text-blue-500 hover:cursor-pointer"
-                  }
+                  className={` px-4 py-1 rounded-xl border-[1px] hover:cursor-pointer ${
+                    sortBy === "powerStone" ? "bg-sky-100 text-blue-500 " : ""
+                  }`}
                   onClick={() => {
                     setSortBy("powerStone");
                   }}
@@ -68,9 +78,9 @@ export const Ranking = () => {
                   PowerStone
                 </p>
                 <p
-                  className={
-                    "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px]  text-gray-400 hover:cursor-pointer"
-                  }
+                  className={`px-4 py-1 rounded-xl border-[1px] hover:cursor-pointer ${
+                    sortBy === "views" ? "bg-sky-100 text-blue-500 " : ""
+                  }`}
                   onClick={() => {
                     setSortBy("views");
                   }}
@@ -78,9 +88,11 @@ export const Ranking = () => {
                   View
                 </p>
                 <p
-                  className={
-                    "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px]  text-gray-400  hover:cursor-pointer"
-                  }
+                  className={`px-4 py-1 rounded-xl border-[1px] hover:cursor-pointer ${
+                    sortBy === "averageRating"
+                      ? "bg-sky-100 text-blue-500 "
+                      : ""
+                  }`}
                   onClick={() => {
                     setSortBy("averageRating");
                   }}
@@ -103,6 +115,7 @@ export const Ranking = () => {
                       <EachItemTopRanking
                         key={index}
                         item={eachNovel}
+                        sort={sortBy}
                         rank={index + 1 + (pageNovel?.currentPage - 1) * 20}
                       />
                     );

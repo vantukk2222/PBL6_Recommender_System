@@ -4,9 +4,36 @@ import { useEffect, useState } from "react";
 import { proxyUrl } from "../../api/apiProxy";
 import banner1 from "../../assets/images/banner1.jpg";
 import { capitalizeFirstLetter } from "../../ultis/capitalizeFirstLetter ";
+import { addToLibrary } from "../../ultis/utilsAccount";
+import { toast } from "react-toastify";
 export const SelectionImage = ({ dataSelectionImage }) => {
   const [selectedImage, setSelectedImage] = useState();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const infor = JSON.parse(localStorage.getItem("Token")) || {};
+
+  const [isAddToLibrary, setIsAddToLibrary] = useState(false);
+  const handleAddtoLibrary = (novel_id) => {
+    setIsAddToLibrary(true);
+    if (infor?.id) {
+      addToLibrary(infor?.id, novel_id)
+        .then(() => {
+          setIsAddToLibrary(false);
+          toast.success(`Add to library successfully`, {
+            autoClose: 1000,
+          });
+        })
+        .catch((error) => {
+          setIsAddToLibrary(false);
+          toast.error(`Failed to add to library: ${error.message}`, {
+            autoClose: 1000,
+          });
+        });
+    } else {
+      alert("Please login to add to library");
+      window.location.href = "/login";
+    }
+  };
+
   useEffect(() => {
     if (dataSelectionImage && dataSelectionImage.length > 0) {
       setSelectedImage(dataSelectionImage[0]);
@@ -86,9 +113,12 @@ export const SelectionImage = ({ dataSelectionImage }) => {
                   <div
                     className="flex items-center justify-center w-[32px] h-[32px] pb-1 bg-blue-100 rounded-full hover:shadow-md hover:cursor-pointer"
                     title="Add to library"
+                    onClick={() => {
+                      handleAddtoLibrary(selectedImage?._id);
+                    }}
                   >
                     <span className="text-blue-500 text-[34px] font-bold ">
-                      +
+                      {!isAddToLibrary ? "+" : "📚"}
                     </span>
                   </div>
                 </div>

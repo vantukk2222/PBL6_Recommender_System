@@ -32,7 +32,7 @@ export const Banner = ({ setIsLoading }) => {
         <CarouselItem dataCarousel={listNovel} />
         {/* grid table */}
         <div className="grid grid-cols-5 grid-cols-2 gap-5 ml-10 ">
-          {listNovel?.weeklyfeatured?.map((eachNovel, key) => {
+          {listNovel?.weeklyfeatured?.slice(0, 10).map((eachNovel, key) => {
             return <WeeklyItem key={key} items={eachNovel} />;
           })}
           {/* {listNovel?.map((eachNovel, key) => {

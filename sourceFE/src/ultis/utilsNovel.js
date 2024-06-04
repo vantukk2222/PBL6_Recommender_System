@@ -9,8 +9,10 @@ export const getNovels = async (filter = {
 }) => {
 
     const response = await apiNovel.getNovels(filter);
+    console.log("search response: ", response);
     const data = {
         'page': {
+            'total': response.data.total,
             'currentPage': response.data.currentPage,
             'totalPages': response.data.totalPages,
         },

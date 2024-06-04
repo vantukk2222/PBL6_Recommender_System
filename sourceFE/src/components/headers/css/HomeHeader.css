@@ -7,6 +7,12 @@
 .container {
   display: flex;
   flex-direction: column;
+  
+  max-width: 1080px;
+  width: 1080px;
+  justify-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .headerNav {
@@ -14,6 +20,8 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+}
+.row{
 }
 
 .row::after {
