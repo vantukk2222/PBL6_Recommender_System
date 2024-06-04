@@ -42,7 +42,7 @@ const Dashboard = () => {
   } = useNovel();
   const [isTrained , setIsTraned] = useState(true)
   useEffect(() => {
-    getRecomment(Token?.id || "017173780861571831")
+    getRecomment(Token?.id )
       .then((res) => {
         console.log('recommentId',res);
         setIdNovelRecommender(res.data);
