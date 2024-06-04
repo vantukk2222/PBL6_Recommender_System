@@ -7,7 +7,7 @@ export const AccountProvider = ({children}) => {
     const [listAccount, setListAccount] = useState([]);
     const [filter, setFilter] = useState({
         page : 1 , 
-        pageSize : 20, 
+        pageSize : 10, 
         sortField : 'username',
         sortOrder:'desc'
     })

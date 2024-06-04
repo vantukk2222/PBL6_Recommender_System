@@ -119,14 +119,14 @@ const Login = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-col text-3xl">
+        <div className="flex flex-col text-3xl mt-10">
           <a href="/" className="text-blue-500 text-lg w-fit">
             <i className="fas fa-arrow-left">Back</i>
           </a>
           <span>Login</span>
         </div>
-        <form className="flex flex-col gap-6" onSubmit={(e) => handleSubmit(e)}>
-          <div>
+        <form className="flex flex-col gap-6 h-[380px]" onSubmit={(e) => handleSubmit(e)}>
+          <div className="mt-2">
             <div>Username</div>
             <input
               type="text"
@@ -160,11 +160,11 @@ const Login = () => {
               ></input>
               <label className="auth--checkbox-label">Remember me</label>
             </div>
-            <div>
+            {/* <div>
               <Link to="" className="underline text-blue-500">
                 Forgot password
               </Link>
-            </div>
+            </div> */}
           </div>
           <button
             type="submit"

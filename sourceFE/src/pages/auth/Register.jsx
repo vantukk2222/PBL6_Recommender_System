@@ -51,9 +51,9 @@ const Register = () => {
       <div className="px-10 flex flex-col gap-6 bg-white">
         <div className="">
           
-          <div className="text-3xl">Register</div>
+          <div className="text-3xl mt-4">Register</div>
         </div>
-        <form className="flex flex-col gap-6" onSubmit={(e) => handleSubmit(e)}>
+        <form className="flex flex-col gap-6 h-[460px]" onSubmit={(e) => handleSubmit(e)}>
           <div>
             <div>Username</div>
             <input
@@ -112,7 +112,7 @@ const Register = () => {
         <div>
           {error !== "" ? <div className="text-red-500 mb-1">{error}</div> : <></>}
           </div>
-        <div className='flex-row'>
+        <div className='flex-row mb-4'>
           <div >
             Already have an account?{" "}
             <Link to="/login" className="underline text-blue-500">

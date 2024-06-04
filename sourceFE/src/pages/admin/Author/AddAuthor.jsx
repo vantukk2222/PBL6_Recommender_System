@@ -84,7 +84,7 @@ const AddAuthor = () => {
                                 type="submit"
                                 className="w-full py-2 text-white bg-purple-500 rounded-md hover:bg-purple-600"
                             >
-                                Save changes
+                                Save
                             </button>
                             
                         </div>

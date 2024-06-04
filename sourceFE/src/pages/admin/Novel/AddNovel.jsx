@@ -241,7 +241,7 @@ const AddNovel = () => {
                 type="submit"
                 className="w-[100px] py-2 text-white bg-purple-500 rounded-md hover:bg-purple-600"
               >
-                Save changes
+                Save
               </button>
 
             </div>
