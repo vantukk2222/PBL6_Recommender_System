@@ -14,8 +14,9 @@ import useAuthor from "../../hooks/useAuthor";
 import { EachRanking } from "../../components/Cards/EachRanking";
 import { EachItemTopRanking } from "./../ranking/EachItemTopRanking";
 import { Loading } from "../../components/UI/Loading";
-import { NovelRecommender } from "../../api/apiRecommender";
+//import { NovelRecommender } from "../../api/apiRecommender";
 import { toast } from "react-toastify";
+import { getRecomment } from "../../ultis/utilsRecomment";
 const Dashboard = () => {
   const Token = JSON.parse(localStorage.getItem("Token"));
   const [showAll, setShowAll] = useState(false);
@@ -39,14 +40,18 @@ const Dashboard = () => {
     page,
     setPage,
   } = useNovel();
+  const [isTrained , setIsTraned] = useState(true)
   useEffect(() => {
-    NovelRecommender(Token?.id || "017173780861571831")
-      .then((data) => {
-        setIdNovelRecommender(data);
+    getRecomment(Token?.id || "017173780861571831")
+      .then((res) => {
+        console.log('recommentId',res);
+        setIdNovelRecommender(res.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error('err',error);
+        setIsTraned(false)
       });
+    
     const newFilter = {
       ...filter,
       sortField: "powerStone",
@@ -105,6 +110,21 @@ const Dashboard = () => {
     // });
   }, []);
 
+  useEffect(()=>{
+    if(!isTrained)
+    {
+      getRecomment("017173780861571831")
+      .then((res) => {
+        console.log('recommentId other',res.status);
+        setIdNovelRecommender(res.data);
+      })
+      .catch((error) => {
+        console.error('err',error);
+        //setIsTraned(false)
+      });
+
+    }
+  },[isTrained])
   return !is_loading ? (
     <div className=" flex flex-col justify-end items-center mx-auto  w-screen max-w-[1080px]">
       <Banner setIsLoading={setIsLoading} />
