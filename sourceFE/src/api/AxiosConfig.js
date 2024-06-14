@@ -8,7 +8,6 @@ const axiosClient = axios.create({
 });
 axiosClient.interceptors.request.use(
     function (config) {
-        console.log("API Response in axios: ", config);
 
         return config;
     },

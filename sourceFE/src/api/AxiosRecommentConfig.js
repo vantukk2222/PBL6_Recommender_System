@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClientRecommender = axios.create({
-    baseURL:'https://4fd8-2405-4802-6044-910-c44c-f18b-1c21-fd45.ngrok-free.app',
+    baseURL: 'https://4fd8-2405-4802-6044-910-c44c-f18b-1c21-fd45.ngrok-free.app',
     //  'http://127.0.0.1:5000',
     headers: {
         'Content-Type': 'application/json',
@@ -18,7 +18,6 @@ axiosClientRecommender.interceptors.request.use(
         config.headers['Content-Type'] = 'application/json';
         config.headers['Accept'] = '*/*';
 
-        console.log("API Response in axiosRecommender: ", config);
         return config;
     },
     function (error) {

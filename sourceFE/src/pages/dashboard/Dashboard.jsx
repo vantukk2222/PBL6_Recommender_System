@@ -86,7 +86,6 @@ const Dashboard = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-       
         toast.error(error);
         setIsLoading(false);
       });
@@ -113,11 +112,12 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
+    console.log("lay id ");
     if (!isTrained) {
       getRecomment("4300323027")
         .then((res) => {
           setIdNovelRecommender(res.data);
-          console.log("lay id mac dinh",res.data);
+          console.log("lay id mac dinh", res.data);
         })
         .catch((error) => {
           console.error("err", error);
