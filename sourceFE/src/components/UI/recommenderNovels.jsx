@@ -45,6 +45,14 @@ export const RecommenderNovels = ({}) => {
       console.log(err);
     });
   }, [idNovelRecommender]);
+  useEffect(()=>{
+    if(listNovel?.recommenderNovel?.length > 0 )
+    {
+      const newShuffledList = shuffleArray([
+        ...listNovel?.recommenderNovel,
+      ]);
+      setShuffledList(newShuffledList);
+    }},[listNovel])
   const randomRecomender = useMemo(() => {
     listNovel?.recommenderNovel?.sort(() => Math.random() - 0.5);
   }, []);
