@@ -64,7 +64,7 @@ const Login = () => {
             setRole("admin");
             navigate("/");
           } else {
-            navigate(-1);
+            navigate("/");
           }
           setIs_Loading(false);
           toast.success(`Wellcome ${userLogin.username}!`, {
@@ -125,7 +125,10 @@ const Login = () => {
           </a>
           <span>Login</span>
         </div>
-        <form className="flex flex-col gap-6 h-[380px]" onSubmit={(e) => handleSubmit(e)}>
+        <form
+          className="flex flex-col gap-6 h-[380px]"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <div className="mt-2">
             <div>Username</div>
             <input

@@ -1,6 +1,47 @@
 import { PropTypes } from "prop-types";
 import { proxyUrl } from "../../api/apiProxy";
-export const RecommenderNovels = ({ dataRecommenderNovels }) => {
+import useNovel from "../../hooks/useNovel";
+import { useEffect, useMemo, useState } from "react";
+import { getNovel, getNovelbyListId } from "../../ultis/utilsNovel";
+import bigInt from "big-integer";
+import ImageWithPlaceholder from "./ImagePlaceHolder";
+
+export const RecommenderNovels = ({}) => {
+  const {
+    novelData,
+    setNovelData,
+    listNovel,
+    setListNovel,
+    filter,
+    setFilter,
+    page,
+    setPage,
+    idNovelRecommender,
+    setIdNovelRecommender,
+  } = useNovel();
+  const [shuffledList, setShuffledList] = useState(listNovel?.recommenderNovel);
+
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+  useEffect(() => {
+    getNovelbyListId(
+      idNovelRecommender
+        ?.map((val) => {
+          const novelIdBigInt = bigInt(val.novel_id);
+          return novelIdBigInt.plus(1).toString();
+        })
+        .slice(0, 20)
+    ).then((res) => {
+      setListNovel((prev) => ({
+        ...prev,
+        recommenderNovel: res.data.novels,
+      }));
+    });
+  }, [idNovelRecommender]);
+  const randomRecomender = useMemo(() => {
+    listNovel?.recommenderNovel?.sort(() => Math.random() - 0.5);
+  }, []);
   return (
     <>
       <div className="flex flex-col w-full  pb-12 ">
@@ -11,21 +52,32 @@ export const RecommenderNovels = ({ dataRecommenderNovels }) => {
           <p
             className="uppercase text-blue-600 text-[16px] hover:underline hover:cursor-pointer "
             onClick={() => {
-              console.log("Switch");
+              const newShuffledList = shuffleArray([
+                ...listNovel?.recommenderNovel,
+              ]);
+              setShuffledList(newShuffledList);
+              console.log("list Random: ", newShuffledList);
             }}
           >
             Switch
           </p>
         </div>
+        {/* listNovel?.recommenderNovel?.sort(() => Math.random() - 0.5).slice(0, 6) */}
         <div className="flex flex-row flex-wrap w-full gap-3 justify-between pt-3">
-          {dataRecommenderNovels?.slice(0, 6).map((item, index) => (
+          {shuffledList?.slice(0, 6).map((item, index) => (
             <div className="flex flex-row w-[190px] " key={index}>
               <a href={"/content/" + item?._id}>
-                <img
-                  className=" rounded w-[65px] h-[90px] max-w-[65px] shadow-lg hover:underline   hover:cursor-pointer transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-102 duration-500"
+                {/* <img
+                    className=" rounded w-[65px] h-[90px] max-w-[65px] shadow-lg hover:underline   hover:cursor-pointer transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-102 duration-500"
+                    key={index}
+                    src={proxyUrl(item?.imageUrl)}
+                    title={item?.name}
+                  /> */}
+                <ImageWithPlaceholder
                   key={index}
-                  src={proxyUrl(item?.imageUrl)}
-                  title={item?.name}
+                  classname=" rounded w-[65px] h-[90px] max-w-[65px] shadow-lg hover:underline   hover:cursor-pointer transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-102 duration-500"
+                  source={proxyUrl(item?.imageUrl)}
+                  title_img={item?.name}
                 />
               </a>
               <div className="flex flex-col ml-2">
@@ -56,6 +108,4 @@ export const RecommenderNovels = ({ dataRecommenderNovels }) => {
   );
 };
 
-RecommenderNovels.propTypes = {
-  dataRecommenderNovels: PropTypes.array.isRequired,
-};
+RecommenderNovels.propTypes = {};

@@ -1,34 +1,36 @@
 import axios from 'axios';
 const axiosClient = axios.create({
-    baseURL : "https://project-pbl7.vercel.app/api/v1",
+    baseURL: "https://project-pbl7.vercel.app/api/v1",
     headers: {
         "Content-Type": "application/json",
-        Accept:"*"
-      },
+        Accept: "*"
+    },
 });
 axiosClient.interceptors.request.use(
-    function(config){
+    function (config) {
+        console.log("API Response in axios: ", config);
+
         return config;
-    }, 
-    function(error){
+    },
+    function (error) {
         return Promise.reject(error);
     }
 );
 
 axiosClient.interceptors.response.use(
-    function(response){
+    function (response) {
         return response;
     },
-    function(error){
+    function (error) {
         return Promise.reject(error)
     }
 );
 export const setHeaderConfigAxios = (token) => {
     if (token) {
-      axiosClient.defaults.headers.common["Authorization"] = token ? "Bearer " + token : "";
+        axiosClient.defaults.headers.common["Authorization"] = token ? "Bearer " + token : "";
     } else {
-      delete axiosClient.defaults.headers.common["Authorization"];
+        delete axiosClient.defaults.headers.common["Authorization"];
     }
-  };
-  
-  export default axiosClient;
+};
+
+export default axiosClient;

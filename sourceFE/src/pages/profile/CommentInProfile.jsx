@@ -35,7 +35,7 @@ export const CommentInProfile = ({ data_comment }) => {
           source={
             "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
           }
-          title_name={"avatar"}
+          title_img={"avatar"}
         />
         {/* <img
           id="headerAvatar"
@@ -103,7 +103,7 @@ export const CommentInProfile = ({ data_comment }) => {
             <ImageWithPlaceholder
               classname="transition-all duration-300 w-14 h-18 mr-4  ease-in-out delay-100 hover:-translate-y-1 hover:scale-105  duration-500"
               source={proxyUrl(dataNovel?.imageUrl)}
-              title_name={dataProfile?.username || "Username"}
+              title_img={dataProfile?.username || "Username"}
             />
 
             <div className="flex flex-col text-[16px] h-14  flex-1 ">

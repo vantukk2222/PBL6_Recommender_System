@@ -16,6 +16,7 @@ import { Banner } from "../../components/banners/Banner";
 import useNovel from "../../hooks/useNovel";
 import { WeeklyItem } from "../../components/Cards/WeeklyItem";
 import { getNovelRecomment } from "../../ultis/utilsRecomment";
+import bigInt from "big-integer";
 const Content = () => {
   const { idCate } = useParams();
   // const [dataNovel, setDataNovel] = useState(null);
@@ -54,8 +55,24 @@ const Content = () => {
     setFilter,
     page,
     setPage,
+    idNovelRecommender,
+    setIdNovelRecommender,
   } = useNovel();
+
   useEffect(() => {
+    getNovelRecomment(idCate).then((res) => {
+      const listID = res.data.map((val) => {
+        const novelIdBigInt = bigInt(val.novel_id);
+        return novelIdBigInt.plus(1).toString();
+      });
+      console.log("listID in content: ", listID);
+      getNovelbyListId(listID).then((res) => {
+        setListNovel((prev) => ({
+          ...prev,
+          recommenderNovel_Novel: res.data.novels,
+        }));
+      });
+    });
     getNovel(idCate)
       .then((res) => {
         setDataNovel(res);
@@ -89,24 +106,24 @@ const Content = () => {
 
   //console.log('idNovel',dataNovel?._id,idCate);
   const [listRecomment, setListReComment] = useState();
-  useEffect(()=>{
-    if(idCate)
-    {
-      getNovelRecomment(idCate).then((res)=>{
-        console.log(res);
-        setListReComment(res.data)
-      }).catch((err)=>{
-        console.log(err);
-      })
+  useEffect(() => {
+    if (idCate) {
+      getNovelRecomment(idCate)
+        .then((res) => {
+          console.log("data listrecommender in content", res);
+          setListReComment(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  },[])
-  useEffect(()=>{
-    console.log(listRecomment.length);
-    if(listRecomment.length > 0)
-      {
-        // getNovelbyListId(listRecomment) viet tiep get api
-      }
-  },[listRecomment])
+  }, []);
+  useEffect(() => {
+    console.log(listRecomment?.length);
+    if (listRecomment?.length > 0) {
+      // getNovelbyListId(listRecomment) viet tiep get api
+    }
+  }, [listRecomment]);
   return is_Loading === false ? (
     <div className="containerCard p-4 w-[1080px] mx-auto bg-slate-50 ">
       <div className="flex h-full flex-initial w-full  rounded-lg">
@@ -312,9 +329,11 @@ const Content = () => {
         </div>
 
         <div className="grid grid-cols-8 space-between">
-          {listNovel?.topranking?.slice(0, 8)?.map((item, index) => (
-            <WeeklyItem key={index} items={item} />
-          ))}
+          {listNovel?.recommenderNovel_Novel
+            ?.slice(0, 8)
+            ?.map((item, index) => (
+              <WeeklyItem key={index} items={item} />
+            ))}
         </div>
       </div>
       <div className="flex size-4/5 w-full border-b-4 ">

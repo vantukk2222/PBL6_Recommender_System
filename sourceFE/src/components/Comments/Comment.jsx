@@ -66,7 +66,10 @@ const Comment = ({ idCate }) => {
               ? " rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.15)]"
               : "")
           }
-          onClick={() => setSortState("newest")}
+          onClick={() => {
+            setPage(1);
+            setSortState("newest");
+          }}
         >
           Newest
         </a>
@@ -77,7 +80,10 @@ const Comment = ({ idCate }) => {
               ? " rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.15)]"
               : "")
           }
-          onClick={() => setSortState("Popular")}
+          onClick={() => {
+            setPage(1);
+            setSortState("Popular");
+          }}
         >
           Popular
         </a>

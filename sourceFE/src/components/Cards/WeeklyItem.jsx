@@ -19,7 +19,7 @@ export const WeeklyItem = ({ items }) => {
           <ImageWithPlaceholder
             classname="w-[110px] h-[139.5px]  w-[110px] h-[139.5px] ease-in-out delay-100 hover:-translate-y-1 hover:scale-105  duration-500"
             source={proxyUrl(items?.imageUrl)}
-            title_name={items?.name}
+            title_img={items?.name}
           />
         </a>
         <div className=" max-w-[110px]  ">

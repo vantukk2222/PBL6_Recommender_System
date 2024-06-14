@@ -45,7 +45,9 @@ export const EachItemNovelGenre = ({ item }) => {
               ></path>
             </svg>
             <span className="text-[12px] font-semibold text-gray-400">
-              {item?.averageRating ? item?.averageRating : "0"}
+              {item?.averageRating
+                ? Number(item?.averageRating).toFixed(1)
+                : "0"}
             </span>
           </strong>
           <strong className="flex flex-row">

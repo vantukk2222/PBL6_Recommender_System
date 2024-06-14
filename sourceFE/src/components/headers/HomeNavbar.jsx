@@ -181,9 +181,9 @@ function HomeNavbar() {
             </ul>
           </div>
 
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-row items-center gap-4 ">
             <a
-              className="w-full flex flex-row items-center hover:cursor-pointer hover:transition-all hover:duration-300 hover:scale-110 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg"
+              className="w-fit flex flex-row items-center hover:cursor-pointer hover:transition-all hover:duration-300 hover:scale-110 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg "
               rel="nofollow"
               title="Search"
             >
@@ -222,7 +222,7 @@ function HomeNavbar() {
             </a>
             <a
               title="Library"
-              className="text-[17px] font-medium text-gray-500 w-full "
+              className="text-[17px] font-medium text-gray-500 "
               href="/library"
               rel="nofollow"
               ref={linkRef}
@@ -252,7 +252,7 @@ function HomeNavbar() {
                 </a>
               ) : (
                 <a
-                  className="block uppercase text-[15px] text-white bg-blue-500 px-4 py-1 rounded-2xl hover:bg-blue-600 transition-all duration-300"
+                  className="w-full block uppercase text-[15px] text-white bg-blue-500 px-4  py-1 rounded-2xl hover:bg-blue-600 transition-all duration-300"
                   href="/login"
                   title="My Profile"
                   rel="nofollow"

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import NovelContext  from "../context/novelContext";
+import NovelContext from "../context/novelContext";
 
 const useNovel = () => {
     const auth = useContext(NovelContext);

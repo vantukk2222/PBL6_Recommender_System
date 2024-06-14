@@ -62,7 +62,7 @@ export const EachItemTopRanking = ({ item, rank, sort }) => {
         <ImageWithPlaceholder
           classname="w-[90px] h-[120px] rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"
           source={Url_image}
-          title_name={item?.name}
+          title_img={item?.name}
         />
       </div>
       <div className="content_pund w-[510px] max-w-[510px] flex flex-col pl-2">

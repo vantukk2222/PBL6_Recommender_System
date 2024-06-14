@@ -9,7 +9,6 @@ export const getNovels = async (filter = {
 }) => {
 
     const response = await apiNovel.getNovels(filter);
-    console.log("search response: ", response);
     const data = {
         'page': {
             'total': response.data.total,
@@ -46,9 +45,9 @@ export const getNovel = async (id) => {
     const response = await apiNovel.getNovel(id);
     return response.data;
 }
-export const getNovelbyListId = async(list=[]) =>{
-    const listId = list.map((val)=>val['novel_id'])
-    console.log('listId', listId);
+export const getNovelbyListId = async (list = []) => {
+    // const listId = list.map((val)=>val['novel_id'])
+    // console.log('listId', listId);
     const response = await apiNovel.getNovelbyListId(list)
     return response;
 }

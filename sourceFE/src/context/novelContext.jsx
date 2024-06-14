@@ -5,6 +5,26 @@ const NovelContext = createContext({});
 export const NovelProvider = ({ children }) => {
   const [novelData, setNovelData] = useState([]);
   const [listNovel, setListNovel] = useState([]);
+  const [idNovelRecommender, setIdNovelRecommender] = useState(() => {
+    const savedId = localStorage.getItem("idNovelRecommender");
+    try {
+      return savedId ? JSON.parse(savedId) : {};
+    } catch (e) {
+      console.error("Failed to parse idNovelRecommender from localStorage:", e);
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "idNovelRecommender",
+        JSON.stringify(idNovelRecommender)
+      );
+    } catch (e) {
+      console.error("Failed to save idNovelRecommender to localStorage:", e);
+    }
+  }, [idNovelRecommender]);
   const [filter, setFilter] = useState({
     page: 1,
     pageSize: 20,
@@ -18,8 +38,13 @@ export const NovelProvider = ({ children }) => {
     currentPage: 1,
   });
   const [search, setSearch] = useState(() => {
-    const savedSearch = localStorage.getItem("search");
-    return savedSearch ? JSON.parse(savedSearch) : "";
+    try {
+      const savedSearch = localStorage.getItem("search") || "";
+      return JSON.parse(savedSearch);
+    } catch (e) {
+      console.error("Failed to parse idNovelRecommender from localStorage:", e);
+      return {};
+    }
   });
 
   useEffect(() => {
@@ -36,6 +61,8 @@ export const NovelProvider = ({ children }) => {
     setPage,
     search,
     setSearch,
+    idNovelRecommender,
+    setIdNovelRecommender,
   };
   return (
     <NovelContext.Provider value={contextNovelData}>
