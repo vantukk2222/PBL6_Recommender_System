@@ -16,6 +16,7 @@ import {
 import useHistory from "../../hooks/useHistories";
 import { EachItemHistories } from "./ItemHistories";
 import { toast } from "react-toastify";
+import { PaginationNav1Presentation } from "../../components/pagination/PaginationNovel";
 export const Library = () => {
   const dataEachHistoryTemplate = {
     _id: "017172645716924557",
@@ -327,14 +328,30 @@ export const Library = () => {
                   );
                 })}
               </div>
+              <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
+                <PaginationNav1Presentation
+                  pageIndex={page?.currentPage || 1}
+                  setPageIndex={setPage}
+                  pageCount={page?.totalPages || 1}
+                />
+              </div>
             </>
           )}
           {library === "history" && historyData?.length > 0 && (
-            <div className="grid grid-cols-1 mt-4">
-              {historyData?.map((eachHistoryItem, idx) => {
-                return <EachItemHistories key={idx} item={eachHistoryItem} />;
-              })}
-            </div>
+            <>
+              <div className="grid grid-cols-1 mt-4">
+                {historyData?.map((eachHistoryItem, idx) => {
+                  return <EachItemHistories key={idx} item={eachHistoryItem} />;
+                })}
+              </div>
+              <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
+                <PaginationNav1Presentation
+                  pageIndex={historyPage?.currentPage || 1}
+                  setPageIndex={setPage}
+                  pageCount={setHistoryData?.totalPages || 1}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>

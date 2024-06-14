@@ -124,9 +124,9 @@ export const Ranking = () => {
               )}
               <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
                 <PaginationNav1Presentation
-                  pageIndex={pageNovel?.currentPage}
+                  pageIndex={pageNovel?.currentPage || 1}
                   setPageIndex={setPageNovel}
-                  pageCount={pageNovel?.totalPages}
+                  pageCount={pageNovel?.totalPages || 1}
                 />
               </div>
             </div>

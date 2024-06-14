@@ -227,9 +227,9 @@ export const Profile = () => {
         </div>
         <div className="flex space-x-2 justify-center items-center bg-white h-fit mt-8">
           <PaginationNav1Presentation
-            pageIndex={pageComment?.currentPage}
+            pageIndex={pageComment?.currentPage || 1}
             setPageIndex={setPageComment}
-            pageCount={pageComment?.totalPages}
+            pageCount={pageComment?.totalPages || 1}
           />
         </div>
       </div>
