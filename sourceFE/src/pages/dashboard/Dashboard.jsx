@@ -49,7 +49,7 @@ const Dashboard = () => {
         setIdNovelRecommender(res.data);
       })
       .catch((error) => {
-        console.error("err", error);
+        console.log("id nay ch dc train", error);
         setIsTraned(false);
       });
 
@@ -86,6 +86,7 @@ const Dashboard = () => {
         setIsLoading(false);
       })
       .catch((error) => {
+       
         toast.error(error);
         setIsLoading(false);
       });
@@ -113,9 +114,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!isTrained) {
-      getRecomment(Token?.id || "017173780861571831")
+      getRecomment("4300323027")
         .then((res) => {
           setIdNovelRecommender(res.data);
+          console.log("lay id mac dinh",res.data);
         })
         .catch((error) => {
           console.error("err", error);

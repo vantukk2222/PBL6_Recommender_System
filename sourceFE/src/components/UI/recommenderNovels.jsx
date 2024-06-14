@@ -24,24 +24,32 @@ export const RecommenderNovels = ({}) => {
   const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
   };
+ 
+  //console.log(idNovelRecommender);
   useEffect(() => {
+
     getNovelbyListId(
       idNovelRecommender
         ?.map((val) => {
-          const novelIdBigInt = bigInt(val.novel_id);
-          return novelIdBigInt.plus(1).toString();
+          const novelIdBigInt = bigInt(val.id);
+          return novelIdBigInt.toString();
         })
         .slice(0, 20)
     ).then((res) => {
+      //console.log('list truyen recomment',res.data);
       setListNovel((prev) => ({
         ...prev,
         recommenderNovel: res.data.novels,
       }));
+    }).catch((err)=>{
+      console.log(err);
     });
   }, [idNovelRecommender]);
   const randomRecomender = useMemo(() => {
     listNovel?.recommenderNovel?.sort(() => Math.random() - 0.5);
   }, []);
+
+  console.log('listNovel',listNovel);
   return (
     <>
       <div className="flex flex-col w-full  pb-12 ">

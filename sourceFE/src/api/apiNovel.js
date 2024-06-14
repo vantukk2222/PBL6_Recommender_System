@@ -23,6 +23,7 @@ const apiNovel = {
     getNovelbyListId: (list = []) => {
 
         const url = `/novel?ids=${list.map((val, idx) => (val))}&pageSize=20`
+        //console.log(url);
         return axiosClient.get(url)
     },
     updateNovel: (data) => {
