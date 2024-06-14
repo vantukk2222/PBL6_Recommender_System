@@ -61,12 +61,14 @@ const Content = () => {
 
   useEffect(() => {
     getNovelRecomment(idCate).then((res) => {
-      const listID = res.data.map((val) => {
-        const novelIdBigInt = bigInt(val.novel_id);
-        return novelIdBigInt.plus(1).toString();
-      });
+      const listID = res.data
+      // .map((val) => {
+      //   const novelIdBigInt = bigInt(val.novel_id);
+      //   return novelIdBigInt.toString();
+      // });
       console.log("listID in content: ", listID);
-      getNovelbyListId(listID).then((res) => {
+      var listid = res?.data?.map((val)=>val.id )
+      getNovelbyListId(listid).then((res) => {
         setListNovel((prev) => ({
           ...prev,
           recommenderNovel_Novel: res.data.novels,
@@ -118,12 +120,12 @@ const Content = () => {
         });
     }
   }, []);
-  useEffect(() => {
-    console.log(listRecomment?.length);
-    if (listRecomment?.length > 0) {
-      // getNovelbyListId(listRecomment) viet tiep get api
-    }
-  }, [listRecomment]);
+  // useEffect(() => {
+  //   console.log(listRecomment?.length);
+  //   if (listRecomment?.length > 0) {
+  //     // getNovelbyListId(listRecomment) viet tiep get api
+  //   }
+  // }, [listRecomment]);
   return is_Loading === false ? (
     <div className="containerCard p-4 w-[1080px] mx-auto bg-slate-50 ">
       <div className="flex h-full flex-initial w-full  rounded-lg">
