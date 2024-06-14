@@ -21,7 +21,7 @@ export const Genres = () => {
   const { genres, novel } = useParams();
 
   const [selectedStatus, setSelectedStatus] = useState(0);
-  const [selectedSort, setSelectedSort] = useState(0);
+  const [selectedSort, setSelectedSort] = useState("updatedAt");
   const [loadingMoreNovel, setLoadingMoreNovel] = useState(true);
   const [is_loading, setIsLoading] = useState(true);
   const {
@@ -64,6 +64,7 @@ export const Genres = () => {
       categoryId: genres == "all" ? 0 : selectedCateIndex,
       page: page.currentPage,
       pageSize: 20,
+      sortField: selectedSort || "views",
     };
     getNovelsByCategoryID(newFilter).then((data) => {
       setListNovel((prevState) => ({
@@ -78,7 +79,7 @@ export const Genres = () => {
 
       setLoadingMoreNovel(false);
     });
-  }, [genres, page.currentPage]);
+  }, [genres, page.currentPage, selectedSort]);
 
   // useEffect(() => {
   //   const handleScroll = debounce(() => {
@@ -171,41 +172,41 @@ export const Genres = () => {
             <div className="flex flex-row space-x-4 mt-2">
               <p
                 className={
-                  selectedSort === 0
+                  selectedSort === "updatedAt"
                     ? "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] bg-sky-100 text-blue-500 hover:cursor-pointer"
                     : "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] border-gray-300 hover:cursor-pointer"
                 }
-                onClick={() => setSelectedSort(0)}
+                onClick={() => setSelectedSort("updatedAt")}
               >
                 Time updated
               </p>
               <p
                 className={
-                  selectedSort === 1
+                  selectedSort === "chapters"
                     ? "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] bg-sky-100 text-blue-500 hover:cursor-pointer"
                     : "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] border-gray-300 hover:cursor-pointer"
                 }
-                onClick={() => setSelectedSort(1)}
+                onClick={() => setSelectedSort("chapters")}
               >
                 Chapters
               </p>
               <p
                 className={
-                  selectedSort === 2
+                  selectedSort === "views"
                     ? "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] bg-sky-100 text-blue-500 hover:cursor-pointer"
                     : "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] border-gray-300 hover:cursor-pointer"
                 }
-                onClick={() => setSelectedSort(2)}
+                onClick={() => setSelectedSort("views")}
               >
                 Views
               </p>
               <p
                 className={
-                  selectedSort === 3
+                  selectedSort === "averageRating"
                     ? "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] bg-sky-100 text-blue-500 hover:cursor-pointer"
                     : "text-[14px] font-medium px-4 py-1 rounded-xl border-[1px] border-gray-300 hover:cursor-pointer"
                 }
-                onClick={() => setSelectedSort(3)}
+                onClick={() => setSelectedSort("averageRating")}
               >
                 Rating
               </p>
