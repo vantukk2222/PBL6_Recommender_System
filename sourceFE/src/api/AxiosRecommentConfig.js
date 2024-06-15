@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClientRecommender = axios.create({
-    baseURL: 'https://88bf-2401-d800-76fd-407a-d502-4615-d82b-699e.ngrok-free.app',
+    baseURL: 'https://a06e-2001-ee0-1c10-261d-d3c-b263-3031-9c05.ngrok-free.app',
     //  'http://127.0.0.1:5000',
     headers: {
         'Content-Type': 'application/json',
