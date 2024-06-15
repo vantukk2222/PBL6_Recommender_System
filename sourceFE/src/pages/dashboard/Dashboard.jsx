@@ -41,16 +41,14 @@ const Dashboard = () => {
     idNovelRecommender,
     setIdNovelRecommender,
   } = useNovel();
-  const [isTrained, setIsTraned] = useState(true);
   useEffect(() => {
-    getRecomment(Token?.id)
+    getRecomment(Token?.id || "123")
       .then((res) => {
         console.log("recommentId", res);
         setIdNovelRecommender(res.data);
       })
       .catch((error) => {
         console.log("id nay ch dc train", error);
-        setIsTraned(false);
       });
 
     const newFilter = {
@@ -111,20 +109,20 @@ const Dashboard = () => {
     // });
   }, []);
 
-  useEffect(() => {
-    console.log("lay id ");
-    if (!isTrained) {
-      getRecomment("4300323027")
-        .then((res) => {
-          setIdNovelRecommender(res.data);
-          console.log("lay id mac dinh", res.data);
-        })
-        .catch((error) => {
-          console.error("err", error);
-          //setIsTraned(false)
-        });
-    }
-  }, [isTrained]);
+  // useEffect(() => {
+  //   console.log("lay id ");
+  //   if (!isTrained) {
+  //     getRecomment("4300323027")
+  //       .then((res) => {
+  //         setIdNovelRecommender(res.data);
+  //         console.log("lay id mac dinh", res.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("err", error);
+  //         //setIsTraned(false)
+  //       });
+  //   }
+  // }, [isTrained]);
 
   return !is_loading ? (
     <div className=" flex flex-col justify-end items-center mx-auto  w-screen max-w-[1080px]">
