@@ -9,11 +9,16 @@ const apiRecomment = {
     },
     getNovelRecomment: async (novelId) => {
         let url = `/recommend_based_on_novel?novel_id=${novelId}`;
-       // console.log('url list novel',url);
+        // console.log('url list novel',url);
         const response = await axiosClientRecommender.get(url);
         console.log('API Response (getNovelRecomment):', response.data); // Log response data from API
         return response;
     },
+    reTrainModel: async () => {
+        let url = '/train';
+        const response = await axiosClientRecommender.post(url);
+        return response
+    }
 };
 
 export default apiRecomment;

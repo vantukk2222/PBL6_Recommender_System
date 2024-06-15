@@ -11,3 +11,8 @@ export const getNovelRecomment = async (id) => {
     console.log("getNovelRecomment Response:", response.data); // Log full response data
     return response;
 };
+export const reTrain = async () => {
+    const response = await apiRecomment.reTrainModel();
+    console.log("reTrain Response:", response.data); // Log full response data
+    return response;
+}

@@ -11,6 +11,7 @@ import {
 import useAuthen from "../../hooks/useAuthen";
 import { getallCategory } from "../../ultis/utilsCategory";
 import { getAllAuthor } from "../../ultis/utilsAuthor";
+import { reTrain } from "../../ultis/utilsRecomment";
 function AdminNavbar() {
   const navigate = useNavigate();
   const [isModalGenresOpen, setIsModalGenresOpen] = useState(false);
@@ -27,7 +28,15 @@ function AdminNavbar() {
       setClickProfile(false);
     }
   };
-  const { user, setUser, setIsAuth, setRole, role } = useAuthen();
+  const {
+    user,
+    setUser,
+    setIsAuth,
+    setRole,
+    role,
+    isLoading_Train,
+    setIsLoading_Train,
+  } = useAuthen();
   const infor = JSON.parse(localStorage.getItem("inforUser")) || {};
 
   useEffect(() => {
@@ -50,6 +59,14 @@ function AdminNavbar() {
     setRole(0);
     localStorage.setItem("Token", JSON.stringify({}));
     navigate("/login");
+  };
+  const handleRetrain = () => {
+    setIsLoading_Train(true);
+    console.log("retrain");
+    reTrain().then((response) => {
+      console.log("Retrain Response:", response);
+      setIsLoading_Train(false);
+    });
   };
 
   return (
@@ -171,6 +188,16 @@ function AdminNavbar() {
 
                 <ul>
                   <li>
+                    <a
+                      href="###"
+                      title="Re-train"
+                      className="block p-3 hover:bg-gray-600"
+                      onClick={() => {
+                        handleRetrain();
+                      }}
+                    >
+                      Re-train
+                    </a>
                     <a
                       href="###"
                       title="Sign Out"
