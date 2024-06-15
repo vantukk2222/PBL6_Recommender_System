@@ -17,6 +17,7 @@ import {
 import Modal from "react-modal";
 import AdBanner from "../../components/admin/AdBanner";
 import { toast } from "react-toastify";
+import { AddValidate } from "../../ultis/utilsAuth.js";
 Modal.setAppElement('#root');
 const AdminDashboard = () => {
   const { listAccount, setListAccount, page, setPage, filter, setFilter } =
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
         setIsLoading(false);
       });
   }, [filter]);
-
+  const [error, setError] = useState("");
 
   const searchInputRef = useRef(null);
   const [isShowModal, setIsShowModal] = useState(false);
@@ -69,6 +70,7 @@ const AdminDashboard = () => {
     setIsShowModal(false);
   }
 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserSelect((prev) => ({
@@ -76,9 +78,16 @@ const AdminDashboard = () => {
       [name]: value,
     }));
   };
+  useEffect(() => {
+    setError(AddValidate(userSelect))
+  }, [userSelect])
 
   const handleSubmitEditUser = (e) => {
     e.preventDefault();
+    if (error) {
+      console.log("err", error);
+      return;
+    }
     const acc = {
       id: userSelect._id,
       name: userSelect.name,
@@ -342,6 +351,9 @@ const AdminDashboard = () => {
                   </button>
                 </div>
               </form>
+              <div>
+                {error !== "" ? <div className="text-red-500 mb-1">{error}</div> : <></>}
+              </div>
             </div>
           </div>
         </Modal>

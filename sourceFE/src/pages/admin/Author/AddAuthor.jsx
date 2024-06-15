@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addAccount } from '../../../ultis/utilsAccount';
 import { Link, useNavigate } from 'react-router-dom';
 import { SelectComponent } from '../../../components/Select/SelectComponent';
@@ -6,6 +6,7 @@ import { Loading } from '../../../components/UI/Loading';
 import { addAuthor } from '../../../ultis/utilsAuthor';
 import AdBanner from '../../../components/admin/AdBanner';
 import { toast } from "react-toastify";
+import { AddValidate } from '../../../ultis/utilsAuth';
 
 const AddAuthor = () => {
     const navigate = useNavigate()
@@ -18,9 +19,17 @@ const AddAuthor = () => {
             [name]: value,
         }));
     }
+    const [error, setError] = useState("");
+    useEffect(()=>{
+        setError(AddValidate(userSelect))
+    },[userSelect])
     const [loading, setLoading] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (error) {
+            console.log("err", error);
+            return;
+        }
         console.log(userSelect);
         setLoading(true)
         addAuthor(userSelect).then((res) => {
@@ -89,6 +98,9 @@ const AddAuthor = () => {
                             
                         </div>
                     </form>
+                    <div>
+                        {error !== "" ? <div className="text-red-500 mb-1">{error}</div> : <></>}
+                    </div>
                 </div>
 
             </div>

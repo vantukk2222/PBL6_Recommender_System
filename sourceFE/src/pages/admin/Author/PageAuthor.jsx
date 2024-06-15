@@ -16,6 +16,7 @@ import useAuthor from "../../../hooks/useAuthor.js";
 import { Loading } from "../../../components/UI/Loading.jsx";
 import AdBanner from "../../../components/admin/AdBanner.jsx";
 import { toast } from "react-toastify";
+import { AddValidate } from "../../../ultis/utilsAuth.js";
 Modal.setAppElement('#root');
 const PageAuthor = () => {
     const { filter,
@@ -30,6 +31,10 @@ const PageAuthor = () => {
     const searchInputRef = useRef(null);
     const [isShowModal, setIsShowModal] = useState(false);
     const [userSelect, setUserSelect] = useState({});
+    const [error, setError] = useState("");
+    useEffect(() => {
+        setError(AddValidate(userSelect))
+    }, [userSelect])
     useEffect(() => {
         setIsLoading(true)
         getAuthors(filter)
@@ -38,15 +43,14 @@ const PageAuthor = () => {
                 // const listAcc  = handleFilter(res.accounts)
                 // console.log('list',listAcc);
                 const list = res.authors
-                if(list.length > 0)
-                {
+                if (list.length > 0) {
                     setListAuthor(res.authors);
-                }else{
+                } else {
                     toast.error(`Can't find this author!`, {
                         autoClose: 1000,
                     });
                 }
-                
+
                 setIsLoading(false);
                 setPage({
                     totalPages: res.page.totalPages,
@@ -78,19 +82,23 @@ const PageAuthor = () => {
         }));
 
     };
-    const[searchText, setSearchText] = useState("")
+    const [searchText, setSearchText] = useState("")
     const handleSearch = () => {
-      console.log('searchText: ',searchText);
-      setFilter((prev)=>({
-        ...prev,
-        search : searchText
-      }))
+        console.log('searchText: ', searchText);
+        setFilter((prev) => ({
+            ...prev,
+            search: searchText
+        }))
     };
 
 
     // console.log(userSelect);
     const handleSubmitEditUser = (e) => {
         e.preventDefault();
+        if (error) {
+            console.log("err", error);
+            return;
+        }
         const acc = {
             id: userSelect._id,
             name: userSelect.name,
@@ -104,7 +112,7 @@ const PageAuthor = () => {
                     );
                     toast.success(`Updated successful!`, {
                         autoClose: 1000,
-                      });
+                    });
                 }
                 closeModal()
             })
@@ -116,26 +124,26 @@ const PageAuthor = () => {
                 setUserSelect({});
             });
     };
-    const handleDeleteAuth = (auth) =>{
+    const handleDeleteAuth = (auth) => {
         const userConfirmed = window.confirm("Are you sure you want to delete this author?");
-    
-      // If the user confirmed, proceed with the deletion
-      if (userConfirmed) {
-        deleteAuthor(auth._id).then((res) => {
-          if (res.status === 200 || res.status === 202) {
-            setListAuthor((prev) => prev.filter((author) => author._id !== auth._id));
-            toast.success(`Deleted successful!`, {
-                autoClose: 1000,
-              });
-          }
-        }).catch((err) => {
-            toast.console.error();(`Could not remove this author!`, {
-                autoClose: 1000,
-              });
-          console.log('Could not remove this author\n',err);
-        });
-      }
-      }
+
+        // If the user confirmed, proceed with the deletion
+        if (userConfirmed) {
+            deleteAuthor(auth._id).then((res) => {
+                if (res.status === 200 || res.status === 202) {
+                    setListAuthor((prev) => prev.filter((author) => author._id !== auth._id));
+                    toast.success(`Deleted successful!`, {
+                        autoClose: 1000,
+                    });
+                }
+            }).catch((err) => {
+                toast.console.error(); (`Could not remove this author!`, {
+                    autoClose: 1000,
+                });
+                console.log('Could not remove this author\n', err);
+            });
+        }
+    }
     const handlePageChange = (newPage) => {
         setFilter((prevFilter) => ({
             ...prevFilter,
@@ -167,19 +175,19 @@ const PageAuthor = () => {
                         <input
                             type="text"
                             placeholder="Search"
-                            onChange={(e)=>setSearchText(e.target.value)}
+                            onChange={(e) => setSearchText(e.target.value)}
                             value={searchText}
                             className="bg-transparent border-none outline-none"
                         />
-                        <button  className="mx-4 absolute inset-y-0 right-0 hover:text-green-400 "
-                        onClick={()=>{
-                            setSearchText('')
-                            setFilter((prev)=>({
-                                ...prev,
-                                search : ''
-                            }))
-                        }}>
-                            <ResetIcon classname="text-gray-500 hover:bg-gray-400"/>
+                        <button className="mx-4 absolute inset-y-0 right-0 hover:text-green-400 "
+                            onClick={() => {
+                                setSearchText('')
+                                setFilter((prev) => ({
+                                    ...prev,
+                                    search: ''
+                                }))
+                            }}>
+                            <ResetIcon classname="text-gray-500 hover:bg-gray-400" />
                         </button>
                         {/* <i className="fas fa-search text-gray-500"></i> */}
                     </div>
@@ -328,6 +336,9 @@ const PageAuthor = () => {
                                     >
                                         Save changes
                                     </button>
+                                </div>
+                                <div>
+                                    {error !== "" ? <div className="text-red-500 mb-1">{error}</div> : <></>}
                                 </div>
                             </form>
                         </div>

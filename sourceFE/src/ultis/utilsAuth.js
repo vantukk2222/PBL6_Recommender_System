@@ -54,3 +54,7 @@ export const AddAccountValidate = (acc) =>{
     if (!acc.password)
         return "Password is required !";
 }
+export const AddValidate = (acc) =>{
+    if (!acc.name)
+        return "Name is required !";
+}
