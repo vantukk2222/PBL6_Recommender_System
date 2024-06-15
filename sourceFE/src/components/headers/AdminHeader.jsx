@@ -16,7 +16,7 @@ function AdminHeader() {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <div className="container">
+    <div className="container w-fit">
       <div className="headerNav">
         <AdminNavbar />
       </div>
@@ -27,9 +27,13 @@ function AdminHeader() {
       )}
       {isLoading_Train && (
         <>
-          <p className="">Retrain Model</p>
-          <div className="pr-2">
-            <Loading />
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg relative flex flex-col justify-center items-center">
+              <p className="text-center">Retrain Model</p>
+              <div className="pr-2">
+                <Loading />
+              </div>
+            </div>
           </div>
         </>
       )}
