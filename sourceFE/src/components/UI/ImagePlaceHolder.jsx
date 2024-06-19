@@ -19,7 +19,11 @@ const ImageWithPlaceholder = ({ source, title_img, classname, ...props }) => {
         title={title_img}
         onLoad={() => setImageLoaded(true)}
         onError={() => setImageError(true)}
-        className={classname + ` ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+        className={
+          classname +
+          " object-fit " +
+          ` ${imageLoaded ? "opacity-100" : "opacity-0"}`
+        }
         {...props}
       />
     </div>

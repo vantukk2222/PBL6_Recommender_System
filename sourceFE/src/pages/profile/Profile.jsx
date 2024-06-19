@@ -43,6 +43,7 @@ export const Profile = () => {
     getComments(newFilter).then((res) => {
       setListComment(res.comments);
       setPageComment({
+        total: res.page.total,
         totalPages: res.page.totalPages,
         currentPage: res.page.currentPage,
       });
@@ -91,7 +92,7 @@ export const Profile = () => {
           <EditProfile data={dataProfile} setModal={setEditProfile} />
         )}
         <div className="items-center h-fit bg-slate-100 w-[1080px] transform duration-200 easy-in-out">
-          <div className="relative flex flex-col h-[382px]  bg-red-100 ">
+          <div className="relative flex flex-col h-[382px]  ">
             <div className="relative h-[382px] w-full">
               <img
                 className="object-cover h-full w-full"
@@ -208,7 +209,7 @@ export const Profile = () => {
             Moments
             {!isLoadingComment && (
               <small className=" text-[21px]  text-center text-gray-400 h-full ">
-                {pageComment?.totalPages * 10 || "0"}
+                {pageComment?.total || "0"}
               </small>
             )}
           </h3>

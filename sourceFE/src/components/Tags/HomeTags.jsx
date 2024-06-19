@@ -26,7 +26,7 @@ export const HomeTags = () => {
           </a>
         </div>
         <div className="flex flex-col justify-between pt-2">
-          <div className="flex  flex-wrap w-fit h-fit max-w-[1080px]  ">
+          <div className="flex  flex-wrap ml-4 w-fit h-fit max-w-[1080px]  ">
             {dataHomeTags?.map((eachTags, idx) => (
               <a
                 className="text-[17px] font-bold text-blue-500 p-[17px] mb-[24px] mr-[24px] shadow-lg hover:underline hover:cursor-pointer transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-300"

@@ -69,7 +69,7 @@ const Dashboard = () => {
       getNovels(filter),
       getNovels(ratingFilter),
     ])
-      .then(([data1, data2, data3, data4]) => {
+      .then(([data1, data2, data3]) => {
         setNovelData(data1);
         setListNovel((prevState) => ({
           ...prevState,
@@ -125,7 +125,7 @@ const Dashboard = () => {
   // }, [isTrained]);
 
   return !is_loading ? (
-    <div className=" flex flex-col justify-end items-center mx-auto  w-screen max-w-[1080px]">
+    <div className=" flex flex-col justify-end items-center mx-auto max-w-[1080px]">
       <Banner setIsLoading={setIsLoading} />
       <div className="flex flex-col w-full  pb-12 ">
         <div className="flex flex-row justify-between  border-b-2 font-bold  ">
@@ -139,8 +139,8 @@ const Dashboard = () => {
             More
           </a>
         </div>
-        <div className="flex flex-col justify-between">
-          <div className="list-ranking flex flex-row flex-wrap justify-between">
+        <div className="flex flex-col justify-between ">
+          <div className="list-ranking flex flex-row flex-wrap justify-between ml-4">
             <EachRanking
               dataEachRanking={listNovel?.topranking?.slice(0, 10)}
               numberList={numberList}
@@ -183,7 +183,7 @@ const Dashboard = () => {
         </div>
       </div>
       <HomeTags />
-      <div className="flex flex-row ">
+      <div className="flex flex-row flex-wrap w-full ">
         <div style={{ flex: 6 }}>
           <SelectionImage dataSelectionImage={listNovel?.topranking} />
         </div>
@@ -197,7 +197,7 @@ const Dashboard = () => {
             Completed Novel
           </h1>
         </div>
-        <div className="grid grid-cols-8 gap-4">
+        <div className="flex flex-row flex-wrap items-center justify-left gap-4 ml-4 mt-2">
           {listNovel?.weeklyfeatured?.slice(0, 8).map((item, index) => (
             <WeeklyItem key={index} items={item} />
           ))}

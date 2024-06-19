@@ -42,16 +42,18 @@ export const SelectionImage = ({ dataSelectionImage }) => {
   return (
     <>
       <>
-        <div className="flex flex-col w-full  pb-12 max-h-[420px] h-[420px]  pr-4">
+        <div className="flex flex-col w-full  pb-12  h-fit  pr-4">
           <div className="flex flex-row justify-between font-bold  ">
             <h1 className="text-2xl text-black font-bold mb-4 pb-6 ">
               Rising Fictions
             </h1>
           </div>
-          <div className="flex flex-col justify-between pt-2 ml-4 bg-gray-100 h-full ">
-            <div className="flex  flex-row w-[640px] max-w-[648px] justify-between">
+          <div className="flex flex-col  justify-between pt-2 ml-4 bg-gray-100 h-full ">
+            <div className="flex flex-row flex-wrap items-center justify-left gap-2">
               {dataSelectionImage?.map((item, index) => {
                 if (index == 9) return null;
+                if (index == 8) return null;
+
                 return (
                   <img
                     className={`image-choose w-[60px] h-[80px]  max-w-[60px] max-h-[80px] mr-2 my-2  rounded ${

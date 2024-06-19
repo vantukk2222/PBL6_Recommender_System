@@ -18,7 +18,7 @@ export const Banner = ({ setIsLoading }) => {
   const [dataCarousel, setDataCarousel] = useState([]);
 
   return (
-    <div className="flex flex-col w-full pb-12 ">
+    <div className="flex flex-col  w-full  pb-12 ">
       <h1
         className="text-2xl text-black font-bold mb-4 pb-6 border-b-2	"
         onClick={() => {
@@ -27,12 +27,17 @@ export const Banner = ({ setIsLoading }) => {
       >
         Weekly Featured
       </h1>
-      <div className="flex flex-row ">
+      <div className="flex flex-row flex-wrap w-full">
         {/* carolsel */}
-        <CarouselItem dataCarousel={listNovel} />
+        <div style={{ flex: 5 }} className="flex justify-start  ">
+          <CarouselItem dataCarousel={listNovel} />
+        </div>
         {/* grid table */}
-        <div className="grid grid-cols-5 grid-cols-2 gap-5 ml-10 ">
-          {listNovel?.weeklyfeatured?.slice(0, 10).map((eachNovel, key) => {
+        <div
+          className="flex flex-row flex-wrap items-center justify-left gap-5  "
+          style={{ flex: 5 }}
+        >
+          {listNovel?.weeklyfeatured?.slice(0, 8).map((eachNovel, key) => {
             return <WeeklyItem key={key} items={eachNovel} />;
           })}
           {/* {listNovel?.map((eachNovel, key) => {

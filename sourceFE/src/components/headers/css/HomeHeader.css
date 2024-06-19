@@ -6,9 +6,7 @@
 
 .container {
   flex-direction: column;
-  
   justify-items: center;
-  display: flex;
   align-items: center;
 }
 
@@ -20,6 +18,8 @@
 }
   
 .row{
+  width:100vw;
+
 }
 
 .row::after {

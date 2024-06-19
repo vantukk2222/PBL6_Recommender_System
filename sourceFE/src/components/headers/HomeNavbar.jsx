@@ -129,9 +129,9 @@ function HomeNavbar() {
 
   return (
     <>
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="flex flex-row">
+      <nav className="navbar ">
+        <div className="nav-container h-full bg-white">
+          <div className="flex flex-row h-full bg-white">
             <a href="/" className="nav-logo mr-10">
               <span></span>
               {/* <i className="fas fa-code"></i> */}
@@ -180,8 +180,7 @@ function HomeNavbar() {
               </li>
             </ul>
           </div>
-
-          <div className="flex flex-row items-center gap-4 ">
+          <div className="flex flex-row items-center gap-4 h-full bg-white">
             <a
               className="w-fit flex flex-row items-center hover:cursor-pointer hover:transition-all hover:duration-300 hover:scale-110 hover:bg-opacity-50 hover:rounded-2xl hover:shadow-lg "
               rel="nofollow"

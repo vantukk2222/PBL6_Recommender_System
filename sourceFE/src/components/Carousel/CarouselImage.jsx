@@ -32,7 +32,7 @@ export const CarouselItem = ({ dataCarousel }) => {
   };
   return (
     <>
-      <div className=" flex flex-col items-center bg-slate-100  min-h-[412px]">
+      <div className=" flex flex-col items-center bg-slate-100 mr-5 w-full min-h-[412px]">
         <div className="carousel-container relative overflow-hidden">
           <div
             className="absolute inset-0 flex items-center justify-center"

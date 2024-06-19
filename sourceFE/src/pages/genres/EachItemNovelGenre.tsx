@@ -7,7 +7,7 @@ export const EachItemNovelGenre = ({ item }) => {
   const Url_image = proxyUrl(item?.imageUrl);
 
   return (
-    <div className="each-item-novel-genre flex flex-row mt-4">
+    <div className="each-item-novel-genre flex flex-row mt-4 w-[380px]">
       <div className="each-item-novel-genre__img ">
         <ImageWithPlaceholder
           classname="w-[90px] h-[120px] max-w-[90px] max-h-[120px]   rounded ease-in-out delay-100 hover:scale-105  duration-500 hover:-translate-y-1 hover:cursor-pointer"

@@ -110,7 +110,7 @@ export const Genres = () => {
   // }, []);
   return is_loading === false ? (
     <>
-      <div className=" flex flex-row  w-screen mx-auto  max-w-[1080px] max-h-[1620px] ">
+      <div className=" flex flex-row  w-screen mx-auto  max-w-[1080px]  ">
         <Categories genres={genres} />
         <div className="flex flex-col w-screen justify-start max-w[890px] h-fit pl-[40px] ">
           <div>
@@ -214,8 +214,9 @@ export const Genres = () => {
           </div>
           {!loadingMoreNovel && (
             <>
-              <div className="grid grid-cols-2 justify-center ">
+              <div className="flex flex-row flex-wrap items-center justify-left gap-5  ">
                 {listNovel?.genres1?.map((eachNovel, index) => {
+                  if (index >= 9) return null;
                   return <EachItemNovelGenre key={index} item={eachNovel} />;
                 })}
               </div>
