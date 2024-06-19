@@ -132,7 +132,7 @@ export const Library = () => {
   };
   return !is_Loading ? (
     <>
-      <div className="flex flex-col items-center justify-center maw-w-[1080px] w-[1080px] h-fit">
+      <div className="flex flex-col items-center justify-center mx-auto max-w-[1080px] w-[1080px] h-fit">
         <div className="flex flex-col w-full items-left justify-center h-[140px] border-b-2 border-gray-300	">
           <h2
             className="leading-10 text-[38px] font-bold"

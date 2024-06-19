@@ -45,7 +45,7 @@ export const EachItemTopRanking = ({ item, rank, sort }) => {
   }
   const Url_image = proxyUrl(item?.imageUrl);
   return (
-    <div className="flex flex-row h-[130px] max-h-[150px] bg-blue-100 w-fit w-max-[770px]">
+    <div className="flex flex-row h-[130px] max-h-[150px] w-fit w-max-[770px]">
       {rank !== 0 && (
         <div
           className={`number-ranking text-[16px] font-bold antialiased ${color} m-2`}
