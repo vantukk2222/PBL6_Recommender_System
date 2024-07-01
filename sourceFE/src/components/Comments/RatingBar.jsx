@@ -78,7 +78,7 @@ const RatingBar = ({ idCate }) => {
       addCommentByUser();
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred while posting your comment");
+      toast.error("An error occurred while posting your comment.");
     }
   };
   useEffect(() => {
